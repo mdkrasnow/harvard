@@ -1,0 +1,152 @@
+---
+title: "Problem Set 1"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, September 13, 2024 at 11:59 pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared "in committee" are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Problem 1
+
+Review the documents in the "Review" module on Canvas on RMarkdown, matrix algebra and probability. 
+
+
+### Problem 2
+
+Rename this file to include your first initial and last name -- e.g., stat139_fall2024_hw1_jxenakis.Rmd.
+Then, in this document, edit the "author" portion of the header to include your name. Click *Knit*. This should produce a .pdf file located in the same folder as the .Rmd file, with a name like stat139_fall2024_hw1_jxenakis.pdf. Note that the file name for a PDF created from an Rmd document will be the same, except with a different file extension. The file name and title of the document seen in the header can be different.
+
+If you did not get a PDF file, stop and try to diagnose the problem by looking at the error messages in the RMarkdown section of the Console.  The error messages are not always helpful, so if you cannot solve the issue, ask the teaching staff for help or talk with another student.
+
+### Problem 3
+
+Let's do some matrix algebra by hand and in \textsf{R}.  Let: 
+$$\vec{c}=
+  \begin{bmatrix}
+    0.5 \\
+    0.5
+  \end{bmatrix},\hspace{0.2in} 
+  \vec{x}=
+  \begin{bmatrix}
+    2 \\
+    3
+  \end{bmatrix},\hspace{0.2in} 
+  \vec{\mu}=
+    \begin{bmatrix}
+    1 \\
+    2 
+  \end{bmatrix}, \hspace{0.2in}
+ \mathbf{\Sigma} = 
+  \begin{bmatrix}
+    2 & 1 \\
+    1 & 4 
+  \end{bmatrix}$$
+
+Calculate each of the following by hand and write your solution using \LaTeX\ syntax. Then confirm your calculations in an \textsf{R} code chunk. You will need the \texttt{matrix()} function,  the \texttt{solve()} function, and the \texttt{\%*\%} operator for matrix multiplication. Remember, if you are unfamiliar with an \textsf{R} function, type \texttt{?} in the console followed by the function name to access the manual pages.
+
+(a) $\vec{c}^{\,T}(\vec{x}-\vec{\mu})$
+
+(b) $\mathbf{\Sigma}^{-1}$
+
+(c) $\vec{c}^{\,T}\mathbf{\Sigma}\vec{c}$
+
+(d) $\vec{c}^{\,T}(\vec{x}-\vec{\mu}) (\vec{c}^{\ T}\mathbf{\Sigma}\vec{c})^{-1/2}$
+
+
+
+### Problem 4
+
+a) In an \textsf{R} code chunk, simulate a vector of length 100 from a $N(0,1)$ distribution and then plot the distribution of your simulated data as a histogram. You will need the \texttt{rnorm()}  and \texttt{hist()} functions. 
+
+
+b) Now repeat your \textsf{R} code chunk, and make a simple change in the chunk header so that only the output (i.e, the histogram) is output, not the code itself.
+
+
+
+### Problem 5
+
+a) What are two useful facts about moment generating functions (MGF's)? Use Markdown syntax to write your answer as an unordered list. Make some text in bold, and some in italics.
+
+b) A Markdown logo was included in this assignment as a .pdf file. Attach it here using Markdown syntax (resize it to make it visually appealing if necessary).
+
+c) Restate the two useful facts about moment generating functions here as an **ordered** list using \LaTeX\ syntax. Make some text in bold and some in italics.
+
+d) The \LaTeX\ logo was included in this assignment as a .png file. Attach it here using \LaTeX\ syntax (resize it to make it visually appealing if necessary).
+
+
+\clearpage
+
+The remainder of the problems are a perhaps challenging review of some STAT 110 concepts that will remain important in STAT 139. But this is not meant to be a challenging probability homework, it is meant to be an introduction to RMarkdown and \LaTeX\. For this reason, I will post the answers to questions 6-9 in a few days and at that point you can copy them to practice your RMarkdown and \LaTeX\ skills. Feel free to challenge yourself by trying them beforehand though.
+
+### Problem 6
+
+Suppose $X_1, \dots X_n \sim N(\mu, \sigma^2)$. The sample mean is defined as $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$, and the sample variance as $S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2$.
+
+a) Why is there an $n-1$ and not an $n$ in the denominator of the $S^2$?
+
+b) What is the sampling distribution of $\bar{X}$?
+
+c) What is the expected value of $S^2$.
+
+d) What is the sampling distribution of $S^2$? 
+
+e) What is the expected value of a $\chi^2$ random variable with $n$ degrees of freedom?
+
+
+
+### Problem 7
+
+The MGF for a random variable $X \sim \chi^2_n$ random variable is defined as:
+\begin{equation*}
+    M_X(t) = (1-2t)^{-\frac{n}{2}}, ~~~ t < \frac{1}{2}
+\end{equation*}
+How would you have derived this if I hadn't given it to you? (No need to derive it, just set it up).
+
+
+### Problem 8
+
+Now we will derive the distribution of $S^2$ together. Let
+$A = \frac{1}{\sigma^2} \sum_i^{n} (X_i -\mu)^2 \sim \chi^2_n$, $B = \frac{1}{\sigma^2} \sum_{i=1}^n (X_i - \bar{X})^2$, and $C = \frac{n(\bar{X}-\mu)^2}{\sigma^2}$
+
+a) What are the distributions of $A$ and $B$?
+
+b) Can you show that $A=B+C$ 
+
+c) Assuming that $B$ and $C$ are independent can you use moment generating functions (see problem 3) to show that the moment generating function of $B$ is that of $\chi^2_{n-1}$ random variable?
+
+
+### Problem 9
+
+I know what you're thinking...we skipped the hardest part: showing that $\bar{X}$ and $S^2$ are independent.
+
+a) What is the distribution (just the name of the distribution) of the vector $(\bar{X}, X_1-\bar{X}, X_2-\bar{X},\dots,X_n-\bar{X})$?
+
+b) What is the expected value of each component?
+
+c) If we can show that $Cov(\bar{X}, X_j-\bar{X}) = 0$ for any element $j$ of the vector, does that prove $\bar{X}$ is independent of every element $j$? Why or why not? 
+
+d) What other distributions would that be true for?
+
+e) Now why is $S^2$ independent of $\bar{X}$?
