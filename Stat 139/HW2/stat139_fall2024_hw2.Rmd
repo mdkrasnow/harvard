@@ -1,0 +1,766 @@
+---
+title: "Problem Set 2"
+author: "Matt Krasnow"
+date: "Due Friday, September 20, 2024 at 11:59pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    latex_engine: xelatex
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+
+### Question 1: Creating our Dataset
+
+We will create our own dataset to try to replicate the analyses we did in class with the human height data (the application in which the method of regression was developed). Start by filling out the questionnaire here:
+
+\url{https://forms.gle/VQJJsNz4Vjs9RFAk6}
+
+\vspace{1em}
+
+### Question 2: Some Algebra
+
+Let $x_1, x_2, \dots, x_n$ be any numbers and define $\bar{x}=\frac{1}{n}\sum_{i=1}^{n} x_i$  and $s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2$. Prove the following:
+
+(a) $\text{argmin}_a \sum_{i=1}^{n} (x_i - a)^2 = \bar{x}$
+
+(b) $(n-1)s^2 = \sum_{i=1}^{n} x_i^2 - n \bar{x}^2$
+
+(c) $\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i -n \bar{x} \bar{y}$
+
+
+
+## 2. Prove the following:
+
+### (a)
+
+$$
+\arg\min_{a} \sum_{i=1}^{n} (x_i - a)^2 = \bar{x}
+$$
+
+**Proof:**
+
+To find the value of $a$ that minimizes the sum of squared differences, we differentiate with respect to $a$ and set the derivative to zero:
+
+$$
+\frac{d}{da} \sum_{i=1}^{n} (x_i - a)^2 = 0
+$$
+
+Applying the chain rule:
+
+$$
+\sum_{i=1}^{n} \frac{d}{da} (x_i - a)^2 = \sum_{i=1}^{n} -2(x_i - a) = 0
+$$
+
+Simplifying:
+
+$$
+-2 \sum_{i=1}^{n} (x_i - a) = 0
+$$
+
+$$
+-2 \left( \sum_{i=1}^{n} x_i - n a \right) = 0
+$$
+
+Dividing both sides by $-2$:
+
+$$
+\sum_{i=1}^{n} x_i - n a = 0
+$$
+
+$$
+n \bar{x} - n a = 0
+$$
+
+Dividing both sides by $n$:
+
+$$
+\bar{x} - a = 0
+$$
+
+$$
+\implies a = \bar{x}
+$$
+
+To confirm this critical point is a minimum, we compute the second derivative:
+
+$$
+\frac{d^2}{da^2} \sum_{i=1}^{n} (x_i - a)^2 = \sum_{i=1}^{n} \frac{d}{da} \left[ -2(x_i - a) \right] = \sum_{i=1}^{n} 2 = 2n > 0
+$$
+
+Since the second derivative is positive, $a = \bar{x}$ indeed minimizes the sum.
+
+Therefore, we have proven that:
+
+$$
+\arg\min_{a} \sum_{i=1}^{n} (x_i - a)^2 = \bar{x}
+$$
+
+### (b) Prove that:
+
+$$(n-1)s^2 = \sum_{i=1}^{n} x_i^2 - n \bar{x}^2$$
+
+**Proof:**
+
+We begin with the definition of the sample variance $s^2$:
+
+$$
+s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2
+$$
+
+Multiplying both sides by $(n-1)$:
+
+$$
+(n - 1)s^2 = \sum_{i=1}^{n} (x_i - \bar{x})^2
+$$
+
+Expanding the right-hand side:
+
+$$
+\sum_{i=1}^{n} (x_i - \bar{x})^2 = \sum_{i=1}^{n} (x_i^2 - 2x_i\bar{x} + \bar{x}^2)
+$$
+
+$$
+= \sum_{i=1}^{n} x_i^2 - 2\bar{x} \sum_{i=1}^{n} x_i + \sum_{i=1}^{n} \bar{x}^2
+$$
+
+Using the fact that $\sum_{i=1}^{n} x_i = n\bar{x}$ and $\sum_{i=1}^{n} \bar{x}^2 = n\bar{x}^2$:
+
+$$
+= \sum_{i=1}^{n} x_i^2 - 2n\bar{x}^2 + n\bar{x}^2
+$$
+
+$$
+= \sum_{i=1}^{n} x_i^2 - n\bar{x}^2
+$$
+
+Therefore, we have proven that:
+
+$$(n - 1)s^2 = \sum_{i=1}^{n} x_i^2 - n \bar{x}^2$$
+
+### (c) Prove that:
+
+$$\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}$$
+
+**Proof:**
+
+We start by expanding the left-hand side of the equation:
+
+$$
+\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} (x_i y_i - x_i \bar{y} - \bar{x} y_i + \bar{x} \bar{y})
+$$
+
+Distributing the summation:
+
+$$
+= \sum_{i=1}^{n} x_i y_i - \bar{y} \sum_{i=1}^{n} x_i - \bar{x} \sum_{i=1}^{n} y_i + \sum_{i=1}^{n} \bar{x} \bar{y}
+$$
+
+Using the properties of the arithmetic mean, we know that $\sum_{i=1}^{n} x_i = n\bar{x}$ and $\sum_{i=1}^{n} y_i = n\bar{y}$. Also, $\sum_{i=1}^{n} \bar{x} \bar{y} = n\bar{x} \bar{y}$. Substituting these:
+
+$$
+= \sum_{i=1}^{n} x_i y_i - n\bar{y} \bar{x} - n\bar{x} \bar{y} + n \bar{x} \bar{y}
+$$
+
+Simplifying:
+
+$$
+= \sum_{i=1}^{n} x_i y_i - n\bar{x} \bar{y}
+$$
+
+Thus, we have proven that:
+
+$$\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}$$
+
+
+#
+
+
+\vspace{1em}
+
+
+### Question 3: Deriving the OLS Estimates
+
+Assume the following population regression model:
+
+$$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \hspace{3em} i=1,\dots n$$
+
+
+where the ELIH assumptions we learned in class hold. Derive the Ordinary Least Squares (OLS) estimates of $\beta_0$ and $\beta_1$ using calculus, as described in Lecture 3. That is, show:
+
+$$\hat{\beta_0} = \bar{Y} - \hat{\beta}_1\bar{x} \hspace{0.2in} \hat{\beta_1} = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(Y_i-\bar{Y})}{\sum_{i=1}^{n} (x_i-\bar{x})^2}$$
+
+The facts you proved in Question 2 will help you.
+
+
+$$
+
+\subsection*{Solution}
+
+\textbf{Step 1: Set up the Objective Function}
+
+We aim to minimize the sum of squared residuals (SSR):
+
+\[
+\text{Minimize } SSR = \sum_{i=1}^{n} [Y_i - (\beta_0 + \beta_1 x_i)]^2
+\]
+
+\textbf{Step 2: Take Derivatives with Respect to $\beta_0$ and $\beta_1$}
+
+Compute the partial derivatives:
+
+1. With respect to $\beta_0$:
+
+\[
+\frac{\partial SSR}{\partial \beta_0} = -2 \sum_{i=1}^{n} [Y_i - (\beta_0 + \beta_1 x_i)] = 0
+\]
+
+2. With respect to $\beta_1$:
+
+\[
+\frac{\partial SSR}{\partial \beta_1} = -2 \sum_{i=1}^{n} x_i [Y_i - (\beta_0 + \beta_1 x_i)] = 0
+\]
+
+\textbf{Step 3: Simplify the Equations}
+
+1. From the derivative with respect to $\beta_0$:
+
+\[
+-2 \sum_{i=1}^{n} [Y_i - \beta_0 - \beta_1 x_i] = 0
+\]
+
+Simplify:
+
+\[
+\sum_{i=1}^{n} Y_i - n\beta_0 - \beta_1 \sum_{i=1}^{n} x_i = 0
+\]
+
+Divide both sides by $n$:
+
+\[
+\bar{Y} - \beta_0 - \beta_1 \bar{x} = 0
+\]
+
+Solve for $\beta_0$:
+
+\[
+\beta_0 = \bar{Y} - \beta_1 \bar{x}
+\]
+
+2. From the derivative with respect to $\beta_1$:
+
+\[
+-2 \sum_{i=1}^{n} x_i [Y_i - \beta_0 - \beta_1 x_i] = 0
+\]
+
+Simplify:
+
+\[
+\sum_{i=1}^{n} x_i Y_i - \beta_0 \sum_{i=1}^{n} x_i - \beta_1 \sum_{i=1}^{n} x_i^2 = 0
+\]
+
+Substitute $\beta_0 = \bar{Y} - \beta_1 \bar{x}$:
+
+\[
+\sum_{i=1}^{n} x_i Y_i - (\bar{Y} - \beta_1 \bar{x}) \sum_{i=1}^{n} x_i - \beta_1 \sum_{i=1}^{n} x_i^2 = 0
+\]
+
+Simplify:
+
+\begin{align*}
+\sum_{i=1}^{n} x_i Y_i - \bar{Y} \sum_{i=1}^{n} x_i + \beta_1 \bar{x} \sum_{i=1}^{n} x_i - \beta_1 \sum_{i=1}^{n} x_i^2 &= 0 \\
+\sum_{i=1}^{n} x_i Y_i - n\bar{Y} \bar{x} + \beta_1 n \bar{x}^2 - \beta_1 \sum_{i=1}^{n} x_i^2 &= 0
+\end{align*}
+
+\textbf{Step 4: Solve for $\beta_1$}
+
+Rewriting the equation:
+
+\[
+\sum_{i=1}^{n} x_i Y_i - n\bar{Y} \bar{x} + \beta_1 (n \bar{x}^2 - \sum_{i=1}^{n} x_i^2) = 0
+\]
+
+Recognize that:
+
+\[
+\sum_{i=1}^{n} x_i Y_i = n \overline{xY}, \quad \sum_{i=1}^{n} x_i^2 = n \overline{x^2}
+\]
+
+Substitute:
+
+\[
+n \overline{xY} - n\bar{Y} \bar{x} + \beta_1 (n \bar{x}^2 - n \overline{x^2}) = 0
+\]
+
+Divide both sides by $n$:
+
+\[
+\overline{xY} - \bar{Y} \bar{x} + \beta_1 (\bar{x}^2 - \overline{x^2}) = 0
+\]
+
+Note that $\bar{x}^2 - \overline{x^2} = -\operatorname{Var}(x)$ (since $\operatorname{Var}(x) = \overline{x^2} - \bar{x}^2$). Therefore:
+
+\[
+\overline{xY} - \bar{Y} \bar{x} - \beta_1 \operatorname{Var}(x) = 0
+\]
+
+Recognize that $\operatorname{Cov}(x, Y) = \overline{xY} - \bar{x} \bar{Y}$. So:
+
+\[
+\operatorname{Cov}(x, Y) - \beta_1 \operatorname{Var}(x) = 0
+\]
+
+Solve for $\beta_1$:
+
+\[
+\beta_1 = \frac{\operatorname{Cov}(x, Y)}{\operatorname{Var}(x)} = \frac{\overline{xY} - \bar{x} \bar{Y}}{\overline{x^2} - \bar{x}^2}
+\]
+
+Expressed in summation form:
+
+\[
+\beta_1 = \frac{\displaystyle \frac{1}{n} \sum_{i=1}^{n} x_i Y_i - \bar{x} \bar{Y}}{\displaystyle \frac{1}{n} \sum_{i=1}^{n} x_i^2 - \bar{x}^2} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+\]
+
+\textbf{Step 5: Obtain $\beta_0$}
+
+Using $\beta_0 = \bar{Y} - \beta_1 \bar{x}$:
+
+\[
+\beta_0 = \bar{Y} - \left( \frac{\sum_{i=1}^{n} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \right) \bar{x}
+\]
+
+\textbf{Conclusion}
+
+We have derived the OLS estimates:
+
+\[
+\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(Y_i - \bar{Y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}
+\]
+
+and
+
+\[
+\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{x}
+\]
+$$
+
+
+\vspace{1em}
+
+### Problem 4. Correlation of OLS Estimates
+
+Assume the model in Problem 3 holds, but add the assumption that $\varepsilon_i \overset{iid}{\sim} N(0,\sigma^2)~~~i=1,2,\dots,n$:
+
+(a) Show that $\bar{Y}$ and $\hat{\beta}_1$ are independent. This will help you in part (b).
+
+
+We can show that $\bar{Y}$ and $\hat{\beta_1}$ are normally distributed. Thus, if we show that they are also uncorrelated, by properties of the normal distribution, they must be independent.
+
+We know that $X_1, ..., X_n$ are numbers (scalars), our model is:
+
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+
+Since $Y_i$ is a linear combination of normals, it must be normal. In this model, $\beta_0$ and $\beta_1$ are also constants (perhaps unknown, but still constant). However, $\hat{\beta_0}$ and $\hat{\beta_1}$ are distributed normally because $\hat{\beta_1}$ is a linear function of $\bar{Y}$ and $\bar{X}$ (which is a linear combination of $Y_i$).
+
+Since the $Y_i$ are normally distributed, a linear function of normals, $\hat{\beta_0}$ and $\hat{\beta_1}$ must be normally distributed (multivariate normal rules).
+
+Now, we will attempt to show that they are uncorrelated.
+
+We must show:
+
+$$\text{Cov}(\bar{Y}, \hat{\beta_1}) = 0$$
+
+$$\text{Cov}(\bar{Y}, \hat{\beta_1}) = E[\bar{Y} \hat{\beta_1}] - E[\bar{Y}] E[\hat{\beta_1}]$$
+
+Because $\hat{\beta_1}$ is normally distributed about $\beta_1$, we have:
+
+$$E[\hat{\beta_1}] = \beta_1$$
+
+Now, $E[\bar{Y} \hat{\beta_1}] = E[\beta_0 + \beta_1 \bar{X}] = 0$
+
+$$E[(\beta_0 + \beta_1 \bar{X})\hat{\beta_1}] - [\beta_0 + \beta_1 \bar{X}] \beta_1 = 0$$
+
+$$0 = 0$$
+
+Since they are uncorrelated, $\bar{Y}$ and $\hat{\beta_1}$ are independent.
+
+(b) Derive the covariance and correlation between $\hat{\beta_1}$ and $\hat{\beta_0}$:
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = \mathbb{E}[\hat{\beta_1} \hat{\beta_0}] - \mathbb{E}[\hat{\beta_1}] \mathbb{E}[\hat{\beta_0}] $$
+$$ = \mathbb{E}[\hat{\beta_1} \hat{\beta_0}] - \beta_1 \beta_0 $$
+Substitute:
+$$ y = \beta_0 + \beta_1 X + \epsilon $$
+$$ \hat{\beta_0} = \bar{y} - \hat{\beta_1} \bar{X} + \epsilon $$
+$$ \mathbb{E}[\hat{\beta_1} \hat{\beta_0}] = \mathbb{E}[\hat{\beta_1}(\bar{y} - \hat{\beta_1} \bar{X} + \epsilon)] $$
+$$ = \mathbb{E}[\hat{\beta_1} \bar{y}] - \mathbb{E}[\hat{\beta_1}^2 \bar{X}] + 0 - \beta_1 \beta_0 $$
+Since $\bar{y}$ and $\hat{\beta_1}$ are independent, we know:
+$$ \mathbb{E}[\bar{y} \hat{\beta_1}] = \mathbb{E}[\bar{y}] \mathbb{E}[\hat{\beta_1}] $$
+$$ = [\mathbb{E}[\bar{y}] + \mathbb{E}[\hat{\beta_1} \bar{X}]] - \mathbb{E}[\hat{\beta_1}^2 \bar{X}] - \beta_1 \beta_0 $$
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = \beta_0 \mathbb{E}[\hat{\beta_1}] + \bar{X}[\mathbb{E}[\hat{\beta_1}] - \mathbb{E}[\hat{\beta_1}^2 \bar{X}]] - \beta_1 \beta_0 $$
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = \mathbb{E}[\hat{\beta_1} \bar{X}] - \mathbb{E}[\hat{\beta_1}] \mathbb{E}[\bar{X}] - \mathbb{E}[\hat{\beta_1}^2 \bar{X}] $$
+By the definition of correlation:
+$$ \text{Corr}[x, y] = \frac{\text{Cov}[x, y]}{\sqrt{\text{Var}[x] \text{Var}[y]}} $$
+Now, we need to find $\text{Var}[\hat{\beta_1}]$ and $\text{Var}[\hat{\beta_0}]$. We know:
+$$ \hat{\beta_1} = \frac{\sum_{i=1}^{n}(x_i - \bar{X})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{X})^2} $$
+Substitute $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$:
+$$ \hat{\beta_1} = \frac{\sum_{i=1}^{n}(x_i - \bar{X})[(\beta_0 + \beta_1 x_i + \epsilon_i) - \bar{y}]}{\sum_{i=1}^{n}(x_i - \bar{X})^2} $$
+This simplifies to:
+$$ \hat{\beta_1} = \beta_1 + \frac{\sum_{i=1}^{n}(x_i - \bar{X}) \epsilon_i}{S_{xx}} $$
+$$ \text{Var}[\hat{\beta_1}] = \sigma^2 + \text{Var} \left[ \frac{\sum_{i=1}^n (x_i - \bar{X}) \epsilon_i}{S_{xx}} \right] = \frac{\sigma^2 \sum_{i=1}^n (x_i - \bar{X})^2}{S_{xx}^2} = \frac{\sigma^2 S_{xx}}{S_{xx}^2} $$
+$$ \text{Var}[\hat{\beta_1}] = \frac{\sigma^2}{S_{xx}} $$
+Now, find the variance of $\hat{\beta_0}$:
+$$ \text{Var}[\hat{\beta_0}] = \text{Var}\left[\bar{y} - \hat{\beta_1} \bar{X}\right] $$
+Since $\bar{y}$ and $\hat{\beta_1}$ are uncorrelated (part a),
+$$ \text{Var}[\hat{\beta_0}] = \text{Var}[\bar{y}] + \text{Var}[\hat{\beta_1} \bar{X}] = \frac{\sigma^2}{n} + \bar{X}^2 \frac{\sigma^2}{S_{xx}} $$
+$$ \text{Var}[\hat{\beta_0}] = \sigma^2 \left[ \frac{1}{n} + \frac{\bar{X}^2}{S_{xx}} \right] $$
+Thus, the covariance between $\hat{\beta_1}$ and $\hat{\beta_0}$ is:
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = \bar{X} \mathbb{E}[\hat{\beta_1}^2] - \mathbb{E}[\hat{\beta_1}] \mathbb{E}[\hat{\beta_0}] $$
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = -\bar{X} \text{Var}[\hat{\beta_1}] $$
+$$ \text{Cov}[\hat{\beta_1}, \hat{\beta_0}] = -\frac{\bar{X} \sigma^2}{S_{xx}} $$
+$$ \text{Corr}[\hat{\beta_1}, \hat{\beta_0}] = \frac{-\frac{\bar{X} \sigma^2}{S_{xx}}}{\sqrt{\frac{\sigma^2}{S_{xx}} \left[\frac{\sigma^2}{n} + \frac{\bar{X}^2 \sigma^2}{S_{xx}}\right]}} = \frac{-\bar{X}}{\sqrt{S_{xx} \left[\frac{1}{n} + \frac{\bar{X}^2}{S_{xx}}\right]}} $$
+$$ \text{Corr}[\hat{\beta_1}, \hat{\beta_0}] = \frac{-\bar{X}}{\sqrt{\frac{S_{xx}}{n} + \bar{X}^2}} $$
+
+(c) In terms of $\bar{x}$, when will this correlation be positive?  When will it be negative?  In 1-2 sentences, justify why this makes sense if $\bar{x}>0$ (think where the scatterplot and regression line lies on the coordinate system). 
+
+$\text{When } \overline{X} > 0, \text{ correlation is negative,}$
+$\overline{X} < 0, \text{ correlation is positive,}$
+$\overline{X} = 0, \text{ correlation is } 0.$
+$\text{Due to } -\overline{X} \text{ in the numerator.}$
+$\text{When } \overline{X} > 0, \text{ that means that most of the points are to the right of the origin on average.}$
+$\text{That means that the slope increases---To account for this, } \hat{\beta}_0, \text{ the intercept, must reduce to still fit the data.}$
+$\text{This indicates an inverse relationship between } \hat{\beta}_1 \text{ and } \hat{\beta}_0, \text{ which is represented by the equation.}$
+
+<!-- (d) Show that the variance of $\hat{\mu}_{Y|X=x_0}$ is $\sigma^2\left[\frac{1}{n}+\frac{(x_0-\bar{x})^2}{S_{xx}}\right]$   -->
+<!-- (which is used in creating the confidence intervals and prediction intervals around the regression line at a particular $X_0$). -->
+
+\vspace{1em}
+
+### Question 5: Fitting the Model
+
+All empirical work begins with some data "cleaning", including ensuring the data are in the right form. James will do this for you this time. After he cleans the data you provided, he will provide you with a dataset with these three variables:
+
+- \texttt{studentheight}: your heights (in inches, to the nearest half inch)
+
+- \texttt{maternalheight}: the height of your mothers (in inches, to the nearest half inch)
+
+- \texttt{paternalheight}: the height of your fathers (in inches, to the nearest half inch)
+
+
+(a) Next, it's important to conduct exploratory data analysis (EDA) to ensure the integrity of your data. This includes summarizing your variables, including the extent of missingness, checking for outliers and inconsistencies, and potentially addressing any data entry errors. Provide an appropriate EDA (e.g., appropriate figures and/or a table), and provide commentary. Also, justify any decisions you make about how you choose to handle any suspect data in your analysis.
+
+```{r}
+# List of packages to install and load
+packages <- c("skimr", "ggplot2", "gridExtra")
+
+# Function to install and load packages
+install_and_load <- function(packages) {
+  new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
+  if(length(new_packages)) install.packages(new_packages)
+  invisible(lapply(packages, library, character.only = TRUE))
+}
+
+# Install and load the packages
+install_and_load(packages)
+library(tidyr)
+```
+
+```{r data loading}
+
+heights_data <- read.csv("heights_139.csv")
+head(heights_data)
+str(heights_data)
+
+
+```
+
+```{r data_cleaning}
+library(readr)
+library(dplyr)
+library(stringr)
+
+# Import the data
+heights_data <- read_csv("heights_139.csv", col_types = cols(.default = "c"))
+
+# Function to convert height to inches
+convert_to_inches <- function(height) {
+  if (is.na(height)) return(NA)
+  
+  # Convert '5'10' format to inches
+  if (str_detect(height, "^\\d+'\\d+(\\.\\d+)?$")) {
+    parts <- str_split(height, "'", simplify = TRUE)
+    return(as.numeric(parts[1]) * 12 + as.numeric(parts[2]))
+  }
+  
+  # Remove any non-numeric characters
+  height <- str_replace_all(height, "[^0-9.]", "")
+  
+  # Convert to numeric
+  height <- as.numeric(height)
+  
+  # Convert cm to inches if greater than 100
+  if (!is.na(height) && height > 100) {
+    height <- height / 2.54
+  }
+  
+  return(height)
+}
+
+# Apply cleaning to each column
+heights_data <- heights_data %>%
+  mutate(across(everything(), ~sapply(., convert_to_inches)))
+
+# Drop rows with NA values
+heights_data <- heights_data %>% drop_na()
+
+# Display the first few rows and structure of the cleaned data
+print(head(heights_data))
+print(str(heights_data))
+
+# Summary statistics of cleaned data
+summary(heights_data)
+
+```
+
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(ggplot2)
+library(gridExtra)
+
+summary_stats <- summary(heights_data)
+print(summary_stats)
+
+# Check for missing values
+missing_values <- colSums(is.na(heights_data))
+print(missing_values) # none!!
+
+skim(heights_data)
+
+
+
+# Function to create a bar chart
+create_bar_chart <- function(data, column, title) {
+  ggplot(data, aes(x = !!sym(column))) +
+    geom_bar(fill = "skyblue", color = "black") +
+    labs(title = title, x = column, y = "Count") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+# Create bar charts
+p1 <- create_bar_chart(heights_data, "studentheight", "Student Height Distribution")
+p2 <- create_bar_chart(heights_data, "maternalheight", "Maternal Height Distribution")
+p3 <- create_bar_chart(heights_data, "paternalheight", "Paternal Height Distribution")
+
+# Arrange the plots in a grid
+grid.arrange(p1, p2, p3, ncol = 2)
+
+
+
+heights_long <- pivot_longer(heights_data, 
+                             cols = c(studentheight, maternalheight, paternalheight),
+                             names_to = "height_type", 
+                             values_to = "height")
+
+ggplot(heights_long, aes(x = height_type, y = height)) +
+  geom_boxplot() +
+  labs(title = "Boxplots of Heights", x = "Height Type", y = "Height (inches)")
+
+
+
+p1 <- ggplot(heights_data, aes(x = maternalheight, y = studentheight)) +
+  geom_point() +
+  labs(title = "Student vs Maternal Height")
+
+p2 <- ggplot(heights_data, aes(x = paternalheight, y = studentheight)) +
+  geom_point() +
+  labs(title = "Student vs Paternal Height")
+
+grid.arrange(p1, p2, ncol = 2)
+
+
+
+
+
+```
+
+
+Commentary:
+Based on the EDA, we can roughly say that:
+- the data for all columns is roughly symmetrical 
+- there appears to be a weak positive linear correlation between child's height and parent's height (stratified on gender)
+- There appears to be two outliers in the data, both lower than most of the data
+- the data is clean -- ther are no null values and the data is standardized. 
+
+Next steps:
+- We should further analyze the relationship between the parents' heights and the child's height
+- We should investigate how much of the relationship in the data can be explained linearly by the parents' heights. 
+
+
+
+(b) Create the following new variables in your dataset:
+
+- \texttt{midparentheight} = \texttt{paternalheight} + 1.08$\times$\texttt{maternalheight}
+
+- \texttt{tallparents} = 1 if \texttt{midparentheight} is greater than or equal to the median of \texttt{midparentheight} and 0 if not. That is, create an *indicator variable* of whether \texttt{midparentheight} is greater than or equal to the median.
+
+
+```{r}
+str(heights_data)
+
+# If the heights are stored as factors or characters, we need to convert them to numeric
+heights_data$studentheight <- as.numeric(as.character(heights_data$studentheight))
+heights_data$maternalheight <- as.numeric(as.character(heights_data$maternalheight))
+heights_data$paternalheight <- as.numeric(as.character(heights_data$paternalheight))
+
+# Now let's check the structure again to confirm the conversion
+str(heights_data)
+
+# If the conversion was successful, we can proceed with creating the new variables
+heights_data$midparentheight <- heights_data$paternalheight + 1.08 * heights_data$maternalheight
+heights_data$tallparents <- as.integer(heights_data$midparentheight >= median(heights_data$midparentheight))
+
+# Summary of new variables
+summary(heights_data[c("midparentheight", "tallparents")])
+
+# Visualize midparentheight distribution
+ggplot(heights_data, aes(x = midparentheight)) +
+  geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Midparent Height", x = "Midparent Height (inches)", y = "Count") +
+  theme_minimal()
+
+# Visualize relationship between midparentheight and studentheight
+ggplot(heights_data, aes(x = midparentheight, y = studentheight)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Student Height vs Midparent Height", 
+       x = "Midparent Height (inches)", 
+       y = "Student Height (inches)") +
+  theme_minimal()
+
+# Compare student heights for tall vs not tall parents
+ggplot(heights_data, aes(x = factor(tallparents), y = studentheight)) +
+  geom_boxplot(fill = "skyblue") +
+  labs(title = "Student Height by Tall Parents Category",
+       x = "Tall Parents (1 = Yes, 0 = No)",
+       y = "Student Height (inches)") +
+  theme_minimal()
+
+```
+
+
+(c)  Fit a simple linear regression in \textsf{R}, with \texttt{studentheight} as your dependent variable, and \texttt{tallparents} as your independent variable. Interpret the slope coefficient from your model.
+
+
+``` {r lin reg}
+
+# Fit the linear regression model
+model <- lm(studentheight ~ tallparents, data = heights_data)
+
+# Display the summary of the model
+summary(model)
+
+# Calculate the confidence interval for the coefficients
+confint(model)
+
+# Plot the regression line
+ggplot(heights_data, aes(x = factor(tallparents), y = studentheight)) +
+  geom_boxplot(fill = "lightblue", alpha = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Student Height vs Tall Parents",
+       x = "Tall Parents (0 = No, 1 = Yes)",
+       y = "Student Height (inches)") +
+  theme_minimal()
+
+```
+
+Interpretation:
+For each unit increase in the "tallparents" variable, we expect an average increase of 2.4758 units in student height. Thus, if the student has tall parents, we can expect them to be 2.4758 inches taller on average. However, this should not be confused with causality. 
+
+However, $R^2$ is relatively low for the data ($.10$), which indicates that lots of the behavior of the data is not explained by the model.
+
+
+
+(d) Test whether there is sufficient evidence to indicate a true mean difference in heights of the children of taller versus shorter parents, using a two sample $t$-test in \textsf{R} at the $\alpha=0.05$ level of significance. Make sure to formally state your hypothesis, report your test statistic and interpret the associated p-value.
+
+Statements:
+- Null Hypothesis ($H_0$): There is no difference in the mean heights of children with taller parents and children with shorter parents.
+- $\mu_1 = \mu_2$, where $\mu_1$ is the mean height of children with taller parents and $\mu_2$ is the mean height of children with shorter parents.
+- Alternative Hypothesis ($H_1$): There is a difference in the mean heights of children with taller parents and children with shorter parents. $\mu_1 \neq \mu_2$
+
+
+```{r ttest}
+
+# Perform the two-sample t-test
+t_test_result <- t.test(studentheight ~ tallparents, data = heights_data)
+
+# Display the results
+print(t_test_result)
+
+# Visualize the distribution of heights for both groups
+ggplot(heights_data, aes(x = studentheight, fill = factor(tallparents))) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Distribution of Student Heights by Parent Height Group",
+       x = "Student Height (inches)",
+       y = "Density",
+       fill = "Tall Parents") +
+  scale_fill_discrete(labels = c("No", "Yes")) +
+  theme_minimal()
+
+```
+Data:
+t = -2.5745, df = 57.66, p-value = 0.01263
+95 percent confidence interval:
+ -4.4010873 -0.5506018
+
+Interpretation:
+The p-value associated with our test statistic is 0.012, which is much smaller than our significance level of $\alpha$ = 0.05.
+Given this small p-value ($p < 0.05$), we reject the null hypothesis. There is strong evidence to suggest that there is a significant difference in the mean heights of children with taller parents compared to children with shorter parents.
+THe 95% confidence intercal does not contain 0, which also gives us reasoning for why we should reject the null hypothesis. 
+
+
+
+(e) Comment on the consistencies and/or inconsistencies between the output of \texttt{lm()} in part (c) and the output of \texttt{t.test()} in part (d). Is there a connection between the estimate from \texttt{lm()} and the test statistic from \texttt{t.test()}? What about the inference from the two approaches? You don't need to derive anything here, just comment on the outputs.
+
+### Consistencies
+- The p value from both isare very very similar to each other.
+- the ttest staitisc is close to the value of the slope coefficient. 
+  - linear regression coefficient: 2.4758
+  - ttest differnce in means: $69.17742 - 66.70157 = 2.47585$
+- the confidence intervals are very similar (negated)
+  - Linear regression CI for tallparents: $(0.5553636, 4.396325)$
+  - T-test CI for the difference in means: $(-4.4010873, -0.5506018)$
+
+### Inconsistencies
+- The degrees of freedom are different
+  - 59 vs 57.66, respectively. 
+I do not know why this difference occurs, but my guess is that the ttest is using a more sophisticated method of calculating DF than just $N-1$. Pehaps it is taking into account variance in the data. 
+
+
+### Conclusion:
+Both the linear regression and t-test provide consistent results, supporting the conclusion that there is a significant relationship between tall parents and student height.
+

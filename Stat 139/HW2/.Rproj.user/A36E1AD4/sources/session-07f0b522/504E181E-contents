@@ -1,0 +1,107 @@
+---
+title: "Problem Set 2"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, September 20, 2024 at 11:59pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+
+### Question 1: Creating our Dataset
+
+We will create our own dataset to try to replicate the analyses we did in class with the human height data (the application in which the method of regression was developed). Start by filling out the questionnaire here:
+
+\url{https://forms.gle/VQJJsNz4Vjs9RFAk6}
+
+\vspace{1em}
+
+### Question 2: Some Algebra
+
+Let $x_1, x_2, \dots, x_n$ be any numbers and define $\bar{x}=\frac{1}{n}\sum_{i=1}^{n} x_i$  and $s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2$. Prove the following:
+
+(a) $\text{argmin}_a \sum_{i=1}^{n} (x_i - a)^2 = \bar{x}$
+
+(b) $(n-1)s^2 = \sum_{i=1}^{n} x_i^2 - n \bar{x}^2$
+
+(c) $\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i -n \bar{x} \bar{y}$
+
+\vspace{1em}
+
+### Question 3: Deriving the OLS Estimates
+
+Assume the following population regression model:
+
+$$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \hspace{3em} i=1,\dots n$$
+
+where the ELIH assumptions we learned in class hold. Derive the Ordinary Least Squares (OLS) estimates of $\beta_0$ and $\beta_1$ using calculus, as described in Lecture 3. That is, show:
+
+$$\hat{\beta_0} = \bar{Y} - \hat{\beta}_1\bar{x} \hspace{0.2in} \hat{\beta_1} = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(Y_i-\bar{Y})}{\sum_{i=1}^{n} (x_i-\bar{x})^2}$$
+
+The facts you proved in Question 2 will help you.
+
+\vspace{1em}
+
+### Problem 4. Correlation of OLS Estimates
+
+Assume the model in Problem 3 holds, but add the assumption that $\varepsilon_i \overset{iid}{\sim} N(0,\sigma^2)~~~i=1,2,\dots,n$:
+
+(a) Show that $\bar{Y}$ and $\hat{\beta}_1$ are independent. This will help you in part (b).
+
+(b) Derive the covariance and correlation between $\hat{\beta}_1$ and $\hat{\beta}_0$.
+
+(c) In terms of $\bar{x}$, when will this correlation be positive?  When will it be negative?  In 1-2 sentences, justify why this makes sense if $\bar{x}>0$ (think where the scatterplot and regression line lies on the coordinate system). 
+
+<!-- (d) Show that the variance of $\hat{\mu}_{Y|X=x_0}$ is $\sigma^2\left[\frac{1}{n}+\frac{(x_0-\bar{x})^2}{S_{xx}}\right]$   -->
+<!-- (which is used in creating the confidence intervals and prediction intervals around the regression line at a particular $X_0$). -->
+
+\vspace{1em}
+
+### Question 5: Fitting the Model
+
+All empirical work begins with some data "cleaning", including ensuring the data are in the right form. James will do this for you this time. After he cleans the data you provided, he will provide you with a dataset with these three variables:
+
+- \texttt{studentheight}: your heights (in inches, to the nearest half inch)
+
+- \texttt{maternalheight}: the height of your mothers (in inches, to the nearest half inch)
+
+- \texttt{paternalheight}: the height of your fathers (in inches, to the nearest half inch)
+
+
+(a) Next, it's important to conduct exploratory data analysis (EDA) to ensure the integrity of your data. This includes summarizing your variables, including the extent of missingness, checking for outliers and inconsistencies, and potentially addressing any data entry errors. Provide an appropriate EDA (e.g., appropriate figures and/or a table), and provide commentary. Also, justify any decisions you make about how you choose to handle any suspect data in your analysis.
+
+(b) Create the following new variables in your dataset:
+
+- \texttt{midparentheight} = \texttt{paternalheight} + 1.08$\times$\texttt{maternalheight}
+
+- \texttt{tallparents} = 1 if \texttt{midparentheight} is greater than or equal to the median of \texttt{midparentheight} and 0 if not. That is, create an *indicator variable* of whether \texttt{midparentheight} is greater than or equal to the median.
+
+
+(c)  Fit a simple linear regression in \textsf{R}, with \texttt{studentheight} as your dependent variable, and \texttt{tallparents} as your independent variable. Interpret the slope coefficient from your model.
+
+(d) Test whether there is sufficient evidence to indicate a true mean difference in heights of the children of taller versus shorter parents, using a two sample $t$-test in \textsf{R} at the $\alpha=0.05$ level of significance. Make sure to formally state your hypothesis, report your test statistic and interpret the associated p-value.
+
+(e) Comment on the consistencies and/or inconsistencies between the output of \texttt{lm()} in part (c) and the output of \texttt{t.test()} in part (d). Is there a connection between the estimate from \texttt{lm()} and the test statistic from \texttt{t.test()}? What about the inference from the two approaches? You don't need to derive anything here, just comment on the outputs.
