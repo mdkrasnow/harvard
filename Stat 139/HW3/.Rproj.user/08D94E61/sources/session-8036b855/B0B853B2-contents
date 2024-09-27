@@ -1,0 +1,206 @@
+---
+title: "Problem Set 3"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Saturday, September 28, 2024 at 11:59pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+
+### Question 1: The Gauss Markov Theorem
+
+In Lecture 5, we introduced the Gauss Markov Theorem, which states that, under the very general ELIH conditions, the OLS estimates are optimal among the class of linear unbiased estimators. By optimal, we mean they have minimum variance in the class (we call them \textbf{BLUE}: \textbf{b}est \textbf{l}inear \textbf{u}nbiased \textbf{e}stimators). In this problem, you will prove the Gauss Markov Theorem in the simple linear regression setting. That is, we assume:
+$$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i ~~~~~~~\varepsilon_i \overset{iid}{\sim} f(0,\sigma^2)~~~~~~~i=1,\dots n$$
+Note that linear estimators are of the form:
+\begin{equation} \label{eq:linest}
+\hat{\beta} = \sum_{i=1}^{n} c_i Y_i
+\end{equation}
+
+where $c_1, \dots c_n$ are constants. 
+
+
+\noindent \textbf{(a)} What must be the variance of any linear estimator of the form above?
+
+\noindent \textbf{(b)} Derive two conditions on the $c_1, \dots c_n$ that are required for the estimate of $\beta_0$ to be unbiased.
+
+\noindent \textbf{(c)} Derive two conditions on the $c_1, \dots c_n$ that are required for the estimate of $\beta_1$ to be unbiased. 
+
+
+\noindent \textbf{(d)} Show that the OLS estimators for $\beta_0$ and $\beta_1$ are in the class of linear unbiased estimators. That is, prove they are unbiased, and that they take the form in Equation \ref{eq:linest}. 
+
+
+\noindent \textbf{(e)} Derive the variances of the OLS estimators of $\beta_0$ and $\beta_1$ and show they are of the form derived in part (a). 
+
+
+
+
+\clearpage
+
+### Question 2: Student height revisited
+
+Question 1 on HW2 asked that you respond to a survey so that we could build our own dataset to explore. A subset of you responded by September 16, when I released the version of the dataset we used on that assignment. By the time the homework was due on September 20, more of you responded, but still not everyone.[^1] I used the final (Sept. 20) cut of data to refit the simple linear model we introduced in class, where I regressed \texttt{studentheight} on \texttt{midparentheight}. However, this time \texttt{midparentheight} was defined as in HW2:  
+
+\texttt{midparentheight} = \texttt{paternalheight} + 1.08$\times$\texttt{maternalheight}
+
+The output from my linear regression is shown below:
+
+[^1]: Unfortunately, I didn't ask for your names, so I can't deduct points for not responding...I would have been ruthless.
+
+\begin{verbatim}
+Coefficients:
+                 Estimate     Std. Error   t value    Pr(>|t|)    
+(Intercept)      10.42160     5.23422      1.991      0.0495 *
+midparentheight  0.17181      0.03805      4.516      1.91e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.811 on 90 degrees of freedom
+  (16 observations deleted due to missingness)
+Multiple R-squared:  0.1847,	Adjusted R-squared:  0.1757 
+F-statistic: 20.39 on 1 and 90 DF,  p-value: 1.908e-05
+\end{verbatim}
+
+\noindent \textbf{(a)} How many students responded to the survey?
+
+\noindent \textbf{(b)} Interpret the $R^2$ from this model.
+
+\noindent \textbf{(c)} Suppose that I had instead used the correct version of the independent variable:
+
+$\texttt{midparentheight}^{*}$ = $\frac{1}{2} \times$ (\texttt{paternalheight} + 1.08$\times$\texttt{maternalheight})
+
+and refit the model. What would change in the table above? Justify your answer mathematically.
+
+\noindent \textbf{(d)} Now suppose instead that we had scaled our **dependent variable** by dividing it by 2. That is, we regressed:
+
+$\texttt{studentheight}^{*} = \frac{1}{2} \times \texttt{studentheight}$
+
+on
+
+\texttt{midparentheight} = \texttt{paternalheight} + 1.08$\times$\texttt{maternalheight}
+
+
+What would change in the table above? Justify your answer mathematically.
+
+\clearpage
+
+
+
+
+\clearpage
+
+### Question 3: Confidence interval intuition
+
+In Lecture 5, we developed the following confidence interval for $\mu_{Y|X=x_0}$ in simple regression:
+
+$$ (\hat{\beta_0}+\hat{\beta}_1 x_0) \pm t^*_{n-2}\sqrt{ \hat{\sigma}^2\left(\frac{1}{n}+\frac{(x_0-\bar{x})^2}{S_{xx}}\right)}$$
+
+where $t^*_{n-2}$ represents an appropriate quantile from a $t$-distribution with $n-2$ degrees of freedom. 
+
+
+\noindent \textbf{(a)} It should be clear mathematically that this confidence is narrowest at $\bar{x}$. Provide some intuition about why this is the case. Do not ask the TF's for intuition.
+
+\noindent \textbf{(b)} An approximate confidence interval that holds for $x_0$ near $\bar{x}$ is:
+
+
+$$(\hat{\beta_0}+\hat{\beta}_1 x_0) \pm t^*\times \frac{\hat{\sigma}}{\sqrt{n}}$$
+Provide intuition for why this approximation holds.
+
+
+
+\clearpage
+
+### Question 4: Simulation to explore violations of assumptions
+
+In this problem we will use simulation to explore the *robustness* of inference from linear regression. *Robustness* refers to the quality of the performance in the presence of assumption violations.  Specifically, we will explore how the Type I error rate for our test of the hypothesis: $H_0:\beta_1=0$ is affected when the normality and constant variance assumptions are violated.  
+
+To simulate data under the null (i.e., with $\beta_1 = 0$), we will use the following model:
+$$Y_i = 10 + 0 \cdot x_i + \varepsilon_i ~~~~~~~\varepsilon_i \overset{iid}{\sim} f(0,\sigma^2)~~~~~~~i=1,\dots n$$
+
+and we will use three different distributions for $f()$:
+
+  (i) $\varepsilon_i \sim N(\mu=0,\sigma^2=4)$
+  (ii) $\varepsilon_i\sim a+b\cdot\text{Exp}(\alpha=1)$
+  (iii) $\varepsilon_i|X_i=x_i\sim w\cdot N(0,x_i^2)$
+  
+and then we will fit a simple linear regression (with both an intercept and a slope) with \texttt{lm()}. We will also vary $n \in \{10,30\}$.
+
+Throughout, we will simulate the independent variable from a Uniform(0,1) distribution. That is:
+$$X_i \sim \text{Unif}(\text{min}=0,\text{max}=1)~~~~~i=1,\dots,n$$
+
+\noindent \textbf{(a)} Determine the values of $a$, $b$, and $w$ above so that the residuals have a mean of zero and variance of $4$ marginally for conditions (ii) and (iii). Be sure to show your work.
+
+\noindent \textbf{(b)} Create three samples of $n=30$ observations: one for each of the three residual conditions above. The partial code given below in part (c) below may help you organize your thoughts.  Create a scatterplot of $\mathbf{Y}$ versus $\mathbf{x}$ for each of the three conditions.  Comment on what you see in relationship to the regression assumptions.
+
+\noindent \textbf{(c)} Define a function called \texttt{reg.sim} that could be used to perform the simulation for the specific scenarios above. It should have at least the following arguments:
+  
+  - \texttt{n}: the sample size, with a default of 10.
+
+  - \texttt{e.dist}: a string/character variable with 3 options: 'norm', 'expo', or 'weighted' corresponding to the three conditions above, with a default of 'norm'.
+  
+  - \texttt{nsims}: the number of simulation repetitions, with a default of 2000.
+  
+  - \texttt{seed}: the value for \texttt{set.seed}, with a default of 'NA'.
+
+and return a list that includes:
+  
+  - \texttt{beta}: the OLS estimate for $\boldsymbol{\beta}_1$
+
+  - \texttt{t.pvalue}: the $p$-value associated with the OLS estimate for $\boldsymbol{\beta}_1$ estimate
+
+The code below frames the function for you.  Your job is to fill out the meat of the function, and then use it in the next part.
+
+```{r,eval=F}
+reg.sim = function(n=10,e.dist="norm",nsims=2000,seed=NA){
+  if(!is.na(seed)){set.seed(seed)}
+  # your code here
+  # 0. before the for loop define storage vectors for saving betas and t.pvalues
+  for(i in 1:nsims){
+    # Create 'nsims' sets of data:
+    # 1. generate the data, first x~Unif(0,1) then y based on the scenario
+    if(e.dist=="norm"){
+      # do something using rnorm()
+    }
+    if(e.dist=="expo"){
+      # do something using rexp()
+    }
+    if(e.dist=="weighted"){
+      # do something using rnorm()
+    }
+    # 2. calculate OLS estimates and store 2 things (fine to use summary from lm): 
+    #     a. the estimate for the slope 
+    #     b. the standard p-value from OLS 
+    if(i%%100==0){print(paste("done with iteration, i =",i))}
+  }
+  # 3. return the two variables as a list: beta and p-value
+  return(list(beta=, pvalue=))
+}
+
+```
+
+\noindent \textbf{(d)} Use your function above to perform the simulation with 2000 repetitions under the 6 scenarios - i.e., the combinations of the three residual conditions and the two sample sizes.  Determine the rejection rate for each of the 6 scenarios, and present these results in an organized tabular form.
+
+\noindent \textbf{(e)} How does inference for the slope in simple regression behave in the presence of these assumption violations?  To which assumption(s) is the inference more more robust?  How does sample size play a role?  Please limit your response to 5 or fewer sentences.
