@@ -1,0 +1,94 @@
+---
+title: "Problem Set 4"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, October 4, 2024 at 11:59pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Question 1
+
+Consider a simple linear regression, with an intercept and one predictor.
+	
+\noindent\textbf{(a)} Write down the design matrix $\mathbf{X}$ and calculate the 2 x 2 matrix $(\mathbf{X}^T \mathbf{X})^{-1}$.
+
+\noindent\textbf{(b)} Show that the vector $\hat{\vec{\beta}}=(\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \vec{Y}$ provides the usual least squares estimates of the intercept and the slope.
+
+\noindent\textbf{(c)} Show that the diagonal elements of the 2 x 2 matrix $\sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}$ provide the usual variances of the least squares estimates of the intercept and the slope for a simple linear regression.
+		
+\noindent\textbf{(d)} A second predictor is being considered for inclusion in the model ($X_2$).  Under what conditions will its presence in the model have no effect on the estimates of $\beta_0$ and $\beta_1$?
+
+\vspace{0.1in}
+
+
+
+### Question 2
+
+In this problem you will code up your own linear regression calculations in \textsf{R}. In parts (a)-(g) you will attempt to replicate the results of `lm()` using the `GaltonFamilies` dataset in the `HistData` package. Specifically, in Lecture 7, we fit the following model:
+
+$$\vec{Y} = \beta_0 + \beta_1 \vec{x}_1 + \beta_2 \vec{x}_2 + \beta_3 \vec{x}_3 + \vec{\varepsilon}~~~~~~~~\vec{\varepsilon} \sim \mathcal{N} (\vec{0}, \sigma^2 I)$$
+where:
+
+$Y=$ child height
+
+$x_1=$ midparent height $=\frac{\text{father height} + 1.08 \times \text{mother height}}{2}$
+
+$x_2=$ an indicator of male gender
+
+$x_3=$ birth order 
+
+\vspace{1em}
+
+\noindent\textbf{(a)} Start by fitting the model in \textsf{R} with `lm()` and saving the output as an object named `lm.out`.
+
+\noindent\textbf{(b)} Use matrix algebra in \textsf{R} to manually compute the least squares estimates of the $\beta$ coefficients. Extract the coefficients from your `lm()` object and show that your estimates match these exactly.
+
+\noindent\textbf{(c)} Compute the residual standard error using matrix algebra in \textsf{R}. Extract the estimate from your `lm()` object and show that they match exactly.
+
+\noindent\textbf{(d)} Use matrix algebra in \textsf{R} to manually compute the variance-covariance matrix of your $\beta$ estimates. Extract the variance-covariance matrix from your `lm()` object and show that your version matches \textsf{R}'s exactly. 
+
+\noindent\textbf{(e)} Manually recreate the table given by `summary(lm.out)$coefficients`. That is, in addition to the $\beta$ coefficients you computed above, compute the standard errors, $t$-statistics and p-values, and organize the data in an attractive tabular format that exactly matches the results given by \textsf{R}.
+
+
+\noindent\textbf{(f)} Manually construct a 95\% confidence interval for the average height of sons born to 5\'8\'\' fathers and 5\'5\'\' mothers who have 3 older siblings. Show that your interval exactly matches that given by the `predict()` function in \textsf{R}.
+
+\noindent\textbf{(g)} Manually construct a prediction interval for a son born to a 5\'8\'\' father and a 5\'5\'\' mother who has 3 older siblings. Show that your interval exactly matches that given by the `predict()` function \textsf{R}.
+
+
+\noindent\textbf{(h)} Interpret the intervals in parts (f) and (g).
+
+\noindent\textbf{(i)} Conduct a formal hypothesis test at the $\alpha=0.05$ level of whether sons born to 5\'8\'\' fathers and 5\'5\'\' mothers who have 3 older siblings are taller on average than daughters born to 6\'0\'\' fathers and 5\'10\'\' mothers who have no older siblings.
+
+
+### Question 3
+
+Prove the theorem on slide 10 of lecture 7 (given on Wednesday, September 25).
+
+
+### Question 4
+
+Prove the theorem on slide 11 of lecture 7 (given on Wednesday, September 25).

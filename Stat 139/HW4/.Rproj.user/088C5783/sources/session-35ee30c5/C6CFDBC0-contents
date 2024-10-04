@@ -1,0 +1,6 @@
+# .Rprofile
+if (interactive()) {
+  library(ggplot2)
+  library(dplyr)
+  library(tidyr)
+}

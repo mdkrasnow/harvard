@@ -1,0 +1,172 @@
+---
+title: "Problem Set 4"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, October 4, 2024 at 11:59pm"
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    includes:
+    fig_width: 5
+    fig_height: 3.5
+urlcolor: blue
+---
+
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Question 1
+
+Consider a simple linear regression, with an intercept and one predictor.
+	
+(a) Write down the design matrix $\mathbf{X}$ and calculate the 2 x 2 matrix $(\mathbf{X}^T \mathbf{X})^{-1}$.
+
+(b) Show that the vector $\hat{\vec{\beta}}=(\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \vec{Y}$ provides the usual least squares estimates of the intercept and the slope.
+
+(c) Show that, for a simple linear regression, the diagonal elements of the 2 x 2 matrix $\sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}$ provide the usual variances of the least squares estimates of the intercept and the slope for a simple linear regression.
+		
+(d) A second predictor is being considered for inclusion in the model ($X_2$).  Under what conditions will its presence in the model have no effect on the estimates of $\beta_0$ and $\beta_1$?
+
+\vspace{0.1in}
+
+
+
+### Question 2
+
+In this problem you will code up your own linear regression "software" in \textsf{R}. In parts (a)-(f) you will attempt to replicate the results of `lm()` using the `GaltonFamilies` dataset in the `HistData` package. Specifically, in Lecture 7, we fit the following model:
+
+$$\vec{Y} = \beta_0 + \beta_1 \vec{x}_1 + \beta_2 \vec{x}_2 + \beta_3 \vec{x}_3 + \vec{\varepsilon}~~~~~\vec{\varepsilon} \sim \mathcal{N} (0, \sigma^2 I)$$
+where:
+
+$Y=$ child height
+
+$x_1=$ midparent height
+
+$x_2=$ an indicator of male gender
+
+$x_3=$ birth order 
+
+\vspace{1em}
+
+(a) Start by fitting the model in \textsf{R} with `lm()` and saving the output as an object named `lm.out`.
+
+(b) Use matrix algebra in \textsf{R} to manually compute the least squares estimates of the $\beta$ coefficients. Extract the coefficients from your `lm()` object and show that your estimates match these exactly.
+
+```{r}
+library(HistData)
+data(GaltonFamilies)
+
+dat <- GaltonFamilies
+
+colnames(GaltonFamilies)
+lm.out <- lm(dat$childHeight ~ midparentHeight + as.factor(gender) + childNum, data=GaltonFamilies)
+
+
+Y <- dat$childHeight
+x1 <- dat$midparentHeight
+x2 <- as.numeric(factor(dat$gender, levels=c("female","male"))) - 1
+x3 <- dat$childNum
+X <- as.matrix(data.frame(x0=1, x1=x1,x2=x2,x3=x3))
+betaHat <- solve(t(X) %*% X) %*% t(X) %*% Y
+betaHat
+lm.out$coefficients
+```
+
+
+(c) Compute the residual standard error using matrix algebra in \textsf{R}. Extract the estimate from your `lm()` object and show that they match **exactly**.
+
+```{r}
+resids <- Y - X %*% betaHat
+se.manual <- sqrt((t(resids) %*% resids) / (nrow(X)-4))
+se.manual
+summary(lm.out)$sigma
+```
+
+
+(d) Use matrix algebra in \textsf{R} to manually compute the variance covariance matrix. Extract the variance-covariance matrix from your `lm()` object and show that your version matches \textsf{R}'s **exactly**. 
+
+```{r}
+as.numeric(se.manual)**2 * solve(t(X) %*% X)
+vcov(lm.out)
+```
+
+(e) Manually recreate the table give by `summary(lm.out)$coefficients`. That is, in addition to the $\beta$ coefficients you computed above, compute the standard errors, $t$-statistics and p-values, and organize the data in an attractive tabular format that exactly matches the results given by \textsf{R}.
+
+```{r}
+summary(lm.out)$coefficients
+```
+
+(e) Manually construct a 95\% confidence interval for the average height of sons born to 5'8" fathers and 5'5" mothers who have 3 older siblings. Show that your intervals exactly matches that given by the `predict()` function.
+
+```{r}
+x0 <- 1
+x1 <-  (68 + 1.08*65)/2
+x2 <- 1
+x3 <- 3
+
+c <- c(x0,x1,x2,x3)
+?qt
+t(c) %*% betaHat + c(-1,1) * qt(0.975, df=nrow(X)-4) * se.manual *  sqrt(t(c) %*% solve(t(X) %*% X) %*% c)
+```
+```{r}
+predict(lm.out, newdata = data.frame(midparentHeight = x1, gender="male", childNum=3), interval="confidence")
+```
+
+
+(f) Manually construct a prediction interval for a son born to a 5'8" father and and 5'5" mother who has 3 older siblings. Show that your intervals exactly matches that given by the `predict()` function.
+
+```{r}
+
+t(c) %*% betaHat + c(-1,1) * qt(0.975, df=nrow(X)-4) * se.manual *  sqrt(1 + t(c) %*% solve(t(X) %*% X) %*% c)
+predict(lm.out, newdata = data.frame(midparentHeight = x1, gender="male", childNum=3), interval="prediction")
+```
+
+
+(g) Interpret the intervals in parts (e) and (f).
+
+(h) Conduct a formal hypothesis test at the $\alpha=0.05$ level of whether sons born to 5'8" fathers and 5'5" mothers who have 3 older siblings are taller on average than daughters born to 6'0" fathers and 5'10" mothers who have no older siblings.
+
+```{r}
+x0 <- 1
+x1 <-  (68 + 1.08*65)/2
+x2 <- 1
+x3 <- 3
+
+c1 <- c(x0,x1,x2,x3)
+
+x0 <- 1
+x1 <-  (72 + 1.08*70)/2
+x2 <- 0
+x3 <- 1
+
+c2 <- c(x0,x1,x2,x3)
+
+c <- c1 - c2
+
+t(c) %*% betaHat + c(-1,1) * qt(0.975, df=nrow(X)-4) * se.manual *  sqrt(t(c) %*% solve(t(X) %*% X) %*% c)
+```
+
+
+### Question 3
+
+Prove the theorem on slide 10 of Lecture 7 (given on Wednesday, September 25).
+
+
+### Question 4
+
+Prove the theorem on slide 11 of Lecture 7 (given on Wednesday, September 25).
