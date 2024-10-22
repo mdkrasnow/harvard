@@ -1,0 +1,123 @@
+---
+title: "Problem Set 5"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Saturday, October 12, 2024 at 11:59pm"
+output: pdf_document
+---
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Problem 1: (Potentially) Fooled by Randomness
+
+Repeatedly simulate datasets from the following model:
+
+$$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i ~~~~~~~~ \varepsilon_i \sim N(0,\sigma^2) ~~~~~~~~ i=1,\ldots n$$
+
+where $n=20$, $\beta_0 = 1$, $\beta_1 = 2$, and $\sigma^2 = 1$. Further, simulate the $x_i$'s from a $N(0,1)$ distribution. For each simulation, fit the true model with `lm()` and create two diagnostic plots: a residuals vs. fitted plot and a normal $QQ$ plot. Repeatedly do this until you identify the three plots that would best mistakenly violate:
+
+\noindent \textbf{(a)} The assumption of linearity.
+
+\noindent \textbf{(b)} The assumption of homoskedasticity.
+
+\noindent \textbf{(c)} The assumption of normality.
+
+
+Make sure to use the `set.seed()` function so that you can recreate the scenarios. The most extreme plots will win bonus points.
+
+\clearpage
+
+### Problem 2: Faraway (2e) Chapter 6 Excercises
+
+Pick **one** of the datasets below that you find interesting and fit the associated linear model.^[If you don't find any of these datasets interesting, you still have to do the problem. Nice try.] Perform regression diagnostics on the model to answer the following questions. Display any plots that are relevant. Do not provide any plots about which you have nothing to say. Suggest possible improvements or corrections to the model where appropriate:
+
+\noindent \textbf{(a)} Check the constant variance assumption for the errors.
+
+\noindent \textbf{(b)} Check the normality assumption.
+
+\noindent \textbf{(c)} Check for large leverage points.
+
+\noindent \textbf{(d)} Check for outliers.
+
+\noindent \textbf{(e)} Check for influential points.
+
+\noindent \textbf{(f)} Check the structure of the relationship between the predictor and the response.
+
+\vspace{1em}
+
+\underline{Datasets:}
+
+`sat`: contains data on school expenditure and test scores in the US in 1994-95 (in the `faraway` package). For this dataset, fit a model with total SAT score (`total`) as the dependent variable, and `expend`, `salary`, `ratio` and `takers` as the independent variables.
+
+`teengamb`: contains data on a survey conducted on teenage gambling in Britain (in the `faraway` package). For this dataset, fit a model with `gamble` as the dependent variable and all the other variables as independent variables.
+
+`prostate`: contains data on a study of men with prostate cancer due to receive radical prostatectomy (in the `faraway` package). For this dataset, fit a model with `lpsa` as the dependent variable, and all the other variables as independent variables. 
+
+`swiss`: contains standardized fertility measure and socioeconomic indicators for each of 47 French-speaking provinces of Switzerland around 1888 (in `datasets` package). For this dataset, fit a model with `Fertility` as the dependent variable and all the other variables as the independent variables.
+
+`cheddar`: contains data on a study of cheddar cheese from the LaTrobe Valley of Victoria, Australia, in which samples of cheese were analyzed for their chemical composition and were subjected to taste tests (in the `faraway` package). Overall taste scores were obtained by combining the scores from several tasters. For this dataset, fit a model with `taste` as the dependent variable and the other three variables as the independent variables.
+
+`happy`: contains data on happiness from a sample of students collected in a University of Chicago MBA class (in the `faraway` package). For this dataset, fit a model with `happy` as the dependent variable, and the other four variables as independent variables.
+
+`tvdoctor`: contains data on life expectancy, doctors and televisions collected on 38 countries in 1993 (in the `faraway` package). For this dataset, fit a model with `life` as the dependent variable and the other two variables as independent variables. 
+
+
+\clearpage
+
+### Question 3: ANOVA and Regression
+
+The included dataset `mouse.csv` contains body weight data on a sample of mice from eight inbred strains that are the founder strains used to create a resource known as the *Collaborative Cross*. In this problem, we will hold off on doing diagnostics until part \textbf{(d)}, even though in a real-world analysis, any interpretation should come after you perform your diagnostics, and satisfactorily address any potential issues in your dataset.
+
+\noindent \textbf{(a)} Using ANOVA (that is, use the `aov()` function in \textsf{R}) formally test the hypothesis that the population body weights for all eight strains are equal. Make sure to formally state your null and alternative hypotheses, your test statistic, the level of your test, and the associated $p$-value. Describe your conclusions in language suitable for a non-statistician collaborator. 
+
+\noindent \textbf{(b)} Now fit the model with `lm()`, including an intercept. Interpret that intercept. Note the correspondence between the F-statistic from the regression model, and that in the ANOVA table.
+
+\noindent \textbf{(c)} We mentioned in class that the one-way ANOVA "Sum of Squares Between" corresponds to the additional sum of squares accounted for by including the factor of interest, compared to fitting an intercept-only model. Show that this is the case in this scenario by computing the sum of squares accounted for by an intercept-only model, and the sum of squares from the `lm()` fit that controls for strain. Show that the difference between these two sums of squares corresponds to the "Sum of Squares Within" in your ANOVA table in part \textbf{(a)}. No need to do any math here, just compute the relevant quantities in \textsf{R}.
+
+\noindent \textbf{(d)} Now, compute residual diagnostics from your model in part \textbf{(b)}. Suppose you were actually analyzing this dataset for a collaborator. Based on your diagnostics, what should you have discussed with your collaborator before you proceeeded to analyze these data? Do you have any idea of what might have happened in this case? 
+
+\noindent \textbf{(e)} Did you actually need to check the linearity assumption in part (d)? Why or why not? Just provide a little intuition. 
+
+\noindent \textbf{(f)} Address any issues in the data as you see fit (you can discuss with a TF in office hours and they will pretend to be your collaborator). Refit the model from part \textbf{(b)}. If your overall $F$-test is significant (it should be very significant!), proceed to pairwise tests for the differences in mean weights between every pair of strains (hint: you saw a function in class that should make this very easy). In your pairwise $t$-tests, use the Bonferroni-adjusted $p$-values. Does there seem to be some structure or grouping to the strains?
+
+\noindent \textbf{(g)} If you are interested, read a little bit online about the Collaborative Cross and see if your results from part \textbf{(f)} make sense scientifically.^[This part will not be graded, although you might find it interesting!]
+
+
+
+\clearpage
+
+
+
+### Question 4: Interpretation of Parameter Estimates
+
+The included dataset `harvardsqhomes.csv` contains data on a sample of homes in the Harvard Square area that were on the market in 2022.  Among others, it includes the following variables:
+
+`price`: the price of the home (in dollars)
+
+`beds`: the number of bedrooms in the home
+
+`sqft`: the square footage of the home
+
+`baths`: the number of bathrooms in the home
+
+`year`: the year the home was built
+
+\vspace{1em}
+
+\noindent \textbf{(a)} Fit a simple linear regression with price **in thousands of dollars** as the dependent variable and `beds` as the sole predictor. Interpret the coefficient estimate associated with `beds`. 
+
+\noindent \textbf{(b)} Now fit a multiple linear regression by adding `sqft`, `baths` and `year` to your model. Interpret the estimate associated with `beds` again. Reconcile the estimate from this model with the one from part \textbf{(a)}. Does it make sense why and how it changed? No math required here, just some intuition/explanation.

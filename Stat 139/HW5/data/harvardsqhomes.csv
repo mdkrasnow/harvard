@@ -1,0 +1,350 @@
+date,type,address,city,zip,price,beds,baths,neighborhood 9,sqft,lotsize,year,hoa,url,mls,latitude,longitude
+September-16-2022,condo,150 Cambridge St #209,Cambridge,2141,715000,1,1,Cambridge,732,,1898,505,https://www.redfin.com/MA/Cambridge/150-Cambridge-St-02141/unit-209/home/12428002,73020121,42.3705885,-71.0780026
+September-16-2022,condo,26C Bradbury St Unit 26C,Cambridge,2138,1900000,3,2.5,Harvard Square,1890,,1960,1954,https://www.redfin.com/MA/Cambridge/26-Bradbury-St-02138/unit-26C/home/138278735,72963401,42.3754424,-71.1304494
+September-14-2022,condo,8 Leland St #2,Somerville,2143,720000,2,2,Somerville,935,,1885,,https://www.redfin.com/MA/Somerville/8-Leland-St-02143/unit-2/home/8753508,73026427,42.3794881,-71.1028902
+September-9-2022,condo,10 Rogers St #718,Cambridge,2142,1300000,2,2,Cambridge,1327,,1989,1258,https://www.redfin.com/MA/Cambridge/10-Rogers-St-02142/unit-718/home/11550815,73014913,42.3656338,-71.0773894
+September-7-2022,condo,1697-1699 Cambridge St #19,Cambridge,2138,410000,1,1,Cambridge,345,,1940,217,https://www.redfin.com/MA/Cambridge/1697-Cambridge-St-02138/unit-19/home/11572681,73008668,42.3753168,-71.1118542
+September-2-2022,condo,31 Concord Ave #2,Cambridge,2138,807000,2,2,Harvard Square,1375,,1920,732,https://www.redfin.com/MA/Cambridge/31-Concord-Ave-02138/unit-2/home/11586215,72998420,42.379888,-71.1259812
+September-1-2022,condo,3 Dana St #9,Cambridge,2138,1230000,2,2,Mid Cambridge,1132,,1910,665,https://www.redfin.com/MA/Cambridge/3-Dana-St-02138/unit-9/home/28451987,73020551,42.3697107,-71.1106635
+August-31-2022,condo,8 Leland #1,Somerville,2143,640000,2,1.5,Inman Square,853,,1885,200,https://www.redfin.com/MA/Somerville/8-Leland-St-02143/unit-1/home/8753502,73002363,42.3794881,-71.1028902
+August-31-2022,condo,55 Magazine St #44,Cambridge,2139,1057500,2,2,Cambridge,1208,,1900,411,https://www.redfin.com/MA/Cambridge/55-Magazine-St-02139/unit-44/home/28439482,73020715,42.3626615,-71.1076822
+August-30-2022,condo,19 Chauncy St Unit 3B,Cambridge,2138,960000,2,2,Cambridge,1180,,1972,700,https://www.redfin.com/MA/Cambridge/19-Chauncy-St-02138/unit-3B/home/11585996,72981890,42.3797538,-71.1226232
+August-29-2022,condo,80 Newton St #3,Somerville,2143,639900,2,1.5,Somerville,724,2053,1900,200,https://www.redfin.com/MA/Somerville/80-Newton-St-02143/unit-3/home/8733517,72990244,42.3769912,-71.0972009
+August-26-2022,condo,375 Broadway Unit 2 (1R),Cambridge,2139,720000,2,1,Mid Cambridge,755,,1870,326,https://www.redfin.com/MA/Cambridge/375-Broadway-02139/unit-2-1R/home/147043772,73001307,42.3710855,-71.1050911
+,condo,375 Broadway #2,Cambridge,2139,720000,2,1,,755,,1870,,https://www.redfin.com/MA/Cambridge/375-Broadway-02139/unit-2/home/19003255,,42.3711817,-71.1049894
+August-25-2022,condo,419 Norfolk St Unit 1D,Somerville,2143,312000,0,1,Somerville,294,,2002,281,https://www.redfin.com/MA/Somerville/419-Norfolk-St-02143/unit-1D/home/8752311,73008589,42.3748653,-71.0958262
+,condo,221 Mt Auburn St #301,Cambridge,2138,1457700,2,2,,1106,,1960,,https://www.redfin.com/MA/Cambridge/221-Mt-Auburn-St-02138/unit-301/home/11587446,,42.3749459,-71.1301481
+August-23-2022,condo,179 Chestnut St #3,Cambridge,2139,686500,1,1,Cambridgeport,742,,1873,255,https://www.redfin.com/MA/Cambridge/179-Chestnut-St-02139/unit-3/home/11560858,73015371,42.3582151,-71.1111771
+August-22-2022,condo,109 Prospect #301,Somerville,2143,950000,2,2,Somerville,930,,2022,200,https://www.redfin.com/MA/Somerville/109-Prospect-St-02143/unit-301/home/179694915,72990702,42.375064,-71.097433
+August-22-2022,condo,369 Franklin St #503,Cambridge,2139,850000,2,1.5,Cambridge,923,,2003,696,https://www.redfin.com/MA/Cambridge/369-Franklin-St-02139/unit-503/home/11599840,72998838,42.3664032,-71.1079781
+August-22-2022,condo,109 Prospect #303,Somerville,2143,955000,2,1,Somerville,942,,2022,200,https://www.redfin.com/MA/Somerville/109-Prospect-St-02143/unit-303/home/179317307,72976145,42.375064,-71.097433
+August-19-2022,condo,75-83 Cambridge Pkwy Unit E806,Cambridge,2142,1780000,2,2,Cambridge,1655,,1989,1507,https://www.redfin.com/MA/Cambridge/75-83-Cambridge-Pkwy-02142/unit-E806/home/11551194,72997408,42.3643818,-71.0769379
+August-18-2022,condo,27 West St #5,Cambridge,2139,960000,2,1,Cambridge,900,,1978,325,https://www.redfin.com/MA/Cambridge/27-West-St-02139/unit-5/home/12427984,73014748,42.3699505,-71.1044144
+August-18-2022,condo,8 Ellery St,Cambridge,2138,2800000,4,5,Mid Cambridge,2468,,2022,,https://www.redfin.com/MA/Cambridge/8-Ellery-St-02138/home/11565068,73007786,42.3700441,-71.1113134
+August-16-2022,condo,432 Norfolk St Unit 2H,Somerville,2143,870000,2,2,Union Square,1326,,2004,555,https://www.redfin.com/MA/Somerville/432-Norfolk-St-02143/unit-2H/home/8758163,72997100,42.3746845,-71.09505
+August-16-2022,condo,1105 Massachusetts Ave Unit 9D,Cambridge,2138,585000,1,1,Harvard Square,582,,1970,330,https://www.redfin.com/MA/Cambridge/1105-Massachusetts-Ave-02138/unit-9D/home/11570450,73014119,42.3707873,-71.1134082
+August-16-2022,condo,348 Harvard St #1,Cambridge,2139,595000,1,1,Harvard Square,707,,1920,490,https://www.redfin.com/MA/Cambridge/348-Harvard-St-02138/unit-1/home/11565850,73008750,42.3707214,-71.11006
+August-16-2022,condo,268 Windsor St #5,Cambridge,2139,711000,2,1,Cambridge,827,,1927,462,https://www.redfin.com/MA/Cambridge/268-Windsor-St-02139/unit-5/home/11556262,73001762,42.3678094,-71.0950394
+August-16-2022,condo,16 Chauncy St #41,Cambridge,2138,515000,0,1,Harvard Square,385,,1900,428,https://www.redfin.com/MA/Cambridge/16-Chauncy-St-02138/unit-41/home/11575882,72999107,42.3794742,-71.1223384
+August-15-2022,condo,8 Ellery St #8,Cambridge,2138,4600000,5,5.5,Mid Cambridge,4022,,1841,,https://www.redfin.com/MA/Cambridge/8-Ellery-St-02138/unit-8/home/180346469,73007783,42.3700441,-71.1113134
+August-15-2022,condo,12 Saint Paul St #1,Cambridge,2139,1090000,3,3,Cambridge,1629,,1903,,https://www.redfin.com/MA/Cambridge/12-St-Paul-St-02139/unit-1/home/11600280,72972818,42.3677515,-71.1037119
+August-12-2022,condo,19 Fairmont Ave Unit C,Cambridge,2139,1030000,2,1,Cambridgeport,1360,,1902,153,https://www.redfin.com/MA/Cambridge/19-Fairmont-Ave-02139/unit-C/home/11598950,72998819,42.3619937,-71.1124275
+,condo,165 Auburn St #2,Cambridge,2139,2125000,3,3.5,,1749,,2014,,https://www.redfin.com/MA/Cambridge/165-Auburn-St-02139/unit-2/home/11561931,,42.3637588,-71.1048686
+,condo,205 Mt Auburn St Unit 1A,Cambridge,2138,440000,2,1,,915,,1900,,https://www.redfin.com/MA/Cambridge/205-Mt-Auburn-St-02138/unit-1A/home/11587621,,42.3748566,-71.1292846
+August-9-2022,condo,20 Corporal Mcternan St #308,Cambridge,2139,1400000,2,2,Cambridge,1090,,1925,879,https://www.redfin.com/MA/Cambridge/20-Corporal-McTernan-St-02139/unit-308/home/18958223,73008400,42.3609149,-71.1079478
+August-9-2022,condo,19 Chauncy St Unit 1B,Cambridge,2138,905000,2,2,Harvard Square,1191,,1972,664,https://www.redfin.com/MA/Cambridge/19-Chauncy-St-02138/unit-1B/home/11585982,73010111,42.3797538,-71.1226232
+,condo,6 Beacon St #6,Somerville,2143,1400000,2,2.5,,1587,,2013,,https://www.redfin.com/MA/Somerville/6-Beacon-St-02143/unit-6/home/109866670,,42.374459,-71.102178
+August-8-2022,condo,35 Berkshire St #3,Cambridge,2141,1365000,3,2,Kendall Square,1105,,2022,150,https://www.redfin.com/MA/Cambridge/35-Berkshire-St-02141/unit-3/home/179343194,72977755,42.3682241,-71.0922361
+August-8-2022,condo,950 Massachusetts Ave Ph 5,Cambridge,2139,1316000,2,2,Cambridge,1001,,1989,1376,https://www.redfin.com/MA/Cambridge/950-Massachusetts-Ave-02139/unit-5/home/11567404,73002310,42.3685407,-71.1102224
+August-5-2022,condo,159 Cherry St #159,Cambridge,2139,1150000,2,1,Central Square,1345,,1998,397,https://www.redfin.com/MA/Cambridge/159-Cherry-St-02139/unit-159/home/113238672,73014376,42.3660431,-71.0969458
+August-5-2022,condo,12 Inman St #62,Cambridge,2139,590000,1,1,Cambridge,653,,1965,404,https://www.redfin.com/MA/Cambridge/12-Inman-St-02139/unit-62/home/11562199,72989024,42.3670628,-71.1048682
+August-5-2022,condo,109 Prospect #305,Somerville,2143,1150000,2,2,Somerville,1120,,2022,200,https://www.redfin.com/MA/Somerville/109-Prospect-St-02143/unit-305/home/179317306,72976147,42.375064,-71.097433
+August-5-2022,condo,21 Chauncy St #21,Cambridge,2138,715000,1,1,Harvard Square,675,,1900,355,https://www.redfin.com/MA/Cambridge/21-Chauncy-St-02138/unit-21/home/137609129,72982639,42.3796749,-71.1230811
+,condo,159 Cherry St #000159,Cambridge,2139,1150000,2,1,,1345,,1998,,https://www.redfin.com/MA/Cambridge/159-Cherry-St-02139/unit-000159/home/11555825,,42.3660431,-71.0969458
+,condo,173 Pleasant St #208,Cambridge,2139,746748,1,1,,996,,2002,,https://www.redfin.com/MA/Cambridge/173-Pleasant-St-02139/unit-208/home/11599917,,42.3593836,-71.1141702
+,condo,21 Chauncy St #21,Cambridge,2138,715000,1,1,,502,,1900,,https://www.redfin.com/MA/Cambridge/21-Chauncy-St-02138/unit-21/home/11586054,,42.3796814,-71.1230847
+August-4-2022,condo,177 Charles St #1,Cambridge,2141,775000,2,1,East Cambridge,888,,1886,183,https://www.redfin.com/MA/Cambridge/177-Charles-St-02141/unit-1/home/179754427,72992911,42.3680748,-71.0832206
+August-3-2022,condo,29 Mansfield St #1,Somerville,2143,780000,3,2,Somerville,1399,,1900,400,https://www.redfin.com/MA/Somerville/29-Mansfield-St-02143/unit-1/home/12438428,72997976,42.3787644,-71.090191
+,condo,29 Mansfield St #000001,Somerville,2143,780000,2,2,,1399,,1900,,https://www.redfin.com/MA/Somerville/29-Mansfield-St-02143/unit-000001/home/12403919,,42.3787747,-71.0901748
+August-3-2022,condo,88 Hancock St #4,Cambridge,2139,579000,1,1,Cambridge,620,,1894,257,https://www.redfin.com/MA/Cambridge/88-Hancock-St-02139/unit-4/home/11566247,72995139,42.3686819,-71.1081103
+,condo,146 Allston St #2,Cambridge,2139,700000,3,2,,704,,1886,,https://www.redfin.com/MA/Cambridge/146-Allston-St-02139/unit-2/home/172605133,,42.3582943,-71.1081281
+August-1-2022,condo,1 Hancock Park #2,Cambridge,2139,1950000,4,2.5,Mid Cambridge,2196,,1903,295,https://www.redfin.com/MA/Cambridge/1-Hancock-Park-02139/unit-2/home/39893118,73002374,42.3704753,-71.1061097
+July-28-2022,condo,38 Speridakis Ter #1,Cambridge,2139,640000,1,1,Cambridgeport,775,,1920,166,https://www.redfin.com/MA/Cambridge/38-Speridakis-Ter-02139/unit-1/home/12165733,72994529,42.3598396,-71.1062447
+,condo,1697 Cambridge St #10,Cambridge,2138,535000,1,1,,620,,1940,,https://www.redfin.com/MA/Cambridge/1697-Cambridge-St-02138/unit-10/home/11572654,,42.3753168,-71.1118542
+,condo,338 Harvard St #9,Cambridge,2139,900000,2,2,,925,,1900,,https://www.redfin.com/MA/Cambridge/338-Harvard-St-02139/unit-9/home/11565294,,42.3703685,-71.1089691
+July-25-2022,condo,31 Concord Ave #11,Cambridge,2138,806000,2,2,Harvard Square,1143,,1920,608,https://www.redfin.com/MA/Cambridge/31-Concord-Ave-02138/unit-11/home/11586241,72994432,42.379888,-71.1259812
+July-22-2022,condo,89 Thorndike St #3,Cambridge,2141,780000,2,1.5,Cambridge,1156,,1860,144,https://www.redfin.com/MA/Cambridge/89-Thorndike-St-02141/unit-3/home/179313504,72975777,42.3700004,-71.0821537
+July-21-2022,condo,931 Massachusetts Ave #506,Cambridge,2139,680000,1,1.5,Mid Cambridge,811,,1987,1003,https://www.redfin.com/MA/Cambridge/931-Massachusetts-Ave-02139/unit-506/home/11565715,72997060,42.3690798,-71.1092476
+July-21-2022,condo,18 Whitney Ave #2,Cambridge,2139,1257000,2,2,Cambridgeport,1195,,1885,359,https://www.redfin.com/MA/Cambridge/18-Whitney-Ave-02139/unit-2/home/16892150,72993157,42.3593905,-71.1123396
+July-21-2022,condo,20 2nd St #224,Cambridge,2141,790000,1,1.5,East Cambridge,842,,2008,675,https://www.redfin.com/MA/Cambridge/20-Second-St-02141/unit-224/home/28439891,72995342,42.3706593,-71.0785109
+July-20-2022,condo,305 Webster #104,Cambridge,2141,660000,1,2,Cambridge,967,,2020,219,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-104/home/168641530,72966898,42.3735688,-71.0943227
+,condo,4 Crawford St #8,Cambridge,2139,575000,1,1,,580,,1930,,https://www.redfin.com/MA/Cambridge/4-Crawford-St-02139/unit-8/home/11598192,,42.3712233,-71.1069454
+July-19-2022,condo,29 Tufts #2,Cambridge,2139,1275000,2,2,Cambridge,1327,,1925,320,https://www.redfin.com/MA/Cambridge/29-Tufts-St-02139/unit-2/home/19003004,72990923,42.3577148,-71.1117094
+July-18-2022,condo,28 River St #3,Cambridge,2139,805000,2,1,Cambridge,832,,1860,212,https://www.redfin.com/MA/Cambridge/28-River-St-02139/unit-3/home/28439597,72995127,42.3646877,-71.105828
+July-15-2022,condo,9 Medford St #205,Somerville,2143,590000,1,1,Somerville,656,,1916,498,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-205/home/147025285,72990440,42.3742011,-71.0868252
+July-15-2022,condo,75-83 Cambridge Pkwy Unit E402,Cambridge,2142,2062000,2,2.5,Cambridge,1865,,1989,2120,https://www.redfin.com/MA/Cambridge/75-83-Cambridge-Pkwy-02142/unit-E402/home/11551079,72984822,42.3643818,-71.0769379
+July-14-2022,condo,31 Concord Ave #10,Cambridge,2138,685000,2,1,Cambridge,744,,1920,396,https://www.redfin.com/MA/Cambridge/31-Concord-Ave-02138/unit-10/home/11586237,72973817,42.379888,-71.1259812
+July-14-2022,condo,19 Florence St #2,Cambridge,2139,2900000,4,3.5,Cambridgeport,2557,,2022,210,https://www.redfin.com/MA/Cambridge/19-Florence-St-02139/unit-2/home/179672160,72989178,42.3587095,-71.1136377
+July-14-2022,condo,1 Fitchburg St Unit C109,Somerville,2143,925000,1,1.5,Brickbottom-Inner Belt,1514,,1920,503,https://www.redfin.com/MA/Somerville/1-Fitchburg-St-02143/unit-C109/home/8748382,72965855,42.375804,-71.0840397
+July-14-2022,condo,31 Concord Ave #14,Cambridge,2138,799000,2,1,Cambridge,1013,,1910,540,https://www.redfin.com/MA/Cambridge/31-Concord-Ave-02138/unit-14/home/11586251,72984280,42.379888,-71.1259812
+July-14-2022,condo,9 Medford #614,Somerville,2143,929000,2,2,Somerville,1057,,1916,883,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-614/home/170504427,72809964,42.3742011,-71.0868252
+July-13-2022,condo,55 Magazine St #32,Cambridge,2139,900000,2,1,Cambridgeport,929,,1900,400,https://www.redfin.com/MA/Cambridge/55-Magazine-St-02139/unit-32/home/28439909,72994955,42.3626615,-71.1076822
+July-12-2022,condo,14 Fayette St #1,Cambridge,2139,1270000,2,2,Mid Cambridge,1745,,1920,425,https://www.redfin.com/MA/Cambridge/14-Fayette-St-02139/unit-1/home/11564217,72980466,42.3716237,-71.1036991
+July-12-2022,condo,109 Prospect #302,Somerville,2143,825000,1,1,Somerville,742,,2022,200,https://www.redfin.com/MA/Somerville/109-Prospect-St-02143/unit-302/home/179317308,72976146,42.375064,-71.097433
+July-12-2022,condo,120 Pleasant St #2,Cambridge,2139,1100000,3,2,Cambridgeport,1675,1500,1894,,https://www.redfin.com/MA/Cambridge/120-Pleasant-St-02139/unit-2/home/11560514,72983560,42.3608785,-71.1116615
+July-11-2022,condo,305 Webster Ave #103,Cambridge,2141,645000,1,2,Cambridge,908,,2020,336,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-103/home/168641461,72964384,42.3735688,-71.0943227
+July-11-2022,condo,14 Ellsworth Park #3,Cambridge,2139,1121000,2,2,Cambridge,1128,,1910,225,https://www.redfin.com/MA/Cambridge/14-Ellsworth-Park-02139/unit-3/home/11548459,72999566,42.3728421,-71.1065471
+,condo,307 Webster Ave #305,Cambridge,2141,291500,1,1,,782,,2020,,https://www.redfin.com/MA/Cambridge/307-Webster-Ave-02141/unit-305/home/180662254,,42.37377,-71.094241
+July-8-2022,condo,7 Waldo Ave #4,Somerville,2143,530000,2,1,Somerville,646,,1900,286,https://www.redfin.com/MA/Somerville/7-Waldo-Ave-02143/unit-4/home/8760196,72994158,42.3771883,-71.1036928
+July-8-2022,condo,321 Harvard St #202,Cambridge,2139,926000,3,1.5,Mid Cambridge,991,,1980,568,https://www.redfin.com/MA/Cambridge/321-Harvard-St-02139/unit-202/home/11564764,72985276,42.3704059,-71.1074028
+July-8-2022,condo,19 Florence #1,Cambridge,2139,2500000,4,3.5,Cambridgeport,2460,,1886,179,https://www.redfin.com/MA/Cambridge/19-Florence-St-02139/unit-1/home/179672155,72989174,42.3587095,-71.1136377
+July-7-2022,condo,20 Clinton St #6,Cambridge,2139,1400000,2,1.5,Cambridge,1083,,1920,283,https://www.redfin.com/MA/Cambridge/20-Clinton-St-02139/unit-6/home/11566886,72983653,42.3687281,-71.105441
+July-7-2022,condo,10 Arnold Cir #2,Cambridge,2139,1465000,3,2.5,Mid Cambridge,1739,3739,1893,335,https://www.redfin.com/MA/Cambridge/10-Arnold-Cir-02139/unit-2/home/11566033,72972603,42.3686715,-71.1078317
+July-7-2022,condo,20 Corporal Mcternan St #203,Cambridge,2139,780000,1,1,Cambridgeport,742,,1926,584,https://www.redfin.com/MA/Cambridge/20-Corporal-McTernan-St-02139/unit-203/home/11927485,72947535,42.3609149,-71.1079478
+,condo,157 Pleasant St #107,Cambridge,2139,755000,2,2,,1033,,2002,,https://www.redfin.com/MA/Cambridge/157-Pleasant-St-02139/unit-107/home/11599809,,42.3599446,-71.1132651
+,condo,135 Second St,Cambridge,2141,1265000,2,2,,946,,1910,,https://www.redfin.com/MA/Cambridge/135-Second-St-02141/home/167211533,,42.3675855,-71.0794762
+July-5-2022,condo,993 Memorial Dr #402,Cambridge,2138,1000000,2,1,Cambridge,1052,,1914,857,https://www.redfin.com/MA/Cambridge/993-Memorial-Dr-02138/unit-402/home/11575113,72990358,42.373661,-71.1263046
+July-5-2022,condo,321 Harvard St #206,Cambridge,2139,680000,1,1.5,Cambridge,669,,1980,343,https://www.redfin.com/MA/Cambridge/321-Harvard-St-02139/unit-206/home/11564774,72960458,42.3704059,-71.1074028
+July-5-2022,condo,135 Second St #135,Cambridge,2141,1265000,2,2,Kendall Square,946,,1910,170,https://www.redfin.com/MA/Cambridge/135-Second-St-02141/unit-135/home/179344021,72977778,42.3675855,-71.0794762
+,condo,73 Allston St #2,Cambridge,2139,657067,2,1,,812,,1916,,https://www.redfin.com/MA/Cambridge/73-Allston-St-02139/unit-2/home/11559596,,42.3577454,-71.1062901
+July-1-2022,condo,53 Webster Ave #1,Cambridge,2141,942500,2,2,Wellington-Harrington,1225,,1854,306,https://www.redfin.com/MA/Cambridge/53-Webster-Ave-02141/unit-1/home/39537222,72977315,42.3680372,-71.0925769
+July-1-2022,condo,169 Monsignor O'brien Hwy #209,Cambridge,2141,523000,1,1,Cambridge,576,,1930,464,https://www.redfin.com/MA/Cambridge/169-Monsignor-O-Brien-Hwy-02141/unit-209/home/11600563,72980375,42.3718067,-71.0777788
+,condo,152 Pearl St #1,Cambridge,2139,600000,1,1,,555,,1900,,https://www.redfin.com/MA/Cambridge/152-Pearl-St-02139/unit-1/home/11601176,,42.3609792,-71.1064411
+July-1-2022,condo,39 Magnolia Ave #3,Cambridge,2138,949000,2,2,Mid Cambridge,1104,,1903,152,https://www.redfin.com/MA/Cambridge/39-Magnolia-Ave-02138/unit-3/home/11596464,72984192,42.3765885,-71.1063763
+July-1-2022,condo,304 Washington St #2,Cambridge,2139,915000,2,1.5,Cambridge,1015,,1895,250,https://www.redfin.com/MA/Cambridge/304-Washington-St-02139/unit-2/home/11555704,72972266,42.3651616,-71.0980913
+,condo,165 Pleasant St #110,Cambridge,2139,860000,2,2,,1136,,2002,,https://www.redfin.com/MA/Cambridge/165-Pleasant-St-02139/unit-110/home/11599471,,42.3598487,-71.1138891
+June-30-2022,condo,170 Gore #405,Cambridge,2141,735000,2,2,Cambridge,937,,1986,590,https://www.redfin.com/MA/Cambridge/170-Gore-St-02141/unit-405/home/11554023,72976039,42.3726509,-71.0862217
+June-30-2022,condo,305 Webster Ave #102,Cambridge,2141,650000,1,2,Cambridge,908,,2020,336,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-102/home/168641215,72964386,42.3735688,-71.0943227
+June-30-2022,condo,305 Webster Ave #101,Cambridge,2141,655000,1,2,Cambridge,918,,2020,336,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-101/home/167975404,72964383,42.3735688,-71.0943227
+June-30-2022,condo,16 Ware St #21,Cambridge,2138,711000,1,1,Harvard Square,660,,1920,400,https://www.redfin.com/MA/Cambridge/16-Ware-St-02138/unit-21/home/11570911,72989346,42.3730628,-71.1125965
+,condo,157 Pleasant St #201,Cambridge,2139,795000,2,2,,1033,,2002,,https://www.redfin.com/MA/Cambridge/157-Pleasant-St-02139/unit-201/home/11598962,,42.3599446,-71.1132651
+June-30-2022,condo,285 Harvard St #405,Cambridge,2139,690000,1,1,Cambridge,601,,1910,332,https://www.redfin.com/MA/Cambridge/285-Harvard-St-02139/unit-405/home/11562535,72987265,42.3694716,-71.1041411
+June-30-2022,condo,243 Bent St #2,Cambridge,2141,1150000,1,1.5,Kendall Square,1210,,1917,210,https://www.redfin.com/MA/Cambridge/243-Bent-St-02141/unit-2/home/23462879,72991660,42.3676313,-71.0846432
+June-29-2022,condo,1541 Cambridge St #1,Cambridge,2139,960000,2,1.5,Mid Cambridge,1251,,1930,244,https://www.redfin.com/MA/Cambridge/1541-Cambridge-St-02139/unit-1/home/11571876,72983408,42.3746649,-71.1061215
+June-29-2022,condo,950 Massachusetts Unit 2C,Cambridge,2138,700000,1,1,Harvard Square,613,,1989,691,https://www.redfin.com/MA/Cambridge/950-Massachusetts-Ave-02139/unit-2C/home/11567119,72979488,42.3685407,-71.1102224
+June-28-2022,condo,170 Gore St #101,Cambridge,2141,480000,1,1,East Cambridge,585,,1986,484,https://www.redfin.com/MA/Cambridge/170-Gore-St-02141/unit-101/home/11553848,72960729,42.3726509,-71.0862217
+,condo,70 Howard St,Cambridge,2139,600000,1,1,,725,,1903,,https://www.redfin.com/MA/Cambridge/70-Howard-St-02139/home/19003005,,42.3662051,-71.1108879
+June-27-2022,condo,8 Fainwood Cir #1,Cambridge,2139,1075000,2,2,Mid Cambridge,1282,,1916,225,https://www.redfin.com/MA/Cambridge/8-Fainwood-Cir-02139/unit-1/home/11599399,72990824,42.3735812,-71.1030965
+June-27-2022,condo,21 Chauncy #3,Cambridge,2138,750000,1,1,Harvard Square,913,,1900,510,https://www.redfin.com/MA/Cambridge/21-Chauncy-St-02138/unit-3/home/11586035,72982908,42.3796814,-71.1230847
+June-27-2022,condo,70 Howard St #1,Cambridge,2139,600000,1,1,Cambridgeport,725,,1903,150,https://www.redfin.com/MA/Cambridge/70-Howard-St-02139/unit-1/home/28455925,72981040,42.3661927,-71.1108884
+June-27-2022,condo,84 Columbia St #3,Cambridge,2139,950000,3,1,Area 4-The Port,1184,,1916,200,https://www.redfin.com/MA/Cambridge/84-Columbia-St-02139/unit-3/home/11549266,72976093,42.3654555,-71.0985007
+June-24-2022,condo,10 Dana St #315,Cambridge,2138,527000,1,1,Mid Cambridge,500,,1909,376,https://www.redfin.com/MA/Cambridge/10-Dana-St-02138/unit-315/home/11565530,72981117,42.3702575,-71.1096183
+June-24-2022,condo,46 Trowbridge St Unit D,Cambridge,2138,1715000,2,2,Harvard Square,1450,,1892,487,https://www.redfin.com/MA/Cambridge/46-Trowbridge-St-02138/unit-D/home/11571030,72982571,42.3722724,-71.1112289
+,condo,288 Western Ave,Cambridge,2139,1220000,5,3.5,,1897,,1903,,https://www.redfin.com/MA/Cambridge/288-Western-Ave-02139/home/11600161,,42.3644722,-71.1125768
+June-24-2022,condo,288 Western Ave #288,Cambridge,2139,1220000,5,3.5,Central Square,1897,,1903,416,https://www.redfin.com/MA/Cambridge/288-Western-Ave-02139/unit-288/home/113227818,72961887,42.3644722,-71.1125768
+June-23-2022,condo,305 Webster Ave #109,Cambridge,2141,775000,2,2,Cambridge,1252,,2020,394,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-109/home/167152294,72964387,42.3735688,-71.0943227
+June-23-2022,condo,1572 Massachusetts Ave #4,Cambridge,2138,830000,2,1,Cambridge,792,,1915,472,https://www.redfin.com/MA/Cambridge/1572-Massachusetts-Ave-02138/unit-4/home/11575945,72971748,42.3789725,-71.1206764
+,condo,71 Marion St #2,Somerville,2143,735000,3,1.5,,1010,,1920,,https://www.redfin.com/MA/Somerville/71-Marion-St-02143/unit-2/home/8756777,,42.3774243,-71.1020816
+June-21-2022,condo,57 Allston St #1,Cambridge,2139,850000,2,1.5,Cambridgeport,840,,1916,200,https://www.redfin.com/MA/Cambridge/57-Allston-St-02139/unit-1/home/179423403,72979652,42.3575658,-71.1059589
+June-21-2022,condo,22 Bradbury St Unit A,Cambridge,2138,699000,1,1,Harvard Square,936,,1960,980,https://www.redfin.com/MA/Cambridge/22-Bradbury-St-02138/unit-A/home/40185181,72945469,42.3752411,-71.1293013
+,condo,36 Oak St #2,Somerville,2143,1320000,3,3,,1589,,1900,,https://www.redfin.com/MA/Somerville/36-Oak-St-02143/unit-2/home/44633258,,42.3757247,-71.098646
+,condo,221 Mt Auburn St Unit 22A,Cambridge,2138,699000,1,1,,936,,1960,,https://www.redfin.com/MA/Cambridge/221-Mt-Auburn-St-02138/unit-22A/home/11587407,,42.3749459,-71.1301481
+,condo,59 Allston St #1,Cambridge,2139,850000,2,1.5,,840,,1916,,https://www.redfin.com/MA/Cambridge/59-Allston-St-02139/unit-1/home/11604050,,42.3575751,-71.10594
+June-21-2022,condo,305 Webster #105,Cambridge,2141,560000,1,1,Cambridge,817,,2020,189,https://www.redfin.com/MA/Cambridge/305-Webster-Ave-02141/unit-105/home/167975598,72966896,42.3735688,-71.0943227
+,condo,22 Bigelow St Unit 2A,Cambridge,2139,998000,2,1,,1021,,1890,,https://www.redfin.com/MA/Cambridge/22-Bigelow-St-02139/unit-2A/home/11566676,,42.368262,-71.1049242
+,condo,450 Broadway #1,Cambridge,2138,1825000,3,2.5,,1542,,1925,,https://www.redfin.com/MA/Cambridge/450-Broadway-02138/unit-1/home/11570554,,42.3733138,-71.1115084
+June-16-2022,condo,50 Beacon St #1,Somerville,2143,940000,3,2,Somerville,1868,,1900,270,https://www.redfin.com/MA/Somerville/50-Beacon-St-02143/unit-1/home/12389571,72939344,42.3756978,-71.1034688
+,condo,178 Harvard St,Cambridge,2139,2106000,3,2.5,,2341,,1886,,https://www.redfin.com/MA/Cambridge/178-Harvard-St-02139/home/11555849,,42.3664385,-71.0966903
+June-16-2022,condo,178 Harvard St #178,Cambridge,2139,2106000,3,3,Area 4-The Port,2341,,1886,350,https://www.redfin.com/MA/Cambridge/178-Harvard-St-02139/unit-178/home/169996508,72943085,42.3664385,-71.0966903
+June-15-2022,condo,20 Corporal Mcternan St #107,Cambridge,2139,1735000,3,3,Cambridgeport,1753,,1926,972,https://www.redfin.com/MA/Cambridge/20-Corporal-McTernan-St-02139/unit-107/home/12228583,72963374,42.3609149,-71.1079478
+,condo,8 Oak St,Cambridge,2139,1050000,2,2.5,,1170,,1900,,https://www.redfin.com/MA/Cambridge/8-Oak-St-02139/home/11549307,,42.3737044,-71.0994197
+June-15-2022,condo,104 Otis St #2,Cambridge,2141,1750000,3,2.5,East Cambridge,2114,,1854,391,https://www.redfin.com/MA/Cambridge/104-Otis-St-02141/unit-2/home/62500507,72973474,42.3704806,-71.0828532
+June-15-2022,condo,28 Bigelow St Unit A,Cambridge,2139,575000,1,1,Cambridge,460,,1890,295,https://www.redfin.com/MA/Cambridge/28-Bigelow-St-02139/unit-A/home/11566698,72985226,42.3684174,-71.1047741
+,condo,518 Putnam Ave Unit B,Cambridge,2139,590000,2,1,,1007,,1888,,https://www.redfin.com/MA/Cambridge/518-Putnam-Ave-02139/unit-B/home/11559954,,42.3580341,-71.1088086
+June-15-2022,condo,390 Norfolk St #3,Cambridge,2139,635000,1,1,Inman Square,629,,1898,241,https://www.redfin.com/MA/Cambridge/390-Norfolk-St-02139/unit-3/home/23430385,72973044,42.3736917,-71.095682
+,condo,28 Rockingham St,Cambridge,2139,1515000,7,2,,1905,,1894,,https://www.redfin.com/MA/Cambridge/28-Rockingham-St-02139/home/12427676,,42.3556942,-71.1109895
+,condo,21 Lawrence St Unit B,Cambridge,2139,1350000,3,2,,1642,,1894,,https://www.redfin.com/MA/Cambridge/21-Lawrence-St-02139/unit-B/home/11549442,,42.3616353,-71.1071184
+June-13-2022,condo,25 3rd St #1,Cambridge,2141,890000,3,3,Cambridge,1657,,2003,299,https://www.redfin.com/MA/Cambridge/25-Third-St-02141/unit-1/home/12374205,72948565,42.3718584,-71.079815
+June-10-2022,condo,217 Thorndike St #108,Cambridge,2141,764000,2,1.5,Cambridge,856,,1986,359,https://www.redfin.com/MA/Cambridge/217-Thorndike-St-02141/unit-108/home/11553618,72958361,42.3707602,-71.0876949
+June-10-2022,condo,14 Vandine St #2,Cambridge,2141,815000,2,2,Kendall Square,817,,1894,309,https://www.redfin.com/MA/Cambridge/14-Vandine-St-02141/unit-2/home/12545353,72943236,42.3688892,-71.0909866
+June-10-2022,condo,44 Concord Ave #101,Cambridge,2138,580000,1,1,Cambridge,484,,1974,225,https://www.redfin.com/MA/Cambridge/44-Concord-Ave-02138/unit-101/home/11588390,72976065,42.3802652,-71.1279021
+June-10-2022,condo,260-262 Sidney Unit BL,Cambridge,2139,525000,2,1,Cambridge,491,,1886,346,https://www.redfin.com/MA/Cambridge/260-Sidney-St-02139/unit-BL/home/11596214,72969397,42.356131,-71.1069961
+June-10-2022,condo,9 Medford St #701,Somerville,2143,933000,2,2,Somerville,1103,,1916,901,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-701/home/170504428,72809965,42.3742011,-71.0868252
+June-10-2022,condo,75-83 Cambridge Pkwy Unit E703,Cambridge,2142,1995000,2,2.5,Cambridge,1625,,1989,1295,https://www.redfin.com/MA/Cambridge/75-83-Cambridge-Pkwy-02142/unit-E703/home/11551164,72967966,42.3643818,-71.0769379
+June-10-2022,condo,9 Medford St Ph 01,Somerville,2143,989900,2,2,East Somerville,1064,,2016,996,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-1/home/167180164,72938588,42.3742011,-71.0868252
+,condo,21 Stone Ave #000021,Somerville,2143,850000,2,1,,1021,,1900,,https://www.redfin.com/MA/Somerville/21-Stone-Ave-02143/unit-000021/home/8756869,,42.3802945,-71.0952422
+June-8-2022,condo,21 Stone Ave #21,Somerville,2143,850000,2,1,Somerville,1021,,1900,200,https://www.redfin.com/MA/Somerville/21-Stone-Ave-02143/unit-21/home/179318704,72976387,42.3802945,-71.0952422
+June-7-2022,condo,97 Prospect St #4,Somerville,2143,1680000,3,2.5,Somerville,1838,,2013,609,https://www.redfin.com/MA/Somerville/97-Prospect-St-02143/unit-4/home/57605295,72962761,42.3756017,-71.0967998
+June-7-2022,condo,10 Rogers #411,Cambridge,2142,785000,1,1,Kendall Square,822,,1989,650,https://www.redfin.com/MA/Cambridge/10-Rogers-St-02142/unit-411/home/11550687,72973824,42.3656338,-71.0773894
+,condo,59 Magazine St #26,Cambridge,2139,657500,1,1,,762,,1909,,https://www.redfin.com/MA/Cambridge/59-Magazine-St-02139/unit-26/home/12428084,,42.3621683,-71.1079022
+June-7-2022,condo,40 Bigelow St #1,Cambridge,2139,898000,2,2,Central Square,920,,1880,291,https://www.redfin.com/MA/Cambridge/40-Bigelow-St-02139/unit-1/home/11566725,72973569,42.3686597,-71.1045715
+,condo,165 Pleasant St #315,Cambridge,2139,775000,2,2,,1026,,2002,,https://www.redfin.com/MA/Cambridge/165-Pleasant-St-02139/unit-315/home/11600141,,42.3598487,-71.1138891
+June-6-2022,condo,217 Thorndike St #301,Cambridge,2139,861000,2,1.5,East Cambridge,890,,1986,373,https://www.redfin.com/MA/Cambridge/217-Thorndike-St-02141/unit-301/home/11553693,72977084,42.3707602,-71.0876949
+June-3-2022,condo,241 River St #6,Cambridge,2139,960000,3,2,Cambridge,825,,1999,520,https://www.redfin.com/MA/Cambridge/241-River-St-02139/unit-6/home/11601012,72966387,42.3629766,-71.1118731
+June-3-2022,condo,218 Thorndike St #209,Cambridge,2141,800000,2,1.5,Cambridge,895,,1986,380,https://www.redfin.com/MA/Cambridge/218-Thorndike-St-02141/unit-209/home/11553682,72940761,42.3704804,-71.0878094
+June-3-2022,condo,9 Jay St #1,Cambridge,2139,2000000,3,2.5,Cambridgeport,2100,,1854,81,https://www.redfin.com/MA/Cambridge/9-Jay-St-02139/unit-1/home/21472329,72963304,42.3641363,-71.1099698
+June-2-2022,condo,169 Monsignor O'brien Hwy #604,Cambridge,2141,586000,1,1,Cambridge,531,,1930,436,https://www.redfin.com/MA/Cambridge/169-Monsignor-O-Brien-Hwy-02141/unit-604/home/11600862,72962496,42.3718067,-71.0777788
+June-1-2022,condo,20 Lake St #2,Somerville,2143,747000,2,1,Somerville,1200,,1890,423,https://www.redfin.com/MA/Somerville/20-Lake-St-02143/unit-2/home/8753676,72968884,42.3800335,-71.0993827
+,condo,165 Pleasant St #201,Cambridge,2139,579000,1,1,,652,,2002,,https://www.redfin.com/MA/Cambridge/165-Pleasant-St-02139/unit-201/home/11599854,,42.3598487,-71.1138891
+June-1-2022,condo,975 Memorial Dr #703,Cambridge,2138,3200000,2,2,Harvard Square,1346,,1986,2300,https://www.redfin.com/MA/Cambridge/975-Memorial-Dr-02138/unit-703/home/11574842,72952845,42.3716048,-71.1236381
+June-1-2022,condo,20 Second St #621,Cambridge,2141,1048500,2,2,East Cambridge,1063,1063,2009,828,https://www.redfin.com/MA/Cambridge/20-Second-St-02141/unit-621/home/28439794,72934932,42.3706593,-71.0785109
+June-1-2022,condo,5 Smith Ave #5,Somerville,2143,1205000,2,2,Somerville,1426,,2021,170,https://www.redfin.com/MA/Somerville/5-Smith-Ave-02143/unit-5/home/175412513,72947405,42.3771618,-71.1056035
+May-31-2022,condo,35 Berkshire St #2,Cambridge,2141,1365000,3,2,Kendall Square,1100,,2022,250,https://www.redfin.com/MA/Cambridge/35-Berkshire-St-02141/unit-2/home/178995303,72965601,42.3682241,-71.0922361
+May-31-2022,condo,169 Monsignor O'brien Hwy #412,Cambridge,2141,693000,2,2,Cambridge,904,,1930,720,https://www.redfin.com/MA/Cambridge/169-Monsignor-O-Brien-Hwy-02141/unit-412/home/11600793,72970825,42.3718067,-71.0777788
+,condo,321 Harvard St #303,Cambridge,2139,812000,2,1.5,,817,,1980,,https://www.redfin.com/MA/Cambridge/321-Harvard-St-02139/unit-303/home/11564790,,42.3704059,-71.1074028
+,condo,384 Washington St Unit A,Somerville,2143,1300000,3,2.5,,1552,,1900,,https://www.redfin.com/MA/Somerville/384-Washington-St-02143/unit-A/home/11650174,,42.3785883,-71.1047996
+May-27-2022,condo,11 Gardner Rd #3,Cambridge,2139,1274000,2,2.5,Central Square,1359,,1910,227,https://www.redfin.com/MA/Cambridge/11-Gardner-Rd-02139/unit-3/home/11549326,72969503,42.3707749,-71.0993727
+May-27-2022,condo,19 Magnolia #3,Cambridge,2138,635000,1,1,Harvard Square,683,,1903,167,https://www.redfin.com/MA/Cambridge/19-Magnolia-Ave-02138/unit-3/home/11571826,72949286,42.3767135,-71.1075173
+,condo,15 Lee St Unit T5,Cambridge,2139,1450000,3,2,,1205,,1982,,https://www.redfin.com/MA/Cambridge/15-Lee-St-02139/unit-T5/home/11566017,,42.3686641,-71.1072337
+,condo,92 Hampshire St Unit B,Cambridge,2139,1050000,2,1,,1500,,1920,,https://www.redfin.com/MA/Cambridge/92-Hampshire-St-02139/unit-B/home/11378177,,42.3687065,-71.0949726
+,condo,105 Gore St #5,Cambridge,2141,550000,1,1,,548,,1920,,https://www.redfin.com/MA/Cambridge/105-Gore-St-02141/unit-5/home/11551967,,42.3723456,-71.082522
+,condo,79 Hampshire St #3,Cambridge,2139,817000,2,1,,1010,,1894,,https://www.redfin.com/MA/Cambridge/79-Hampshire-St-02139/unit-3/home/11556396,,42.368206,-71.0938851
+,condo,1572 Massachusetts Ave #47,Cambridge,2138,1200000,2,1,,1294,,1850,,https://www.redfin.com/MA/Cambridge/1572-Massachusetts-Ave-02138/unit-47/home/11576022,,42.3789725,-71.1206764
+May-25-2022,condo,17 Otis St #308,Cambridge,2141,975000,2,1.5,Lechmere Square,939,,2006,626,https://www.redfin.com/MA/Cambridge/17-Otis-St-02141/unit-308/home/12427579,72963255,42.3701568,-71.0773633
+,condo,12 Marney St,Cambridge,2141,905000,2,2,,840,,1910,,https://www.redfin.com/MA/Cambridge/12-Marney-St-02141/home/28439966,,42.3703449,-71.0898337
+May-23-2022,condo,16 Ware St #3,Cambridge,2138,810000,1,1,Cambridge,660,,2000,400,https://www.redfin.com/MA/Cambridge/16-Ware-St-02138/unit-3/home/11570842,72973956,42.3730628,-71.1125965
+May-20-2022,condo,94 Beacon St #11,Somerville,2143,580000,2,1,Somerville,855,,1976,355,https://www.redfin.com/MA/Somerville/94-Beacon-St-02143/unit-11/home/8725204,72962995,42.3770374,-71.1053559
+May-20-2022,condo,16 Chauncy #44,Cambridge,2138,530000,0,1,Harvard Square,386,,1900,411,https://www.redfin.com/MA/Cambridge/16-Chauncy-St-02138/unit-44/home/11575890,72963807,42.3794742,-71.1223384
+May-20-2022,condo,27 Prince St Unit 2R,Cambridge,2139,1050000,2,2,Cambridgeport,960,,1930,198,https://www.redfin.com/MA/Cambridge/27-Prince-St-02139/unit-2R/home/40324283,72964066,42.3607855,-71.1103418
+May-20-2022,condo,122 Trowbridge St #5,Cambridge,2138,815000,2,1,Mid Cambridge,804,,1910,181,https://www.redfin.com/MA/Cambridge/122-Trowbridge-St-02138/unit-5/home/12427724,72962576,42.3772142,-71.109178
+May-20-2022,condo,262 Monsignor Obrien Hwy #102,Cambridge,2141,979000,2,1.5,East Cambridge,1117,,2017,505,https://www.redfin.com/MA/Cambridge/262-Monsignor-O-Brien-Hwy-02141/unit-102/home/135266418,72963932,42.3731881,-71.0819967
+May-19-2022,condo,9 Chauncy St #63,Cambridge,2138,775000,2,1,Cambridge,832,,1972,377,https://www.redfin.com/MA/Cambridge/9-Chauncy-St-02138/unit-63/home/11577112,72959479,42.3800422,-71.1213333
+May-18-2022,condo,37 Lee St #1,Cambridge,2139,525000,1,1,Mid Cambridge,743,,1901,361,https://www.redfin.com/MA/Cambridge/37-Lee-St-02139/unit-1/home/11565952,72963790,42.3694263,-71.1063722
+May-18-2022,condo,1 Hancock Pl #2,Cambridge,2139,1650000,3,2.5,Cambridge,1495,,1902,250,https://www.redfin.com/MA/Cambridge/1-Hancock-Pl-02139/unit-2/home/178956382,72961944,42.3696538,-71.1071464
+May-18-2022,condo,13 Linden St #3,Somerville,2143,670000,2,1,Somerville,878,,1900,250,https://www.redfin.com/MA/Somerville/13-Linden-St-02143/unit-3/home/8752051,72971098,42.3779472,-71.0927476
+May-17-2022,condo,28 Essex St #4,Cambridge,2139,1510000,4,2,Cambridge,1304,,1900,334,https://www.redfin.com/MA/Cambridge/28-Essex-St-02139/unit-4/home/19003205,72957421,42.3664102,-71.1016704
+May-13-2022,condo,104 Otis St #1,Cambridge,2141,1820000,3,2.5,East Cambridge,2027,,1854,354,https://www.redfin.com/MA/Cambridge/104-Otis-St-02141/unit-1/home/60390245,72963207,42.3704806,-71.0828532
+May-13-2022,condo,10 Dana St #4,Cambridge,2138,825000,2,1,Harvard Square,966,,1909,486,https://www.redfin.com/MA/Cambridge/10-Dana-St-02138/unit-4/home/11565428,72953567,42.3702575,-71.1096183
+,condo,276 Harvard St #7,Cambridge,2139,850000,3,1,,1448,,1900,,https://www.redfin.com/MA/Cambridge/276-Harvard-St-02139/unit-7/home/11562265,,42.3688475,-71.1035897
+May-13-2022,condo,619 Franklin St #3,Cambridge,2139,840000,1,1,Riverside,1209,,1886,322,https://www.redfin.com/MA/Cambridge/619-Franklin-St-02139/unit-3/home/55737078,72961890,42.3686435,-71.1131223
+,condo,180 Franklin St,Cambridge,2139,2050000,3,3.5,,1281,,2012,,https://www.redfin.com/MA/Cambridge/180-Franklin-St-02139/home/55737090,,42.3630747,-71.1030206
+May-12-2022,condo,9 Medford St #704,Somerville,2143,655000,1,1,Somerville,799,,2016,641,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-704/home/167845814,72948387,42.3742011,-71.0868252
+,condo,38 Prince St,Cambridge,2139,1300000,2,2,,1138,,1841,,https://www.redfin.com/MA/Cambridge/38-Prince-St-02139/home/12427708,,42.3605928,-71.1107321
+May-10-2022,condo,16 Murdock St #16,Cambridge,2139,2160000,4,3,Central Square,2171,,2021,221,https://www.redfin.com/MA/Cambridge/16-Murdock-St-02139/unit-16/home/178308731,72942873,42.371188,-71.0988714
+May-10-2022,condo,986 Memorial Dr #304,Cambridge,2138,1550000,2,2,Harvard Square,1560,,1918,1761,https://www.redfin.com/MA/Cambridge/986-Memorial-Dr-02138/unit-304/home/138417138,72953839,42.3729309,-71.1254445
+,condo,1697 Cambridge St #29,Cambridge,2138,500000,1,1,,605,,1940,,https://www.redfin.com/MA/Cambridge/1697-Cambridge-St-02138/unit-29/home/11572709,,42.3753168,-71.1118542
+,condo,321 Harvard St #207,Cambridge,2139,700000,1,1,,666,,1980,,https://www.redfin.com/MA/Cambridge/321-Harvard-St-02139/unit-207/home/11564775,,42.3704059,-71.1074028
+May-6-2022,condo,1699 Cambridge St #29,Cambridge,2139,500000,1,1,Harvard Square,410,,1940,258,https://www.redfin.com/MA/Cambridge/1699-Cambridge-St-02138/unit-29/home/18262452,72960515,42.3752825,-71.1119769
+May-6-2022,condo,400 Washington St #101,Somerville,2143,885000,2,1,Inman Square,1084,,2001,562,https://www.redfin.com/MA/Somerville/400-Washington-St-02143/unit-101/home/8758168,72960663,42.3782435,-71.105666
+May-6-2022,condo,469 Windsor #2,Cambridge,2414,695000,3,1,Cambridge,921,,1930,150,https://www.redfin.com/MA/Cambridge/469-Windsor-St-02141/unit-2/home/12427494,72955445,42.3723659,-71.0935799
+May-6-2022,condo,121 Second St #1,Cambridge,2141,1300000,3,2,Kendall Square,1660,,1910,350,https://www.redfin.com/MA/Cambridge/121-Second-St-02141/unit-1/home/178795923,72959140,42.3678251,-71.079486
+,condo,29 Concord Ave #412,Cambridge,2138,475000,1,1,,495,,1965,,https://www.redfin.com/MA/Cambridge/29-Concord-Ave-02138/unit-412/home/11586436,,42.3796787,-71.1256782
+,condo,121 Second St,Cambridge,2141,1300000,3,2,,880,,1910,,https://www.redfin.com/MA/Cambridge/121-Second-St-02141/home/11548759,,42.3678251,-71.079486
+,condo,429 Norfolk St #1,Somerville,2143,655000,3,1,,906,,2003,,https://www.redfin.com/MA/Somerville/429-Norfolk-St-02143/unit-1/home/8754683,,42.3748962,-71.095421
+May-5-2022,condo,18 Murdock St #18,Cambridge,2139,2160000,4,3,Central Square,2146,,2021,221,https://www.redfin.com/MA/Cambridge/18-Murdock-St-02139/unit-18/home/177548098,72926346,42.3711175,-71.0989325
+May-4-2022,condo,221 Mt. Auburn St #307,Cambridge,2138,1100000,1,1,West Cambridge,988,,1962,1392,https://www.redfin.com/MA/Cambridge/221-Mt-Auburn-St-02138/unit-307/home/11587468,72960286,42.3749459,-71.1301481
+,condo,140 Banks St,Cambridge,2138,2590000,3,4.5,,1636,,1870,,https://www.redfin.com/MA/Cambridge/140-Banks-St-02138/home/109303367,,42.3672943,-71.1145629
+May-3-2022,condo,140 Banks St #140,Cambridge,2138,2590000,3,4.5,Cambridge,2193,,2016,458,https://www.redfin.com/MA/Cambridge/140-Banks-St-02138/unit-140/home/178466080,72947750,42.3672943,-71.1145629
+May-3-2022,condo,285 Harvard St #109,Cambridge,2139,393500,0,1,Cambridge,398,,1910,231,https://www.redfin.com/MA/Cambridge/285-Harvard-St-02139/unit-109/home/11562458,72964161,42.3694716,-71.1041411
+May-2-2022,condo,5 Saint Mary Rd #1,Cambridge,2139,1388000,3,2,Cambridge,1385,,1920,300,https://www.redfin.com/MA/Cambridge/5-St-Mary-Rd-02139/unit-1/home/11563047,72956657,42.3709765,-71.1004652
+May-2-2022,condo,30 Bigelow St Unit A,Cambridge,2139,1190000,2,1.5,Mid Cambridge,906,,1890,367,https://www.redfin.com/MA/Cambridge/30-Bigelow-St-02139/unit-A/home/11566855,72966270,42.3684967,-71.1047546
+April-29-2022,condo,14 Valentine St #2,Cambridge,2139,1070000,2,2,Cambridge,1101,,1916,144,https://www.redfin.com/MA/Cambridge/14-Valentine-St-02139/unit-2/home/178669778,72954093,42.3601102,-71.1058936
+April-29-2022,condo,44 Roberts Rd #2,Cambridge,2138,938000,2,1,Mid Cambridge,1096,,1893,250,https://www.redfin.com/MA/Cambridge/44-Roberts-Rd-02138/unit-2/home/176008603,72943678,42.3773785,-71.1080699
+April-29-2022,condo,29 Otis St #302,Cambridge,2141,1205000,2,2,East Cambridge,1000,,2006,793,https://www.redfin.com/MA/Cambridge/29-Otis-St-02141/unit-302/home/12427845,72957416,42.3703121,-71.0781561
+April-29-2022,condo,218 Harvard St #3,Cambridge,2139,725000,2,1,Cambridge,667,,1900,220,https://www.redfin.com/MA/Cambridge/218-Harvard-St-02139/unit-3/home/21322521,72947381,42.3671889,-71.0990388
+April-29-2022,condo,62 Hurley St #2,Cambridge,2141,625000,1,1,Cambridge,608,,1894,133,https://www.redfin.com/MA/Cambridge/62-Hurley-St-02141/unit-2/home/11599510,72950088,42.368061,-71.0796813
+April-29-2022,condo,345 Harvard St Unit B2X,Cambridge,2138,512500,1,1,Cambridge,540,13873,1964,276,https://www.redfin.com/MA/Cambridge/345-Harvard-St-02138/unit-B2X/home/12428159,72959317,42.3712009,-71.1099307
+,condo,44 1/2 Roberts Rd #2,Cambridge,2138,938000,2,1,,958,,1893,,https://www.redfin.com/MA/Cambridge/44-1-2-Roberts-Rd-02138/unit-2/home/11602020,,42.3773422,-71.1080169
+,condo,100 Concord Ave #000100,Somerville,2143,755000,2,1,,863,,1900,,https://www.redfin.com/MA/Somerville/100-Concord-Ave-02143/unit-000100/home/8682870,,42.3754389,-71.1017407
+,condo,9 Medford St #206,Somerville,2143,532500,1,1,,564,,2015,,https://www.redfin.com/MA/Somerville/9-Medford-St-02143/unit-206/home/148627147,,42.3742011,-71.0868252
+April-28-2022,condo,14 Valentine St #3,Cambridge,2139,1110000,2,2,Cambridge,1144,,1916,155,https://www.redfin.com/MA/Cambridge/14-Valentine-St-02139/unit-3/home/178618338,72951860,42.3601102,-71.1058936
+April-28-2022,condo,137 Second St #137,Cambridge,2141,1450000,3,3,Kendall Square,1597,,1910,256,https://www.redfin.com/MA/Cambridge/137-Second-St-02141/unit-137/home/174885936,72950848,42.3675765,-71.0794652
+April-28-2022,condo,280 Harvard St Unit 2C,Cambridge,2139,755000,2,1.5,Mid Cambridge,870,,1978,435,https://www.redfin.com/MA/Cambridge/280-Harvard-St-02139/unit-2C/home/11566762,72954607,42.3688844,-71.1043096
+April-27-2022,condo,361 Harvard St #7,Cambridge,2139,1321000,2,2,Harvard Square,1388,,1920,829,https://www.redfin.com/MA/Cambridge/361-Harvard-St-02138/unit-7/home/11570977,72952369,42.3715056,-71.1111409
+,condo,15 Rose St,Somerville,2143,1455000,3,3,,1801,,1920,,https://www.redfin.com/MA/Somerville/15-Rose-St-02143/home/112944894,,42.3786246,-71.1030227
+April-26-2022,condo,14 Columbus Ave #14,Somerville,2143,1175000,4,3,Union Square,2336,,1900,208,https://www.redfin.com/MA/Somerville/14-Columbus-Ave-02143/unit-14/home/57331222,72953557,42.3802374,-71.0929988
+April-25-2022,condo,848 Massachusetts Ave #3,Cambridge,2139,488000,0,1,Central Square,476,,1920,272,https://www.redfin.com/MA/Cambridge/848-Massachusetts-Ave-02139/unit-3/home/11599581,72946348,42.3671127,-71.1073149
+April-25-2022,condo,22 Inman St #1,Cambridge,2139,1420000,2,2,Mid Cambridge,1194,,1870,427,https://www.redfin.com/MA/Cambridge/22-Inman-St-02139/unit-1/home/11561975,72963405,42.3677756,-71.1043388
+April-23-2022,condo,16 Chauncy #22,Cambridge,2138,582000,1,1,Harvard Square,538,,1900,565,https://www.redfin.com/MA/Cambridge/16-Chauncy-St-02138/unit-22/home/11575837,72948666,42.3794742,-71.1223384
+,condo,257 Sidney St Unit A,Cambridge,2139,975000,3,1,,1100,,1893,,https://www.redfin.com/MA/Cambridge/257-Sidney-St-02139/unit-A/home/11559460,,42.3564055,-71.1072063
+April-22-2022,condo,950 Massachusetts Ave #306,Cambridge,2139,1010000,2,2,Riverside,953,,1989,823,https://www.redfin.com/MA/Cambridge/950-Massachusetts-Ave-02139/unit-306/home/11567198,72938728,42.3685407,-71.1102224
+April-22-2022,condo,8 Leonard Ave #2,Cambridge,2139,975000,2,1,Cambridge,1056,,1900,175,https://www.redfin.com/MA/Cambridge/8-Leonard-Ave-02139/unit-2/home/11571862,72953834,42.3752774,-71.1059114
+April-22-2022,condo,169 Monsignor Obrien Hwy #807,Cambridge,2141,850000,2,2,East Cambridge,1165,,1930,928,https://www.redfin.com/MA/Cambridge/169-Monsignor-O-Brien-Hwy-02141/unit-807/home/11600910,72919304,42.3718067,-71.0777788
+April-22-2022,condo,32 5th St #1,Cambridge,2141,1200000,3,3,Cambridge,1701,,1905,316,https://www.redfin.com/MA/Cambridge/32-5th-St-02141/unit-1/home/142954542,72953360,42.3719016,-71.0828664
+April-21-2022,condo,111 1/2 Inman St Unit B,Cambridge,2139,700000,1,1.5,Cambridge,885,,1874,250,https://www.redfin.com/MA/Cambridge/111-1-2-Inman-St-02139/unit-B/home/11594597,72947403,42.37259,-71.101395
+April-21-2022,condo,285 Harvard St #102,Cambridge,2139,696500,2,1,Cambridge,748,,1910,412,https://www.redfin.com/MA/Cambridge/285-Harvard-St-02139/unit-102/home/11562443,72935494,42.3694716,-71.1041411
+April-21-2022,condo,20 Clinton St #4,Cambridge,2139,1140000,2,2,Cambridge,1290,,1920,285,https://www.redfin.com/MA/Cambridge/20-Clinton-St-02139/unit-4/home/11566881,72950868,42.3687281,-71.105441
+April-19-2022,condo,271 Hurley St #1,Cambridge,2141,739000,2,1,East Cambridge,694,,2003,275,https://www.redfin.com/MA/Cambridge/271-Hurley-St-02141/unit-1/home/23478345,72953314,42.3687926,-71.0831722
+April-15-2022,condo,432 Norfolk St Unit 4G,Somerville,2143,575000,1,1,Somerville,606,,2004,,https://www.redfin.com/MA/Somerville/432-Norfolk-St-02143/unit-4G/home/8757846,72947526,42.3746845,-71.09505
+April-15-2022,condo,107 Gore St #3,Cambridge,2141,550000,1,1.5,East Cambridge,653,,1920,308,https://www.redfin.com/MA/Cambridge/107-Gore-St-02141/unit-3/home/11551975,72911704,42.3723145,-71.0825129
+April-15-2022,condo,145 Pearl St #145,Cambridge,2139,1110000,4,2.5,Cambridgeport,1921,,1895,336,https://www.redfin.com/MA/Cambridge/145-Pearl-St-02139/unit-145/home/177421760,72924082,42.361288,-71.1066
+April-15-2022,condo,1105 Massachusetts Ave Unit 12C,Cambridge,2138,800000,2,1,Harvard Square,871,,1970,428,https://www.redfin.com/MA/Cambridge/1105-Massachusetts-Ave-02138/unit-12C/home/11570512,72960281,42.3707873,-71.1134082
+,condo,55 Magazine St #11,Cambridge,2139,707600,1,1,,870,,1900,,https://www.redfin.com/MA/Cambridge/55-Magazine-St-02139/unit-11/home/28439578,,42.3626615,-71.1076822
+April-15-2022,condo,18 Centre St #104,Cambridge,2139,525000,1,1,Mid Cambridge,573,,1910,341,https://www.redfin.com/MA/Cambridge/18-Centre-St-02139/unit-104/home/12427818,72950395,42.3694826,-71.1094333
+September-16-2022,multifamily,53 Concord Ave,Somerville,2143,1000000,3,3,Somerville,2358,3521,1900,,https://www.redfin.com/MA/Somerville/53-Concord-Ave-02143/home/8730093,73019665,42.376862,-71.0987885
+September-9-2022,multifamily,8 Worcester St,Cambridge,2139,1200000,4,2,Cambridge,2090,3415,1839,,https://www.redfin.com/MA/Cambridge/8-Worcester-St-02139/home/11558271,73016949,42.3664364,-71.0987884
+September-1-2022,multifamily,641 Green,Cambridge,2139,1800000,6,3,Cambridge,2522,4003,1930,,https://www.redfin.com/MA/Cambridge/99-Bishop-Allen-Dr-02139/home/179683695,72989808,42.3657979,-71.1021255
+September-1-2022,multifamily,439 Cambridge,Cambridge,2141,1050000,4,2.5,Cambridge,2475,2380,1900,,https://www.redfin.com/MA/Cambridge/439-Cambridge-St-02141/home/11552199,72989817,42.3716653,-71.0835987
+August-31-2022,multifamily,415 Broadway,Cambridge,2138,2160000,4,4,Harvard Square,3198,2671,1873,,https://www.redfin.com/MA/Cambridge/415-Broadway-02138/home/11571586,72996772,42.3728089,-71.1088066
+August-17-2022,multifamily,1126 Cambridge St,Cambridge,2139,1800000,4,2.5,Inman Square,3126,1154,1862,,https://www.redfin.com/MA/Cambridge/1126-Cambridge-St-02139/home/11557475,72949727,42.3729637,-71.096052
+August-11-2022,multifamily,362 Windsor St,Cambridge,2141,1830000,5,2.5,Cambridge,3221,3328,1886,,https://www.redfin.com/MA/Cambridge/362-Windsor-St-02141/home/11556494,72981364,42.3699765,-71.0940899
+August-9-2022,multifamily,10 Newton St,Cambridge,2139,2280000,9,9,Cambridgeport,3969,3071,1916,,https://www.redfin.com/MA/Cambridge/10-Newton-St-02139/home/11561032,73007976,42.3581792,-71.110526
+August-9-2022,multifamily,347-349 Broadway,Cambridge,2139,2850000,10,4,Mid Cambridge,7454,6624,1868,,https://www.redfin.com/MA/Cambridge/347-Broadway-02139/home/179444100,72966794,42.3703166,-71.1032608
+August-4-2022,multifamily,63 Oak St,Somerville,2143,1280000,6,3.5,Somerville,2988,2042,1915,,https://www.redfin.com/MA/Somerville/63-Oak-St-02143/home/11795803,72931304,42.3753747,-71.0991992
+July-28-2022,multifamily,131-133 Charles St,Cambridge,2141,1349000,4,3,East Cambridge,3394,3000,1854,,https://www.redfin.com/MA/Cambridge/131-Charles-St-02141/home/179701289,72991338,42.3679576,-71.0819589
+July-28-2022,multifamily,289 Elm St,Cambridge,2139,1700000,6,3,Inman Square,2816,1563,1873,,https://www.redfin.com/MA/Cambridge/289-Elm-St-02139/home/11557108,72953490,42.373279,-71.0953962
+July-27-2022,multifamily,166-168 Auburn St,Cambridge,2139,3800000,17,9.5,Central Square,8157,3998,1982,,https://www.redfin.com/MA/Cambridge/166-Auburn-St-02139/home/11561865,72935701,42.363495,-71.105257
+July-18-2022,multifamily,339 Allston St,Cambridge,2139,2280000,9,6,Cambridge,4086,3049,1913,,https://www.redfin.com/MA/Cambridge/339-Allston-St-02139/home/11569240,72967488,42.3612829,-71.1126132
+July-7-2022,multifamily,5 Kinnaird St,Cambridge,2139,2300000,5,3,Cambridge,3146,5000,1854,,https://www.redfin.com/MA/Cambridge/5-Kinnaird-St-02139/home/11568565,72963189,42.3642083,-71.1090851
+July-7-2022,multifamily,26-28 Oakland St,Cambridge,2139,1900000,6,4,Inman Square,3567,2369,1916,,https://www.redfin.com/MA/Cambridge/26-Oakland-St-02139/home/179177603,72971854,42.3743689,-71.0988457
+July-5-2022,multifamily,99 Spring St,Cambridge,2141,1300000,6,3,Cambridge,2766,1875,1881,,https://www.redfin.com/MA/Cambridge/99-Spring-St-02141/home/11552583,72978151,42.3694454,-71.0827213
+June-17-2022,multifamily,119 Inman St,Cambridge,2139,2800000,11,4.5,Cambridge,4386,6266,1969,,https://www.redfin.com/MA/Cambridge/119-Inman-St-02139/home/11594641,72930387,42.3730086,-71.1011745
+June-15-2022,multifamily,89 3rd St,Cambridge,2141,1600000,2,3.5,Cambridge,2332,1600,1861,,https://www.redfin.com/MA/Cambridge/89-Third-St-02141/home/11552372,72966220,42.3700833,-71.0802366
+June-3-2022,multifamily,76 Fairmont St,Cambridge,2139,1925000,6,3,Cambridge,3564,1739,1964,,https://www.redfin.com/MA/Cambridge/76-Fairmont-St-02139/home/11569251,72936977,42.3625133,-71.1124275
+June-1-2022,multifamily,72-74 Fairmont St,Cambridge,2139,1875000,3,3.5,Cambridgeport,2623,2623,1878,,https://www.redfin.com/MA/Cambridge/72-Fairmont-St-02139/home/11569254,72961986,42.362441,-71.1122723
+May-16-2022,multifamily,280 Mcgrath Hwy,Somerville,2145,1200000,6,3,Union Square,3357,3049,1900,,https://www.redfin.com/MA/Somerville/280-McGrath-Hwy-02143/home/8738492,72939467,42.3784791,-71.0897472
+May-10-2022,multifamily,23 Hunting St,Cambridge,2141,1500000,6,2.5,Cambridge,2040,4410,1873,,https://www.redfin.com/MA/Cambridge/23-Hunting-St-02141/home/11554188,72968085,42.3734368,-71.0910661
+May-6-2022,multifamily,27 Ellery St,Cambridge,2138,2750000,11,6,Cambridge,3927,2234,1903,,https://www.redfin.com/MA/Cambridge/27-Ellery-St-02138/home/11570275,72964506,42.3709404,-71.1111277
+May-6-2022,multifamily,19 Berkshire St,Cambridge,2141,1650000,6,3,East Cambridge,3030,2115,1893,,https://www.redfin.com/MA/Cambridge/19-Berkshire-St-02141/home/11555087,72896719,42.3686107,-71.0920566
+May-6-2022,multifamily,19 Leonard Ave,Cambridge,2139,1610000,7,3,Mid Cambridge,3610,3444,1903,,https://www.redfin.com/MA/Cambridge/19-Leonard-Ave-02139/home/11563171,72937214,42.3759268,-71.1053249
+April-22-2022,multifamily,883 Cambridge St,Cambridge,2141,2150000,6,7,Inman Square,3610,1930,1890,,https://www.redfin.com/MA/Cambridge/883-Cambridge-St-02141/home/11554395,72940508,42.3726934,-71.0915837
+April-20-2022,multifamily,286 Pearl St,Cambridge,2139,1420000,4,2,Cambridgeport,1973,,1876,,https://www.redfin.com/MA/Cambridge/286-Pearl-St-02139/home/11559876,72940554,42.3576757,-71.1100274
+April-20-2022,multifamily,26 Clark St,Somerville,2143,1350000,6,3,Union Square,2713,3700,1900,,https://www.redfin.com/MA/Somerville/26-Clark-St-02143/home/8729903,72948954,42.3779664,-71.0974795
+April-20-2022,multifamily,27 Dana St,Cambridge,2138,2755000,7,3,Mid Cambridge,4500,3478,1886,,https://www.redfin.com/MA/Cambridge/27-Dana-St-02138/home/11571149,72959769,42.3713366,-71.1095138
+August-5-2022,multifamily,93 Thorndike St,Cambridge,2141,4296675,14,8,East Cambridge,8737,5007,1846,,https://www.redfin.com/MA/Cambridge/93-Thorndike-St-02141/home/11552523,72908566,42.3701304,-71.0823166
+July-29-2022,multifamily,95-97 Hampshire St,Cambridge,2139,2700000,10,6.5,Cambridge,5223,5628,1886,,https://www.redfin.com/MA/Cambridge/95-Hampshire-St-02139/home/11556753,72970636,42.3691534,-71.0949574
+July-8-2022,multifamily,337 Cambridge St,Cambridge,2141,3750000,16,5,East Cambridge,7580,2685,1890,,https://www.redfin.com/MA/Cambridge/337-Cambridge-St-02141/home/11552225,72893617,42.3713966,-71.0816343
+June-1-2022,multifamily,359 Cambridge St,Cambridge,2141,4075000,17,9.5,Cambridge,8183,5006,1910,,https://www.redfin.com/MA/Cambridge/359-Cambridge-St-02141/home/11552079,72951001,42.3715076,-71.0820202
+June-1-2022,multifamily,3 Boston St,Somerville,2143,1900000,11,5,Somerville,4870,5412,1890,,https://www.redfin.com/MA/Somerville/3-Boston-St-02143/home/8738353,72962571,42.3803498,-71.0905765
+September-2-2022,singlefamily,35 Brewster St,Cambridge,2138,2895000,5,2.5,West Cambridge,2501,4107,1884,,https://www.redfin.com/MA/Cambridge/35-Brewster-St-02138/home/11588170,73001840,42.3789081,-71.13252
+August-26-2022,singlefamily,37 Marion St,Somerville,2143,865000,2,1.5,Inman Square,1150,2178,1986,,https://www.redfin.com/MA/Somerville/37-Marion-St-02143/home/8751618,73012015,42.3774285,-71.1004822
+August-17-2022,singlefamily,18 Craigie St,Cambridge,2138,4250000,4,4,Harvard Square,3587,7805,1920,,https://www.redfin.com/MA/Cambridge/18-Craigie-St-02138/home/11587060,72973442,42.3781429,-71.1281185
+August-11-2022,singlefamily,5 Chauncy Ln,Cambridge,2138,2100000,3,2.5,Harvard Square,2122,2070,1968,,https://www.redfin.com/MA/Cambridge/5-Chauncy-Ln-02138/home/11577033,73001510,42.3800257,-71.1221415
+August-5-2022,singlefamily,12 Hilliard St,Cambridge,2138,2405000,5,2.5,Harvard Square,2500,2806,1911,,https://www.redfin.com/MA/Cambridge/12-Hilliard-St-02138/home/11575730,72989334,42.3741297,-71.1233096
+August-3-2022,singlefamily,5 Michael Way,Cambridge,2141,1350000,3,2,Cambridge,1296,3336,1984,,https://www.redfin.com/MA/Cambridge/5-Michael-Way-02141/home/11554794,72995436,42.36947,-71.0891812
+August-2-2022,singlefamily,1 Allston Ct,Cambridge,2139,2200000,4,3,Cambridgeport,1946,2250,1873,,https://www.redfin.com/MA/Cambridge/1-Allston-Ct-02139/home/11560874,73002199,42.359228,-71.1098373
+August-2-2022,singlefamily,28 Bristol St,Cambridge,2141,1945000,3,2.5,Kendall Square,2736,3211,1894,,https://www.redfin.com/MA/Cambridge/28-Bristol-St-02141/home/11555058,72983931,42.367854,-71.092101
+July-25-2022,singlefamily,38 Howard St,Cambridge,2139,1400000,3,4,Central Square,2849,3400,1886,,https://www.redfin.com/MA/Cambridge/38-Howard-St-02139/home/11568100,72993239,42.365369,-71.1106652
+July-19-2022,singlefamily,15 Chalk St,Cambridge,2139,3525000,6,4,Cambridgeport,4111,4999,1873,,https://www.redfin.com/MA/Cambridge/15-Chalk-St-02139/home/11561385,72978997,42.3618277,-71.1093288
+July-18-2022,singlefamily,58 Shepard St,Cambridge,2138,4275000,4,3.5,Harvard Square,2904,4080,1873,,https://www.redfin.com/MA/Cambridge/58-Shepard-St-02138/home/11586180,72978981,42.380249,-71.1242518
+July-15-2022,singlefamily,6 Fulkerson St,Cambridge,2141,970000,3,2,Cambridge,1470,1025,1894,,https://www.redfin.com/MA/Cambridge/6-Fulkerson-St-02141/home/11553447,72983774,42.3716141,-71.0868648
+July-15-2022,singlefamily,19 Lilac Ct,Cambridge,2141,1675000,3,2,Kendall Square,1368,1535,1981,,https://www.redfin.com/MA/Cambridge/19-Lilac-Ct-02141/home/11555134,72990729,42.3674283,-71.0913399
+July-14-2022,singlefamily,59 Dana St,Cambridge,2138,2550000,3,2.5,Cambridge,2200,6150,1903,,https://www.redfin.com/MA/Cambridge/59-Dana-St-02138/home/11571727,72948818,42.3730179,-71.1087166
+July-5-2022,singlefamily,82 Line St,Somerville,2143,1736700,5,3.5,Inman Square,2184,1625,1900,,https://www.redfin.com/MA/Somerville/82-Line-St-02143/home/8725558,72978473,42.3759283,-71.1047683
+June-14-2022,singlefamily,172 Harvard St,Cambridge,2139,1800000,3,3,Cambridge,2500,3132,1805,,https://www.redfin.com/MA/Cambridge/172-Harvard-St-02139/home/11555636,72969425,42.3662196,-71.0962828
+June-10-2022,singlefamily,17 Perry St,Somerville,2143,1900000,3,2.5,Somerville,1897,2767,1900,,https://www.redfin.com/MA/Somerville/17-Perry-St-02143/home/8746231,72976324,42.3787158,-71.1016575
+June-6-2022,singlefamily,5 Dana Pl,Cambridge,2138,1750000,4,3,Mid Cambridge,1844,1600,1980,,https://www.redfin.com/MA/Cambridge/5-Dana-Pl-02138/home/178965639,72962785,42.3704677,-71.11027
+June-3-2022,singlefamily,19 Appleton St,Cambridge,2138,6850000,6,4.5,West Cambridge,5116,11520,1886,,https://www.redfin.com/MA/Cambridge/19-Appleton-St-02138/home/11591050,72944971,42.3780193,-71.1338504
+June-2-2022,singlefamily,8 Cleveland St,Cambridge,2138,2414000,5,1.5,Mid Cambridge,2082,2199,1865,,https://www.redfin.com/MA/Cambridge/8-Cleveland-St-02138/home/11571105,72980107,42.3715939,-71.109735
+May-26-2022,singlefamily,235 Third St,Cambridge,2141,1725000,2,1,Kendall Square,996,2910,1886,,https://www.redfin.com/MA/Cambridge/235-Third-St-02142/home/11553107,72893210,42.3671853,-71.0817994
+May-16-2022,singlefamily,72A Inman St,Cambridge,2139,1775000,4,1.5,Cambridge,1822,1511,1854,,https://www.redfin.com/MA/Cambridge/72A-Inman-St-02139/home/178967813,72963238,42.3708036,-71.1022205
+May-6-2022,singlefamily,18 Brown St,Cambridge,2138,3125000,3,2.5,Harvard Square,2376,3600,1873,,https://www.redfin.com/MA/Cambridge/18-Brown-St-02138/home/11587328,72947810,42.376012,-71.1286723
+May-5-2022,singlefamily,34 Andrew St,Cambridge,2139,2400000,4,3.5,Cambridgeport,2740,1925,1873,,https://www.redfin.com/MA/Cambridge/34-Andrew-St-02139/home/170596349,72936673,42.3612511,-71.1121572
+April-28-2022,singlefamily,2 Nichols Pl,Cambridge,2138,1125000,2,2,Harvard Square,1643,1279,1870,,https://www.redfin.com/MA/Cambridge/2-Nichols-Pl-02138/home/11572033,72953254,42.376284,-71.109088
+April-22-2022,singlefamily,346 Allston St,Cambridge,2139,3200000,4,4.5,Cambridgeport,3135,2640,2021,,https://www.redfin.com/MA/Cambridge/346-Allston-St-02139/home/11568977,72948037,42.3612315,-71.113047
+April-22-2022,singlefamily,7 Skehan St,Somerville,2143,1525000,4,3,Somerville,3016,3825,1920,,https://www.redfin.com/MA/Somerville/7-Skehan-St-02143/home/8719220,72942064,42.3801683,-71.1049769
+April-19-2022,singlefamily,7 Foster Pl,Cambridge,2138,2100000,3,2,Harvard Square,1288,2121,1873,,https://www.redfin.com/MA/Cambridge/7-Foster-Pl-02138/home/11587194,72943915,42.3763265,-71.1294638
+April-14-2022,singlefamily,8 Florence,Cambridge,2139,1925000,3,2.5,Cambridge,1955,2227,1877,,https://www.redfin.com/MA/Cambridge/8-Florence-St-02139/home/11560344,72950519,42.3580813,-71.1132137
+September-16-2022,townhouse,9 Saint Mary Rd #9,Cambridge,2139,1400000,2,2.5,Cambridge,1541,,1854,300,https://www.redfin.com/MA/Cambridge/9-St-Mary-Rd-02139/unit-9/home/87364994,73007755,42.3711059,-71.1007833
+September-2-2022,townhouse,94-98 Pleasant St #98,Cambridge,2139,1115000,2,1,Cambridgeport,1172,,1886,175,https://www.redfin.com/MA/Cambridge/94-Pleasant-St-02139/unit-98/home/180560442,73012382,42.3617458,-71.1106923
+September-1-2022,townhouse,7-9 Pine St #9,Cambridge,2139,1760000,4,3.5,Cambridge,1978,,2022,,https://www.redfin.com/MA/Cambridge/7-Pine-St-02139/unit-9/home/180040239,73002331,42.3668162,-71.0975195
+August-26-2022,townhouse,45 Market St #1,Cambridge,2139,1361000,3,2,Area 4-The Port,1691,,2000,319,https://www.redfin.com/MA/Cambridge/45-Market-St-02139/unit-1/home/11599442,73017668,42.3688375,-71.0964079
+August-22-2022,townhouse,7 Durham St #2,Somerville,2143,1405000,3,3.5,Somerville,2102,,2015,185,https://www.redfin.com/MA/Somerville/7-Durham-St-02143/unit-2/home/105492316,73002293,42.3793482,-71.1060213
+August-19-2022,townhouse,328 Harvard St #4,Cambridge,2139,2300000,4,3,Harvard Square,1806,,1980,650,https://www.redfin.com/MA/Cambridge/328-Harvard-St-02139/unit-4/home/11565309,72978699,42.3702234,-71.1079913
+August-18-2022,townhouse,15 Valentine St #7,Cambridge,2139,1735000,3,2.5,Cambridge,1965,,2004,447,https://www.redfin.com/MA/Cambridge/15-Valentine-St-02139/unit-7/home/11603028,73000970,42.3605313,-71.1058688
+August-11-2022,townhouse,100 Otis St #2,Cambridge,2141,1285000,3,2,Cambridge,1424,,1849,200,https://www.redfin.com/MA/Cambridge/100-Otis-St-02141/unit-2/home/11549225,72994344,42.3704989,-71.0826249
+August-10-2022,townhouse,4 King Pl #3,Cambridge,2139,510000,2,1,Inman Square,579,,1886,200,https://www.redfin.com/MA/Cambridge/4-King-Pl-02139/unit-3/home/11562797,72999302,42.370833,-71.101602
+August-10-2022,townhouse,323 Elm St #3,Cambridge,2139,1176000,3,3,Inman Square,1433,6705,2005,390,https://www.redfin.com/MA/Cambridge/323-Elm-St-02139/unit-3/home/19003349,72998805,42.374052,-71.095182
+August-10-2022,townhouse,165 Auburn St #165,Cambridge,2139,2125000,3,3,Cambridgeport,2477,,2015,558,https://www.redfin.com/MA/Cambridge/165-Auburn-St-02139/unit-165/home/179811253,72994583,42.3637588,-71.1048686
+August-3-2022,townhouse,266 Pearl St Unit G,Cambridge,2139,1325000,3,2.5,Cambridgeport,1774,,1980,246,https://www.redfin.com/MA/Cambridge/266-Pearl-St-02139/unit-G/home/11559860,72996917,42.3579805,-71.1096975
+July-14-2022,townhouse,182 Elm St #2,Cambridge,2139,1012000,2,1.5,Inman Square,1344,,2004,,https://www.redfin.com/MA/Cambridge/182-Elm-St-02139/unit-2/home/11604469,72994618,42.3711411,-71.0961376
+July-7-2022,townhouse,9 Fairmont Ave #9,Cambridge,2139,1898000,3,2,Cambridge,2075,,1879,209,https://www.redfin.com/MA/Cambridge/9-Fairmont-Ave-02139/home/28945948,72976757,42.3622218,-71.1122392
+June-30-2022,townhouse,17 Roberts Rd Unit A,Cambridge,2138,2215000,4,3,Mid Cambridge,1757,,1900,350,https://www.redfin.com/MA/Cambridge/17-Roberts-Rd-02138/unit-A/home/11572018,72980267,42.3760188,-71.1091315
+June-29-2022,townhouse,8 Lopez St #8,Cambridge,2139,1630000,3,2.5,Cambridgeport,1684,,1880,210,https://www.redfin.com/MA/Cambridge/8-Lopez-St-02139/unit-8/home/179389085,72990099,42.36119,-71.1044429
+June-24-2022,townhouse,7 Joseph Unit 7R,Somerville,2143,815000,2,1.5,Somerville,952,,1900,170,https://www.redfin.com/MA/Somerville/7-Joseph-St-02143/unit-7R/home/12403811,72983651,42.3775186,-71.0972474
+June-22-2022,townhouse,145 Hamilton St #2,Cambridge,2139,1850000,4,3.5,Cambridgeport,2178,9999,2022,228,https://www.redfin.com/MA/Cambridge/145-Hamilton-St-02139/unit-2/home/179102840,72968174,42.3592551,-71.1074616
+June-22-2022,townhouse,328 Harvard #3,Cambridge,2139,2110000,4,3,Cambridge,1801,,1980,650,https://www.redfin.com/MA/Cambridge/328-Harvard-St-02139/unit-3/home/11565306,72990852,42.3702234,-71.1079913
+June-17-2022,townhouse,1 Broadway Ct #1,Cambridge,2138,1825000,3,2,Mid Cambridge,1542,,1987,300,https://www.redfin.com/MA/Cambridge/1-Broadway-Ct-02138/unit-1/home/179387023,72979643,42.373094,-71.111571
+June-15-2022,townhouse,518-520 Putnam Ave Unit B,Cambridge,2139,590000,2,1,Cambridgeport,1007,,1888,320,https://www.redfin.com/MA/Cambridge/518-520-Putnam-Ave-02139/unit-B/home/175549728,72960104,42.3584249,-71.1085834
+June-15-2022,townhouse,8 Oak St #8,Cambridge,2139,1050000,2,1,Inman Square,1170,,1900,200,https://www.redfin.com/MA/Cambridge/8-Oak-St-02139/unit-8/home/178973319,72964030,42.3737044,-71.0994197
+June-10-2022,townhouse,39 Dana St #5,Cambridge,2138,1555000,3,2,Mid Cambridge,1325,,1986,343,https://www.redfin.com/MA/Cambridge/39-Dana-St-02138/unit-5/home/11571078,72975664,42.3718409,-71.1092244
+June-7-2022,townhouse,88 Pearl St #1,Cambridge,2139,1552000,3,2.5,Cambridgeport,1208,,1820,210,https://www.redfin.com/MA/Cambridge/88-Pearl-St-02139/unit-1/home/39903162,72971033,42.362641,-71.1046264
+May-31-2022,townhouse,386 Washington St Unit 1A,Somerville,2143,750000,2,2,Somerville,1260,,2005,310,https://www.redfin.com/MA/Somerville/386-Washington-St-02143/unit-1A/home/8758110,72968060,42.3784394,-71.1050324
+May-31-2022,townhouse,155 Brookline St #12,Cambridge,2139,1910000,2,2.5,Cambridgeport,1987,,1900,609,https://www.redfin.com/MA/Cambridge/155-Brookline-St-02139/unit-12/home/11377136,72950761,42.3603819,-71.1052553
+May-31-2022,townhouse,143 Hamilton St #1,Cambridge,2139,1835000,4,3.5,Cambridgeport,2172,9999,2022,228,https://www.redfin.com/MA/Cambridge/143-Hamilton-St-02139/unit-1/home/12427875,72955802,42.3592631,-71.1075547
+May-27-2022,townhouse,17 Lee St Unit T5,Cambridge,2139,1450000,3,2,Mid Cambridge,1205,,1982,360,https://www.redfin.com/MA/Cambridge/17-Lee-St-02139/unit-T5/home/101834960,72973415,42.3686157,-71.1071226
+May-26-2022,townhouse,94 Hampshire St Unit B,Cambridge,2139,1050000,2,2.5,Area 4-The Port,1500,,1920,590,https://www.redfin.com/MA/Cambridge/94-Hampshire-St-02139/unit-B/home/113431231,72964396,42.3688045,-71.0951119
+May-23-2022,townhouse,12 Marney St #12,Cambridge,2141,905000,2,2,Wellington-Harrington,1267,,1910,260,https://www.redfin.com/MA/Cambridge/12-Marney-St-02141/unit-12/home/178958955,72962227,42.3703449,-71.0898337
+May-23-2022,townhouse,39 Webster Ave #0,Cambridge,2141,2250000,5,3,Cambridge,2342,,2022,999999,https://www.redfin.com/MA/Cambridge/39-Webster-Ave-02141/unit-0/home/178747068,72956856,42.3677103,-71.0924731
+May-19-2022,townhouse,118 Trowbridge St #5,Cambridge,2138,1395000,3,2.5,Mid Cambridge,1824,,1916,541,https://www.redfin.com/MA/Cambridge/118-Trowbridge-St-02138/unit-5/home/11572351,72955311,42.3770816,-71.1092708
+May-16-2022,townhouse,149 Bishop Allen Dr Unit C,Cambridge,2139,1123000,2,1.5,Central Square,1115,,1854,307,https://www.redfin.com/MA/Cambridge/149-Bishop-Allen-Dr-02139/unit-C/home/11562087,72963421,42.367357,-71.1045549
+May-12-2022,townhouse,45 Webster Ave #0,Cambridge,2141,1995000,4,2,Cambridge,2063,,2022,999999,https://www.redfin.com/MA/Cambridge/45-Webster-Ave-02141/home/11377229,72959089,42.3678723,-71.092426
+May-12-2022,townhouse,178 Franklin St #178,Cambridge,2139,2050000,3,3.5,Cambridgeport,1958,,2012,250,https://www.redfin.com/MA/Cambridge/178-Franklin-St-02139/unit-178/home/40504008,72959388,42.3630719,-71.1029837
+May-11-2022,townhouse,41 Oak St Unit B,Somerville,2143,1310000,3,2.5,Inman Square,1503,,1900,400,https://www.redfin.com/MA/Somerville/41-Oak-St-02143/unit-B/home/8758314,72959361,42.376079,-71.09881
+April-29-2022,townhouse,57 Kelly Rd #0,Cambridge,2139,1390000,2,3.5,Cambridgeport,1878,,1900,247,https://www.redfin.com/MA/Cambridge/57-Kelly-Rd-02139/unit-0/home/179768933,72947760,42.3631344,-71.110178
+April-29-2022,townhouse,100 Concord Ave #100,Somerville,2143,755000,2,1,Somerville,863,,1900,141,https://www.redfin.com/MA/Somerville/100-Concord-Ave-02143/unit-100/home/137016149,72956910,42.3754292,-71.1017352
+April-29-2022,townhouse,43 Webster Ave #0,Cambridge,2141,1810000,4,3.5,Cambridge,2076,,2021,999999,https://www.redfin.com/MA/Cambridge/43-Webster-Ave-02141/unit-0/home/176683429,72906093,42.3677063,-71.0926516
+April-26-2022,townhouse,15 Rose St #15,Somerville,2143,1455000,4,2,Union Square,2135,,1920,250,https://www.redfin.com/MA/Somerville/15-Rose-St-02143/unit-15/home/178451181,72946951,42.3786209,-71.1030178
+April-25-2022,townhouse,14 Valentine St #1,Cambridge,2139,1700000,3,3,Cambridge,2024,,1916,235,https://www.redfin.com/MA/Cambridge/14-Valentine-St-02139/unit-1/home/178590794,72951195,42.3601102,-71.1058936
+April-22-2022,townhouse,41 Webster Ave #0,Cambridge,2141,1800000,4,3.5,Cambridge,1897,,2021,999999,https://www.redfin.com/MA/Cambridge/41-Webster-Ave-02141/unit-0/home/176729273,72908643,42.3677063,-71.0926516
+April-14-2022,townhouse,245 River St #3,Cambridge,2139,1565000,3,2,Cambridgeport,1460,,1999,452,https://www.redfin.com/MA/Cambridge/245-River-St-02139/unit-3/home/11600196,72950958,42.3631183,-71.1120561
