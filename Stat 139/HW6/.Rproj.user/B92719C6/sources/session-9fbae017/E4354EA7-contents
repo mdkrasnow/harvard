@@ -1,0 +1,180 @@
+---
+title: "Problem Set 6"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, November 1, 2024 at 11:59pm"
+output: pdf_document
+urlcolor: blue
+header-includes:
+  - \usepackage{hyperref}
+---
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Question 1
+
+The file `pregnancydata.csv` includes several variables to model the birthweight of babies (measured through an online survey).  Those variables are defined below.  Use this dataset in \textsf{R} to answer the questions below:
+
+
+`id`: a unique identifier of the mother
+
+\vspace{-0.5em}
+
+`weight`: birthweight of the newborn baby, in ounces
+
+\vspace{-0.5em}
+
+`pregnancylength`: the length of the pregnancy, in days
+
+\vspace{-0.5em}
+
+`country`: where the birth took place; categories are United States (US), United Kingdom (UK), Canada (Can), and Other
+
+\vspace{-0.5em}
+
+`motherage`: age of mother at childbirth, in years
+
+\vspace{-0.5em}
+
+`multiples`: whether the baby was a 1=singleton or 2=twin
+
+\vspace{-0.5em}
+
+`sex`: sex of the baby: girl or boy
+
+\vspace{-0.5em}
+
+`induced`: a binary indicator for whether labor was induced with oxytocin
+
+\vspace{-0.5em}
+
+`cesarean`: a binary indicator for whether a cesarean (c-section) was performed
+
+\vspace{-0.5em}
+
+`previousbirths`: the number of births by the mother previous to this recorded one (from 0 to 10)
+
+
+\vspace{1em}
+
+\noindent \textbf{(a)} Fit a regression model to predict weight from country and use the `relevel` command to make the "Other" group the reference group (call this \textbf{Model 1}).  Interpret the results and provide a visual to support your conclusions.  
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} Build a $3^{rd}$ order polynomial regression model to predict weight from `pregnancylength` (call this **Model 2**). Interpret the output and provide a visual to support the results of the model.  
+
+\vspace{0.5em}
+
+\noindent \textbf{(c)} Use **Model 2** to estimate the probability that a baby will weigh less than 7 pounds (112 ounces) when born on day 280. 
+
+\vspace{0.5em}
+
+\noindent \textbf{(d)} It is of medical interest to determine at what gestational age a developing fetus is gaining weight the fastest.  Use **Model 2** to estimate this *period of fastest growth*.
+
+
+\clearpage
+
+### Question 2
+
+In this problem, we will attempt to investigate whether the COVID-19-related restrictions imposed by the government had any effect on the reporting of criminal activity in the Boston Police Department (BPD).  For this purpose, we will use the `bpd.csv` dataset, which includes the number of daily incident reports filed (`count`) and various weather indicators on those days (`maxtemp` is the only weather variable we will use in this problem).
+
+Note: a state of emergency was declared in Massachusetts on March 10, 2020, and restrictions on non-essential businesses, schools, and MBTA service were mainly put into effect on March 17,2020 (see this \href{https://www.boston.gov/departments/public-health-commission/coronavirus-timeline}{City of Boston article}
+ for the timeline). 
+
+The \textsf{R} chunk below reads in the data and includes some code to create a variable called `dayinyear` in the `bpd` data frame that counts the number of days into the year, starting with 0 for Jan 1.
+
+```{r}
+bpd = read.csv('data/bpd.csv')
+
+jan1_19 = as.Date("1/1/19",format="%m/%d/%y")
+jan1_20 = as.Date("1/1/20",format="%m/%d/%y")
+jan1_21 = as.Date("1/1/21",format="%m/%d/%y")
+
+bpd$dayinyear = as.Date(bpd$date,format="%m/%d/%y") - jan1_19 
+bpd$dayinyear[bpd$year==2020] =
+  as.Date(bpd$date,format="%m/%d/%y")[bpd$year==2020] - jan1_20 
+bpd$dayinyear[bpd$year==2021] =
+  as.Date(bpd$date,format="%m/%d/%y")[bpd$year==2021] - jan1_21
+```
+
+\vspace{0.5em}
+
+\noindent \textbf{(a)} Create a binary/dummy variable (call it `restrictions`) to indicate whether that day falls under the time period of state of emergency or restricted business operations in the city of Boston (all dates between and including March 10, 2020 and Friday, May 28, 2020).  How many days fall in this time period in the dataset?
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} Calculate the mean number of daily incident reports filed by the BPD during the restriction orders in Boston.  Separately calculate the mean number of daily incident reports for a comparison group with the same calendar dates in the pre-pandemic portion of the data. Use these two groups to calculate a reasonable 95% confidence interval for the effect of COVID-19 restrictions on the reporting of crime in the BPD (based on a simple 2-group comparison method and not linear regression).
+
+\noindent \textbf{(c)} Fit a  linear regression model to predict `count` from `maxtemp` and `restrictions` (call it **model1**), and print out the `summary` results. Briefly interpret the coefficient estimates and use this model to estimate the effect of COVID-19 restrictions on the reporting of crime in the BPD (with 95% confidence).
+
+\vspace{0.5em}
+
+\noindent \textbf{(d)} Fit a  linear regression model to predict `count` from `maxtemp`, `restrictions`, `dayinyear` and all 2-way interactions between these 3 predictors (call it **model2**), and print out the `summary` results.  Interpret what this model says about the effect of restrictions when \texttt{maxtemp}=0 and \texttt{dayinyear}=0 (point estimate only is fine).  Also provide a point estimate for `count` on the 91st day of the year in 2020, assuming the temperature was 50 degrees. Do the same for 2019 and compare the difference.
+
+\vspace{0.5em}
+
+\noindent \textbf{(e)} Perform a formal hypothesis test to determine whether **model2** performs significantly better at predicting `count` than **model1**.
+
+\vspace{0.5em}
+
+\noindent \textbf{(f)} Investigate the assumptions for **model2**. Be sure to include and reference useful visuals.
+
+\vspace{0.5em}
+
+\noindent \textbf{(g)} Determine on which four dates **model2** did the worst job at predicting `count`. 
+
+\vspace{0.5em}
+
+\noindent \textbf{(h)} Write a short (200-300 word) summary addressing whether there is evidence that COVID-19 reduced the amount of crime in Boston.  Be sure to reference the results above (specifically, which approach you think was most reasonable) and mention any biases or confounders that may be present in this relationship.
+
+
+
+\clearpage
+
+### Question 3 (Faraway, Chapter 3 Problem 3)
+
+The `cheddar` dataset (in the `faraway` package) contains data on a study of cheddar cheese from the LaTrobe Valley of Victoria, Australia (you might have used this dataset in the our last problem set). Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produced. Use the `cheddar` dataset to answer the following:
+
+
+\noindent \textbf{(a)} Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the 5\% level.
+
+\noindent \textbf{(b)} `Acetic` and `H2S` are measured on a log scale. Fit a linear model where all three predictors are measured on their original scale. Identify the predictors that are statistically significant at the 5\% level for this model.
+
+\noindent \textbf{(c)} Can we use an $F$-test to compare these two models? Explain. Which model provides a better fit to the data? Explain your reasoning.
+
+\noindent \textbf{(d)} If `HS2` is increased 0.01 for the model used in part \textbf{(a)}, what change in the `taste` would be expected?
+
+\noindent \textbf{(e)} What is the percentage change in `H2S` on the original scale corresponding to an additive increase of 0.01 on the (natural) log scale?
+
+
+\clearpage
+
+
+### Question 4 (Based on Faraway, Chapter 3 Problem 6)
+
+The `happy` dataset (in the `faraway` package) contains data on happiness from a sample of 39 students collected in a University of Chicago MBA class  (you might have used this dataset in our last problem set). The students were asked about happiness and how this related to their income and social life. Fit a model with `happy` as the dependent variable, and the other four variables as independent variables.
+
+
+\noindent \textbf{(a)} Which predictors are statistically significant at the 1\% level. 
+
+\noindent \textbf{(b)} Implement a permutation procedure to test the significance of the `money` predictor.  Do not use any existing packages here, write your own code instead.
+
+\noindent \textbf{(c)} Create a histogram of the permutation $t$-statistics. Make sure to use the probability rather than frequency version of the histogram. 
+
+\noindent \textbf{(d)} Overlay an appropriate $t$-distribution over your histogram. Hint: Use `grid <- seq(-3, 3, length = 300)` to create a grid of values, then use the `dt` function to compute the $t$-density over this grid and the `lines` function to superimpose the result.
+
+\noindent \textbf{(e)} Implement a bootstrap procedure to compute 90\% and 95\% confidence intervals for $\beta_{\text{money}}$. Do not use any existing packages here, write your own code instead. Does zero fall within these confidence intervals? Are these results consistent with the previous tests?
