@@ -1,0 +1,258 @@
+---
+title: "Midterm Exam 2"
+author: "STAT 139 Team"
+date: "Due Friday, November 22, 2024 at 1:00pm"
+
+fontsize: 11pt
+geometry: margin=1in
+output:
+  pdf_document:
+    latex_engine: xelatex
+    fig_width: 5
+    fig_height: 3.5
+---
+
+
+```{r, echo=F}
+options(scipen=0.999,digits=4)
+```
+\vspace{0.2in}
+
+## NAME ___________________   HUID ______________________
+
+\vspace{0.2in}
+
+- This exam consists of 4 problems and 5 pages.  The exam is worth 100 points (each question is worth 25 points) with the opportunity to earn 2 additional bonus points.
+
+- Before submitting the exam, read and sign the statement below confirming that you have not cheated on this exam. A digital signature is fine.
+
+- Some parts of a question may require the answer to an earlier part. If you cannot solve the earlier part, you can still receive partial credit for the later parts; make up a reasonable answer for the earlier part to use in subsequent parts of the problem.
+
+- Show your work and explain your reasoning; the final answer is not as important as the process by which you arrived at that answer. We can more easily give partial credit if you have written out your steps clearly.
+
+- This exam is open book and open notes, and you may use the internet. But there can be no discussing the exam with other people, including people who are not in this class. 
+
+
+
+\vspace{0.2in}
+
+*By signing below, I confirm that I have not cheated while taking this exam: I have not used any unauthorized resources nor copied  another student's responses.*
+
+\vspace{0.5in}
+
+
+Signature: __________________________
+
+\vspace{0.1in}
+
+
+\begin{Large}
+\begin{center}
+     
+\begin{tabular}{|r|c|r|} \hline
+\multicolumn{3}{|c|}{Problem Scoring} \\
+\hline
+     Problem & Point Value & Points Scored \\ \hline
+     1 & 25  & \\ \hline
+     2 & 25  & \\ \hline
+     3 & 25  & \\ \hline
+     4 & 25  & \\ \hline
+ Total & 100 & \\ \hline
+\end{tabular}
+     
+\end{center}
+\end{Large}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+\noindent \textbf{Problem 1: Warm-up} [25 points] 
+
+Your collaborator is investigating the relationship between educational attainment and cognitive ability. She has collected data on a random sample of adults in Massachusetts in the dataset `p1.csv`. The variable `COG` encodes a continuous measure of cognitive ability designed to have a mean around 50 (higher scores are associated with higher cognitive ability). Educational attainment refers to the highest level of education an individual has completed, and is encoded in the `EDUC` variable as follows:
+
+`0`: Primary School (grade 5)
+
+`1`: Junior High School (grade 8)
+
+`2`: High School (grade 12)
+
+`3`: College degree or higher
+
+\vspace{0.5em}
+
+Your collaborator asks you to fit a linear regression to predict cognitive ability from educational attainment. 
+
+\vspace{0.5em}
+
+\noindent \textbf{(a)} Write the formal statistical model you intend to fit.
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} Create an appropriate plot to visualize the association between educational attainment and cognitive ability.
+
+\vspace{0.5em}
+
+\noindent \textbf{(c)} Fit the linear regression that you specified in part (a) and interpret all the mean parameter estimates.
+
+\vspace{0.5em}
+
+\noindent \textbf{(d)} Based on your plot, you might be tempted to use a linear term to model the association between educational attainment and cognitive ability instead, retaining the original coding scheme (that is, treating `EDUC` as a continuous variable). Statistically test whether this would be a better model. Comment on whether you think this is a better approach.
+
+
+\vspace{0.5em}
+
+\noindent \textbf{(e)} Suppose instead that you retained the original coding scheme (treating `EDUC` as a continuous variable) but fit a third degree polynomial (with all lower order terms included as well). Would this improve the fit of the model in part c)? What if you fit an even higher order polynomial?
+
+
+\vspace{0.5em}
+
+\noindent \textbf{BONUS (2 points)}: Which of the assumptions of linear regression would you have to test for the model you fit in part c)? Test them and comment on the validity of that model. Is there anything else you should make your collaborator aware of? 
+
+
+
+
+
+
+\clearpage
+
+
+
+
+\noindent \textbf{Problem 2: Open-ended application} [25 points]
+
+You have another collaborator who has asked you to help him develop a model to estimate the associations between various predictors and systolic blood pressure (`SBP`) in a random sample of American adults aged at least 50. For this purpose, he has curated a dataset (`p2.csv`) which contains the following variables:
+
+\vspace{0.5em}
+
+`SBP`: Systolic blood pressure, in mmHg.
+
+`AGE`: Age in years.
+
+`GENDER`: Gender indicator; 0 = Male, 1 = Female.
+
+`EDUC`: Highest level of education attained. 0 = Primary School, 1 = Junior High, 2 = High School, 3 = College degree or higher.
+
+`DM`: Diabetes mellitus indicator; 0 = No, 1 = Yes.
+
+`SMOKE`: Smoking status indicator; 0 = No, 1 = Yes.
+
+`BMI`: Body mass index (kg/m\textsuperscript{2}).
+
+`STATIN`: Statin use indicator; 0 = No, 1 = Yes.
+
+\vspace{0.5em}
+
+\noindent \textbf{(a)} Your collaborator does not have a model in mind, but he would like you to do some exploratory analyses, as he believes many of the variables he has collected are important. Used principled model selection procedure(s) to arrive at what you believe to be an appropriate model. For simplicity, do not consider any polynomial terms in this problem. Start by making sure the categorical variables are coded as factors.
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} Explain your final model to your collaborator. Remember, your collaborator is not a statistician, and some of the terms in your model might be difficult to explain. It might be helpful to explain some of the relationships visually, and/or in particular subgroups. Every parameter should in some way be included in your interpretation.
+
+
+\clearpage
+
+\noindent \textbf{Problem 3: The mechanics of prediction} [25 points] 
+
+A year later, your collaborator returns to you, but he is no longer interested in estimating the associations between predictor variables and `SBP`. Instead, he is hoping you can help him to build a best predictive model. He has expanded his target population to include all adults, and has collected several more variables. The data (`p3.csv`) now consists of the following variables:
+
+\vspace{0.5em}
+
+`SBP`: Systolic blood pressure, in mmHg.
+
+`AGE`: Age in years.
+
+`GENDER`: Gender indicator; 0 = Male, 1 = Female.
+
+`EDUC`: Highest level of education attained. 0 = Primary School, 1 = Junior High, 2 = High School, 3 = College degree or higher.
+
+`DM`: Diabetes mellitus indicator; 0 = No, 1 = Yes.
+
+`SMOKE`: Smoking status indicator; 0 = No, 1 = Yes.
+
+`BMI`: Body mass index (kg/m\textsuperscript{2}).
+
+`STATIN`: Statin use indicator; 0 = No, 1 = Yes.
+
+`CVD`: History of cardiovascular event indicator; 0 = No, 1 = Yes.
+
+`HYPERTENSION`: Indicator of hypertension; 0 = No, 1 = Yes.
+
+`CHOL`: Total cholesterol, in mmol/L.
+
+`HDL`: HDL cholesterol, in mmol/L.
+
+`eGFR`: Estimated glomerular filtration rate, a measure of kidney function in mL/min (lower values indicate possible kidney damage).
+
+\vspace{0.5em}
+
+\noindent \textbf{(a)} Start by making sure your categorical variables are coded as factors.
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} Break the dataset into an 80-20 train-test split.
+
+\vspace{0.5em}
+
+\noindent \textbf{(c)} Using your training data and a $k$ of 5, perform $k$-fold cross validation with ridge regression to identify the value of $\lambda$ that produces the lowest mean RMSE for a full model that includes all main effects and 2-way interaction terms. Plot the MSE vs. $\ln(\lambda)$. Report the optimal $\lambda$ and the RMSE on your test data.
+
+\vspace{0.5em}
+
+\noindent \textbf{(d)} Repeat part c) using LASSO.
+
+
+\clearpage
+
+
+\noindent \textbf{Problem 4: A little theory and simulation} [25 points] 
+
+In this problem, you will explore the concept of shrinkage (or regularization) through an example called "Stein's paradox" (parts a-c) and then draw a connection with ridge regression in part d.
+
+Suppose $Y_i \sim \mathcal{N}(\mu_i, \sigma^2)$ for $i=1,\ldots,n$. You observe $Y_1, \ldots Y_n$ and want to estimate $\mu_1,\ldots, \mu_n$.
+
+\vspace{0.5em}
+
+\noindent \textbf{(a)} The most obvious estimator of $\mu_i$ is $\hat{\mu}_i = Y_i$. What is the bias of this estimator?
+
+\vspace{0.5em}
+
+\noindent \textbf{(b)} A \textit{shrinkage} estimator of $\mu_i$ is $\hat{\mu}_i(c) = cY_i$ where $c \in [0,1]$ is a user-specified parameter that controls the amount of shrinkage. Write \textsf{R} code to do the following:
+
+\vspace{0.5em}
+
+\begin{itemize}
+\item Set $n=1000$. Randomly generate $\mu_i \sim \text{Uniform}(0,10)$ for $i=1,\ldots,n$.
+\item Randomly generate $Y_i \sim \mathcal{N}(\mu_i,\sigma^2)$ for $i=1,\ldots,n$ where $\sigma=4$.
+\item For each $c \in \{0.0, 0.01, 0.02, \ldots, 0.99, 1.0\}$ compute $\text{MSE(c)}$ where:
+$$\text{MSE(c)}= \frac{1}{n} \sum_{i=1}^{n} (\hat{\mu}_i (c) - \mu_i)^2$$
+\end{itemize}
+
+\vspace{0.5em}
+
+Plot $\text{MSE(c)}$ versus $c$, along with the variance and the square of the bias. For your dataset, what value of $c$ minimizes $\text{MSE(c)}$? So, does shrinkage help?
+
+
+\vspace{0.5em}
+
+\noindent \textbf{(c)} Explain your findings from (b) in terms of the bias-variance tradeoff. What happens to the bias and the variance when $c \rightarrow 0$?
+
+
+\vspace{0.5em}
+
+\noindent \textbf{(d)} Suppose we defined our ridge regression estimates as:
+
+$$ \widehat{\boldsymbol{\beta}}^R_\lambda = \left( {\bf X}^\prime {\bf X} + \lambda {\bf I} \right)^{-1} {\bf X}^\prime \vec{\bf y} $$
+
+where $\vec{\bf y} \in \mathbb{R}^{n \times 1}$. Note this is a slightly different definition than was used in class. But suppose you want to frame the shrinkage problem in parts a) - c) as a ridge regression problem. How should you define $\bf X$ and $\bf I$? Make sure to include dimensions.
+
+\vspace{0.5em}
+
+\noindent \textbf{(e)} Using the design matrix you defined in part d), show that $\widehat{\boldsymbol{\beta}}^R_\lambda = c\vec{\mathbf{y}}$ for some $c \in \mathbb{R}$. Give the actual mathematical expresson for $c$ as a function of $\lambda$.
+

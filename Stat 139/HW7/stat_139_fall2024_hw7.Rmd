@@ -1,0 +1,569 @@
+---
+title: "Problem Set 7"
+author: "Matt Krasnow!!!!! (the goat)"
+date: "Due Friday, November 15, 2024 at 11:59pm"
+output: pdf_document
+urlcolor: blue
+---
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+
+
+### Question 1
+
+There are two datasets included that will be used for this problem:
+
+- a training dataset called `bosflights18.csv` which includes data on a subset of flights ($n=10,000$) in and out of Boston's Logan Airport in the year 2018. 
+
+- a test dataset called `bosflights18_test.csv` (note it is actually larger in size than `bosflights18.csv`)
+
+The important variables in these datasets are:
+
+\footnotesize
+
+`flight_time`: the total amount of time the flight takes from the time the plane takes off until the time it arrives at the destination gate.
+
+`year`: year of flight (they are all from 2018)
+
+`month`: month: 1 = January, 2 = February, etc.
+
+`dayofmonth`: the calendar day of the month, from 1 to 31.
+
+`weekday`: day of the week: 1 = Monday, 2 = Tuesday, etc.
+
+`carrier`: the unique 2-digit carrier code of the flight. For details, see the list here: \url{https://en.wikipedia.org/wiki/List_of_airlines_of_the_United_States}
+
+`tailnum`: the unique tail number of the aircraft
+
+`flightnum`: the carrier's specific flight number
+
+`origin`: the originating airport.  See \url{http://www.leonardsguide.com/us-airport-codes.shtml}.
+
+`dest`: the destination airport.
+
+`bos_depart`: an indicator if the flight departed out of Boston.
+
+`schedule_depart`: the scheduled departure time in minutes across the day ranging from 0 to 1439.  7pm is 1140, for example.
+
+`depart`: the actual departure time (in minutes)
+
+`wheels_off`: the time of day the plane took off (in minutes)     
+
+`distance`: the distance of the flight, in miles.
+
+`weather_delay`: an indicator if the delay is due to extreme weather.
+
+`nas_delay`: an indicator if the delay is due to the national aviation system (air traffic control, for example).
+
+`security_delay`: an indicator if the delay is due to a security issue at the terminal.
+
+`late_aircraft_delay`: an indicator if the delay is due to a late arrival of a previous flight with the same aircraft.
+
+`carrier_delay`: an indicator if the delay is due to a carrier (kind of a catch all if not the others).
+
+\normalsize
+
+More info on the delay indicators can be found at the Bureau of [Transportation Statistics (BTS)](https://www.bts.gov/topics/airlines-and-airports/airline-time-performance-and-causes-flight-delays).  
+
+We want to predict `flight_time` (untransformed) based on all of the other predictors in the data set (all other variables could be measured at some point before the flight takes off). 
+
+\vspace{0.1in}
+
+
+\clearpage
+
+\noindent \textbf{(a)} Fit the following three linear models and for each report (1) $R^2$ on the training data, (2) the number of non-`NA` $\beta$ estimates in the training model, and (3) the number of `NA` $\beta$ estimates in the training model: 
+
+- **lm1** that predicts flight time from the main effects of all of the included predictors (untransformed quantitative predictors, but be sure to handle categorical predictors appropriately).
+
+- **lm2** that predicts flight time from the main effects of all of the included predictors but treats `distance` with a $15^{th}$ order polynomial function (in this case, do NOT use the `raw=T` argument in `poly`).
+
+- **lm3** that predicts flight time from the main effects (treating `distance` with a $15^{th}$ order polynomial function) and the interactions of `bos_depart` with all the other predictors (including all polynomial terms of `distance`) [ignore other interactions].  
+
+
+**Note**: you should completely ignore 4 variables here: `year`, `day_of_month`, `flightnum`, and `tailnum`.
+```{r}
+library(tidyverse)
+
+
+flights_train <- read.csv("data/bosflights18.csv")
+
+# Remove excluded variables and prepare the data
+flights_clean <- flights_train %>%
+  select(-year, -dayofmonth, -flightnum, -tailnum) %>%
+  mutate(
+    month = as.factor(month),
+    weekday = as.factor(weekday),
+    carrier = as.factor(carrier),
+    origin = as.factor(origin),
+    dest = as.factor(dest),
+    bos_depart = as.factor(bos_depart),
+    weather_delay = as.factor(weather_delay),
+    nas_delay = as.factor(nas_delay),
+    security_delay = as.factor(security_delay),
+    late_aircraft_delay = as.factor(late_aircraft_delay),
+    carrier_delay = as.factor(carrier_delay)
+  )
+
+
+
+
+
+```
+
+```{r}
+# one 
+
+lm1 <- lm(flight_time ~ ., data = flights_clean)
+
+# Extract results for lm1
+r2_lm1 <- summary(lm1)$r.squared
+coef_lm1 <- summary(lm1)$coefficients
+na_count_lm1 <- sum(is.na(coef_lm1[,1]))
+nonna_count_lm1 <- sum(!is.na(coef_lm1[,1]))
+
+```
+
+
+```{r}
+# two 
+
+lm2 <- lm(flight_time ~ . - distance + poly(distance, 15), 
+          data = flights_clean)
+
+
+r2_lm2 <- summary(lm2)$r.squared
+coef_lm2 <- summary(lm2)$coefficients
+na_count_lm2 <- sum(is.na(coef_lm2[,1]))
+nonna_count_lm2 <- sum(!is.na(coef_lm2[,1]))
+
+
+```
+
+```{r}
+# three
+
+poly_dist <- poly(flights_clean$distance, 15)
+# Create the formula with interactions
+lm3 <- lm(flight_time ~ (. - distance + poly(distance, 15)) * bos_depart, 
+          data = flights_clean)
+
+r2_lm3 <- summary(lm3)$r.squared
+coef_lm3 <- summary(lm3)$coefficients
+na_count_lm3 <- sum(is.na(coef_lm3[,1]))
+nonna_count_lm3 <- sum(!is.na(coef_lm3[,1]))
+
+
+
+```
+
+
+```{r}
+
+results <- data.frame(
+  Model = c("lm1", "lm2", "lm3"),
+  R_squared = c(r2_lm1, r2_lm2, r2_lm3),
+  Non_NA_betas = c(nonna_count_lm1, nonna_count_lm2, nonna_count_lm3),
+  NA_betas = c(na_count_lm1, na_count_lm2, na_count_lm3)
+)
+
+
+print(results)
+
+```
+
+INTERPRETATOIN:
+
+- all are good fit to the training data with high r^2 values
+- progressive improbvement in r^2 (but small)
+
+Stability
+- all of them have no NA coefficients indicating stable estimation
+
+Implications
+- they are all good fits, with lm3 being the best because the r^2 is highest (tentatively)
+
+
+
+\vspace{1em}
+
+\noindent \textbf{(b)} Why are there `NA` estimates (be specific to this dataset)?
+
+There are not any NA estimates in these models! Except if year day of the month flight num and tail num are -- these should not have any relation to the response variable so we excluded them. the rest of the variables are non NA. 
+
+
+\vspace{1em}
+
+\noindent \textbf{(c)} Evaluate the three models in part (a) based on RMSE on both the train and test sets.  Interpret the results as to which model is best for prediction and which models may be overfit.
+
+
+```{r}
+
+
+rmse <- function(actual, predicted) {
+  sqrt(mean((actual - predicted)^2, na.rm = TRUE))
+}
+
+
+train_rmse_lm1 <- rmse(flights_clean$flight_time, predict(lm1))
+train_rmse_lm2 <- rmse(flights_clean$flight_time, predict(lm2))
+train_rmse_lm3 <- rmse(flights_clean$flight_time, predict(lm3))
+
+
+flights_test <- read.csv("data/bosflights18_test.csv")
+flights_test_clean <- flights_test %>%
+  select(-year, -dayofmonth, -flightnum, -tailnum) %>%
+  mutate(
+    month = as.factor(month),
+    weekday = as.factor(weekday),
+    carrier = as.factor(carrier),
+    origin = as.factor(origin),
+    dest = as.factor(dest),
+    bos_depart = as.factor(bos_depart),
+    weather_delay = as.factor(weather_delay),
+    nas_delay = as.factor(nas_delay),
+    security_delay = as.factor(security_delay),
+    late_aircraft_delay = as.factor(late_aircraft_delay),
+    carrier_delay = as.factor(carrier_delay)
+  )
+
+
+test_rmse_lm1 <- rmse(flights_test_clean$flight_time, predict(lm1, newdata = flights_test_clean))
+test_rmse_lm2 <- rmse(flights_test_clean$flight_time, predict(lm2, newdata = flights_test_clean))
+test_rmse_lm3 <- rmse(flights_test_clean$flight_time, predict(lm3, newdata = flights_test_clean))
+
+results <- data.frame(
+  Model = c("lm1", "lm2", "lm3"),
+  Train_RMSE = c(train_rmse_lm1, train_rmse_lm2, train_rmse_lm3),
+  Test_RMSE = c(test_rmse_lm1, test_rmse_lm2, test_rmse_lm3)
+)
+
+print(results)
+
+
+
+```
+
+INTERPRETATION
+- all are very similar in respect to RMSE
+- sligght progressive improvement in RMSE (decreaasing test error)
+- 
+
+overfitting analysis
+- very slight increase between train and test RMSE in LM2 and LM3
+- this indicates that there is probably limited overfitting, but expectdely as model complexity increases, overfitting may occur
+
+- lm3 is the best probably because it has the lowest RMSE without evidence of signficant overfitting in comparison to the other models. however, it is more complex which may not be favorable
+
+
+
+\clearpage
+
+
+### Question 2
+
+\noindent \textbf{(a)} Fit well-tuned Ridge and LASSO regression models using `cv.glmnet` based on the predictors used in the **lm3** model from the previous problem. Hint: the \textsf{R} command `model.matrix` may be helpful to get you started.
+
+```{r}
+library(glmnet)
+
+
+# First, create the formula string that matches lm3
+formula_lm3 <- as.formula("flight_time ~ (. - distance + poly(distance, 15)) * bos_depart")
+
+
+X <- model.matrix(formula_lm3, data = flights_clean)[,-1]
+y <- flights_clean$flight_time
+
+set.seed(139)
+
+
+ridge_cv <- cv.glmnet(X, y, alpha = 0)
+
+
+lasso_cv <- cv.glmnet(X, y, alpha = 1)
+
+# optimal lambda values
+ridge_lambda_min <- ridge_cv$lambda.min
+ridge_lambda_1se <- ridge_cv$lambda.1se
+lasso_lambda_min <- lasso_cv$lambda.min
+lasso_lambda_1se <- lasso_cv$lambda.1se
+
+
+cat("Ridge Regression:\n")
+cat("Optimal lambda (minimum MSE):", ridge_lambda_min, "\n")
+cat("Optimal lambda (1se rule):", ridge_lambda_1se, "\n\n")
+
+cat("LASSO Regression:\n")
+cat("Optimal lambda (minimum MSE):", lasso_lambda_min, "\n")
+cat("Optimal lambda (1se rule):", lasso_lambda_1se, "\n")
+
+```
+
+
+\vspace{1em}
+
+\noindent \textbf{(b)} For both the Ridge and LASSO models, plot the average MSE on the validation sets against the $\lambda$'s you considered in the previous part. Report the best $\lambda$'s. (This part should require almost no work if you did part (a)).
+
+\vspace{1em}
+
+```{r}
+par(mfrow=c(1,2))
+
+plot(ridge_cv, main="Ridge Regression")
+abline(v=log(ridge_lambda_min), col="red", lty=2)
+abline(v=log(ridge_lambda_1se), col="blue", lty=2)
+legend("topright", 
+       legend=c("Min MSE", "1SE"),
+       col=c("red", "blue"), 
+       lty=2)
+
+plot(lasso_cv, main="LASSO Regression")
+abline(v=log(lasso_lambda_min), col="red", lty=2)
+abline(v=log(lasso_lambda_1se), col="blue", lty=2)
+legend("topright", 
+       legend=c("Min MSE", "1SE"),
+       col=c("red", "blue"), 
+       lty=2)
+
+par(mfrow=c(1,1))
+
+
+```
+Ridge:
+
+lambda_min (minimum MSE) = 5.261206
+lambda_1se (one standard error rule) = 5.261206
+
+LASSO:
+
+lambda_min (minimum MSE) = 0.01606696
+lambda_1se (one standard error rule) = 0.07118664
+
+from A
+
+\noindent \textbf{(c)} Provide the "$\widehat{\beta}$ trajectory" plots of the main effects from these models (plot each $\beta_j$ as a function of $\lambda$ as a curve, and do this for all main/linear effects). Interpret what you see in 2-3 sentences.
+
+```{r}
+# (without cross-validation this time)
+ridge_fit <- glmnet(X, y, alpha = 0)
+lasso_fit <- glmnet(X, y, alpha = 1)
+
+par(mfrow=c(1,2))
+
+plot(ridge_fit, xvar="lambda", main="Ridge Regression\nCoefficient Trajectories", 
+     label=TRUE)
+abline(v=log(ridge_lambda_min), col="red", lty=2)
+
+plot(lasso_fit, xvar="lambda", main="LASSO Regression\nCoefficient Trajectories",
+     label=TRUE)
+abline(v=log(lasso_lambda_min), col="red", lty=2)
+
+par(mfrow=c(1,1))
+
+
+```
+
+In the Ridge, we see that coefficients are shrunk gradually towards zero as lambda increases, but never reach exactly zero. In contrast, the LASSO plot shows coefficients being shrunk to exactly zero as lambda increase. Some coefficients are eliminated entirely at larger lambda values, indicating these variables are considered less important for prediction by the LASSO model.
+
+More interestingly, there are two coefficients which seem to be the most important in both -- further analysis would idenitfy which these are 
+
+\vspace{1em}
+
+\noindent \textbf{(d)} Choose a best regularized/penalized regression model and briefly justify your choice. Revisit the grid of $\lambda$'s that were used (either explicitly by you, or automatically by `R`) and comment on whether it's obvious that these penalized models will predict better than the original model.
+
+LASSO IS BETTER
+- use lambda min or = 0.016
+- good variable selection -- less important variables go to zero
+- stable MSE across range of lambda valus
+- slightly better performance than RIDGE
+
+
+Its not obvious if using LASSO or RIDGE will be better than the lm3. there isn't much improvement becuase
+- relatively flat MSE curves around optimal lmabda
+- lm3 already had good performance
+- no dramatic shift in the selected lmabda values
+
+
+
+\clearpage
+
+### Question 3: Work on your EDA
+
+Question 3 allows you to start working on your final project EDA. Thus, if you find any issues with your data, you will be aware early! Evaluate the quality of your data by creating a table which, for each important continuous variable in your dataset reports:
+
+- The number of non-missing observations
+
+- The  number of missing observations
+
+- A measure(s) of the central tendency (i.e., mean, media)
+
+- A measure(s) of variability (i.e, sd, IQR)
+
+and for each important categorical variable in your dataset reports:
+
+- The levels of the variable
+
+- For each level:
+  
+  - The number of non-missing observations
+  
+  - The number of missing observations
+  
+  
+```{r}
+data <- read.csv("data/NSDUH_data.csv")
+
+
+summary(data)
+
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+library(corrplot)
+library(gridExtra)
+
+
+NSDUH_df <- read.csv("data/NSDUH_data.csv")
+
+# Define missing value codes for each variable
+NSDUH_df[NSDUH_df == 99] <- NA
+NSDUH_df$LVLDIFCARE2[NSDUH_df$LVLDIFCARE2 %in% c(94, 97, 98)] <- NA
+NSDUH_df$NOMARR2[NSDUH_df$NOMARR2 %in% c(94, 97, 99)] <- NA
+NSDUH_df$WRKDHRSWK2[NSDUH_df$WRKDHRSWK2 %in% c(985, 994, 997, 998, 999)] <- NA
+NSDUH_df$WRKSTATWK2[NSDUH_df$WRKSTATWK2 %in% c(98, 99)] <- NA
+NSDUH_df$addprev[NSDUH_df$addprev %in% c(85, 94, 97, 98, 99)] <- NA
+NSDUH_df$adrelig[NSDUH_df$adrelig %in% c(94, 97, 98, 99)] <- NA
+NSDUH_df$cigtry[NSDUH_df$cigtry %in% c(985, 994, 997)] <- NA
+NSDUH_df$hltinmnt[NSDUH_df$hltinmnt %in% c(85, 94, 97, 98, 99)] <- NA
+NSDUH_df$service[NSDUH_df$service %in% c(85, 94, 97, 99)] <- NA
+NSDUH_df$snrldcsn[NSDUH_df$snrldcsn %in% c(85, 94, 97, 98, 99)] <- NA
+NSDUH_df$snrlgsvc[NSDUH_df$snrlgsvc %in% c(85, 94, 97, 98, 99)] <- NA
+NSDUH_df$yodprev[NSDUH_df$yodprev %in% c(85, 94, 97, 98, 99)] <- NA
+NSDUH_df$yorelig[NSDUH_df$yorelig %in% c(94, 97, 98, 99)] <- NA
+
+
+summary_stats <- NSDUH_df %>%
+  summarise(across(everything(), list(
+    n_obs = ~sum(!is.na(.)),
+    n_missing = ~sum(is.na(.)),
+    mean = ~if(is.numeric(.)) mean(., na.rm = TRUE) else NA,
+    median = ~if(is.numeric(.)) median(., na.rm = TRUE) else NA,
+    sd = ~if(is.numeric(.)) sd(., na.rm = TRUE) else NA,
+    min = ~if(is.numeric(.)) min(., na.rm = TRUE) else NA,
+    max = ~if(is.numeric(.)) max(., na.rm = TRUE) else NA
+  )))
+
+
+summary_long <- summary_stats %>%
+  pivot_longer(everything(), 
+              names_to = c("variable", "stat"), 
+              names_pattern = "(.*)_(.*)") %>%
+  pivot_wider(names_from = stat, values_from = value) %>%
+  arrange(variable)
+
+
+print("Summary Statistics:")
+print(kable(summary_long, digits = 2))
+
+
+categorical_vars <- names(NSDUH_df)[sapply(NSDUH_df, function(x) 
+  length(unique(na.omit(x))) < 10)]
+
+cat("\nFrequency Tables for Categorical Variables:\n")
+for(var in categorical_vars) {
+  cat("\nFrequency table for", var, ":\n")
+  print(table(NSDUH_df[[var]], useNA = "ifany"))
+}
+
+numeric_vars <- names(NSDUH_df)[sapply(NSDUH_df, is.numeric)]
+
+pdf("distribution_plots.pdf", width = 10, height = 8)
+for(var in numeric_vars) {
+  p <- ggplot(NSDUH_df, aes_string(x = var)) +
+    geom_histogram(bins = 30, fill = "lightblue", color = "black") +
+    theme_minimal() +
+    labs(title = paste("Distribution of", var),
+         x = var,
+         y = "Count")
+  print(p)
+}
+dev.off()
+
+# Calculate correlations for numeric variables with sufficient observations
+valid_numeric_cols <- numeric_vars[sapply(NSDUH_df[numeric_vars], function(x) 
+  sum(!is.na(x)) > 30)]
+
+
+if(length(valid_numeric_cols) > 1) {
+  cor_matrix <- cor(NSDUH_df[valid_numeric_cols], 
+                   use = "pairwise.complete.obs")
+  
+  
+  pdf("correlation_plot.pdf", width = 10, height = 8)
+  corrplot(cor_matrix, 
+           method = "color", 
+           type = "upper",
+           tl.col = "black", 
+           tl.srt = 45,
+           addCoef.col = "black",
+           number.cex = 0.7,
+           diag = FALSE)
+  dev.off()
+}
+
+
+missing_data <- data.frame(
+  Variable = names(NSDUH_df),
+  Missing_Percent = sapply(NSDUH_df, function(x) sum(is.na(x))/length(x) * 100)
+)
+
+
+cat("\nMissing Data Summary:\n")
+print(kable(missing_data[order(-missing_data$Missing_Percent), ], 
+           digits = 2))
+
+# Save all results to a file
+sink("eda_results.txt")
+cat("EDA Results\n\n")
+cat("1. Summary Statistics:\n")
+print(kable(summary_long, digits = 2))
+cat("\n\n2. Missing Data Summary:\n")
+print(kable(missing_data[order(-missing_data$Missing_Percent), ], 
+           digits = 2))
+cat("\n\n3. Categorical Variable Frequencies:\n")
+for(var in categorical_vars) {
+  cat("\nFrequency table for", var, ":\n")
+  print(table(NSDUH_df[[var]], useNA = "ifany"))
+}
+sink()
+
+
+
+
+```
+
+
+
+
+

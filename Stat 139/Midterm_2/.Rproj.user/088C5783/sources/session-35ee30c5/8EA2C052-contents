@@ -1,0 +1,5 @@
+#install.packages("faraway")
+#install.packages('caret') #I don't understand why when I clicked on install it works, but when I do it from the command line it doesnt' work
+library(faraway)
+library(tidyverse)
+library(caret)

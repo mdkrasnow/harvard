@@ -1,0 +1,351 @@
+---
+title: "Midterm Exam 2"
+author: "STAT 139 Team"
+date: "Due Friday, November 22, 2024 at 12:00pm"
+
+fontsize: 11pt
+geometry: margin=1in
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{enumerate}
+  - \usepackage{float}    # Load the float package for the H option
+  - \usepackage{booktabs}    # Load the float package for the H option
+  - \usepackage{tikz}
+output:
+  pdf_document:
+    latex_engine: xelatex
+    fig_width: 5
+    fig_height: 3.5
+
+---
+
+
+```{r, echo=F}
+options(scipen=0.999,digits=4)
+```
+\vspace{0.2in}
+
+## NAME ___________________   HUID ______________________
+
+\vspace{0.2in}
+
+- The exam consists of 4 problems and 11 pages.  The exam is worth 100 points and the point value for each question is displayed.
+
+- There are two questions for which you can earn bonus points (2 points for each question). The bonus points are real this time. 
+
+- Before submitting the exam, read and sign the statement below confirming that you have not cheated on this exam. 
+
+- Be sure to read the questions carefully. Some parts of a problem statement may ask for more than one calculation.
+
+- Some parts of a question may require the answer to an earlier part. If you cannot solve the earlier part, you can still receive partial credit for the later parts; make up a reasonable answer for the earlier part to use in subsequent parts of the problem.
+
+- Show your work and explain your reasoning; the final answer is not as important as the process by which you arrived at that answer. We can more easily give partial credit if you have written out your steps clearly.
+
+- You are allowed a calculator (graphing is fine) and two double-sided pages of notes as reference during the exam.
+
+- Some students may not take this exam today due to illness. Please do not discuss this exam with anyone else until the exam is returned unless you are sure they have taken the exam already. 
+
+
+\vspace{0.2in}
+
+*By signing below, I confirm that I have not cheated while taking this exam: I have not used any unauthorized resources nor copied  another student's responses.*
+
+\vspace{0.5in}
+
+
+Signature: __________________________
+
+\vspace{0.1in}
+
+
+\begin{Large}
+\begin{center}
+     
+\begin{tabular}{|r|c|r|} \hline
+\multicolumn{3}{|c|}{Problem Scoring} \\
+\hline
+     Problem & Point Value & Points Scored \\ \hline
+     1 & 25  & \\ \hline
+     2 & 25  & \\ \hline
+     3 & 25  & \\ \hline
+     4 & 25  & \\ \hline
+ Total & 100 & \\ \hline
+\end{tabular}
+     
+\end{center}
+\end{Large}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+\noindent \textbf{Problem 1} [25 points] 
+
+Your collaborator is investigating the relationship between educational attainment and cognitive ability. She has collected data on a random sample of adults in Massachusetts. The variable `COG` encodes a continuous measure of cognitive ability designed to have a mean value around 50. Higher scores are associated with higher cognitive ability. Educational attainment refers to the highest level of education an individual has completed, and is encoded in the `EDUC` variable as follows:
+
+`0`: Primary School (grade 5)
+
+`1`: Junior High (aka "Middle") School (grade 8)
+
+`2`: High School (grade 12)
+
+`3`: College degree or higher
+
+
+Your collaborator asks you fit a linear regression to analyze her data. She asks you to fit a linear regression to predict cognitive ability from educational attainment. 
+
+\noindent \textbf{(a)} Write the formal statistical model you intend to fit.
+
+$Y_{ij} = \beta_0 + \beta_j \text{Educ}_{ij} + \varepsilon_i, ~~~~~ j \in{1,2,3}, ~~~~ i =1,\ldots,n$
+
+\noindent \textbf{(b)} Create an appropriate plot to visualize the association between educational attainment and cognitive ability.
+
+
+```{r, echo=FALSE}
+df.p1 <- read.csv("data/p1.csv")
+boxplot(COG ~ factor(EDUC), data=df.p1)
+```
+
+\noindent \textbf{(c)} Fit the linear regression that you specified in part (a) and interpret all the mean parameter estimates.
+
+\textcolor{blue}{
+Interpretation should be free points...
+}
+```{r, echo=FALSE}
+lm.cat <- lm(COG ~ factor(EDUC), data=df.p1)
+summary(lm.cat)
+```
+
+\noindent \textbf{(d)} Which of the assumptions of linear regression should you formally test? Test them and comment on the validity of your model. Also perform any other checks you think are appropriate before you would hand over your analysis to your collaborator.
+
+\textcolor{blue}{
+Linearity is met by definition with a categorical predictor only. Should check normality and for outliers. There is at least one outlier, should run model with and without this point(s).
+}
+```{r, eval=FALSE, echo=FALSE, include=FALSE}
+plot(lm.cat)
+plot(cooks.distance(lm.cat), type="h")
+abline(h=4/ (nrow(df.p1) - length(coef(lm.cat))))
+library(MASS)
+plot(studres(lm.cat), type="h")
+```
+
+
+
+\noindent \textbf{(e)} Your friend Johnny B. knows a little bit about statistics and claims that you should use a linear term to model the association between educational attainment and cognitive ability instead, retaining the original coding scheme (that is, treating `EDUC` as a continuous variable ). Statistically test whether this would be a better model. Comment on whether or not you agree with Johnny B.
+
+
+
+```{r}
+lm.con <- lm(COG ~ EDUC, data=df.p1)
+AIC(lm.cat); AIC(lm.con)
+BIC(lm.cat); BIC(lm.con)
+```
+
+\textcolor{blue}{
+Emprically, this makes sense. But I'm hesitant because there is really no meaningful difference between the levels.
+}
+
+
+\noindent \textbf{(f)} Mikey G. joins in on the fun, and says that you should instead model educational attainment with a third order polynomial. Comment on whether you think this would add any value to your analysis.
+
+```{r, eval=FALSE, echo=FALSE, include=FALSE}
+lm.degree3 <- lm(COG ~ EDUC + I(EDUC^2) + I(EDUC^3), data=df.p1)
+summary(lm.degree3)
+summary(lm.cat)
+```
+
+
+\textcolor{blue}{
+You would get exactly the same model. Except you have to be careful with interpolations with this one...
+}
+
+\noindent \textbf{(g)} Two more friends - a statistical duo who call themselves "The Jays" - say you should fit an even higher order polynomial, as this might improve your model even further. Should you even waste your time entertaining The Jays' suggestion?
+
+\textcolor{blue}{
+This will be non-identifiable.
+}
+
+\noindent \textbf{(h)} Your collaborator gives you a draft of her manuscript to review. In it, she claims to have found a causal relationship between educational attainment and cognitive ability. She says she is comfortable making this claim because she randomly sampled adults in Massachusetts. Comment on whether you agree or disagree.
+
+\textcolor{blue}{
+No, only if they were randomized to education status.
+}
+
+\clearpage
+
+
+
+
+\noindent \textbf{Problem 2} [25 points] 
+
+In this problem, you will explore the concept of shrinkage (or regularization) through an example called "Stein's paradox" (parts a-c) and then draw a connection with ridge regression.
+
+Suppose $Y_i \sim \mathcal{N}(\mu_i, \sigma^2)$ for $i=1,\ldots,n$. You observe $Y_1, \ldots Y_n$ and want to estimate $\mu_1,\ldots, \mu_n$.
+
+\noindent \textbf{(a)} The most obvious estimator of $\mu_i$ is $\hat{\mu}_i = Y_i$. Compute the bias of this estimator.
+
+
+\textcolor{blue}{
+There is no bias.
+}
+
+\noindent \textbf{(b)} A \textit{shrinkage} estimator of $\mu_i$ is $\hat{\mu}_i(c) = cY_i$ where $c \in [0,1]$ is a user-specified parameter that controls the amount of shrinkage. Write \textsf{R} code to do the following:
+
+\begin{itemize}
+\item Set $n=1000$. Randomly generate $\mu_i \sim \text{Uniform}(0,10)$ for $i=1\ldots,n$.
+\item Randomly generate $Y_i \sim \mathcal{N}(\mu_i,\sigma^2)$ for $i=1,\ldots,n$ where $\sigma=4$.
+\item For each $c \in \{0.0, 0.01, 0.02, \ldots, 0.99, 1.0\}$ compute $\text{MSE(c)}$ where:
+$$\text{MSE(c)}= \frac{1}{n} \sum_{i=1}^{n} (\hat{\mu}_i (c) - \mu_i)^2$$
+\end{itemize}
+
+Plot $\text{MSE(c)}$ versus $c$, along with the variance and the square of the bias. For your dataset, what value of $c$ minimizes $\text{MSE(c)}$? So, does shrinkage help?
+
+\textcolor{blue}{
+I haven't added the code yet, but it will re-create the plot that we keep showing in class. Yes, shrinkage will help.
+}
+
+\noindent \textbf{(c)} Explain your findings from (b) in terms of the bias-variance tradeoff. What happens to the bias and the variance when $c \rightarrow 0$?
+
+\textcolor{blue}{
+When $c=1$, there is no bias. But the variance is large because we are perfectly fitting the training data. As $c \rightarrow 0$, bias increases  but the variance decreases. At $c=0$ we predict $\mu_i = 0$ for all $i=1,\ldots,n$, so there is zero variance but high bias. The lowest MSE occurs at xxx; some shrinkage improves the estimate.
+}
+
+\noindent \textbf{(d)} Suppose we defined our ridge regression estimates as:
+
+$$ \widehat{\boldsymbol{\beta}}^R_\lambda = \left( {\bf X}^\prime {\bf X} + \lambda {\bf I} \right)^{-1} {\bf X}^\prime {\bf y} $$
+
+where $\bf X \in \mathbb{R}^{n \times p}$, $\bf y \in \mathbb{R}^{n \times 1}$, and ${\bf I}$ is the $p \times p$ identity matrix. Note this is a slightly different definition than was used in class...you'll see why in a moment...
+
+Now, suppose you want to frame the shrinkage problem in parts a) - c) as a ridge regression problem. How should you define $\bf X$?
+
+\textcolor{blue}{
+It should be the identity matrix.
+}
+
+\noindent \textbf{(e)} Using the design matrix you defined in part d), show that $\widehat{\boldsymbol{\beta}}^R_\lambda = cy$ for some $c \in \mathbb{R}$. Give the actual mathematical expresson for $c$ as a function of $\lambda$.
+
+\textcolor{blue}{
+It's easy to show that $c=(\lambda+1)^{-1}$.
+}
+
+\noindent \textbf{(f)} Explain the connection between the ridge estimate and the shrinkage framework in parts a)-c).
+
+\textcolor{blue}{
+The setups are the same! When X=I, we are trying to estimate a mean parameter for every observation. The ridge estimator has the same form as the shrinkage estimator from parts a)-c), with the relationship between c and $\lambda$ given in the previous part. Intuitively, they are doing the same thing, pulling the mean estimates towards zero for every observation.
+}
+
+
+
+
+
+
+
+\clearpage
+
+
+\noindent \textbf{Problem 3} [25 points]
+
+Now suppose that you have another collaborator who has asked you to help him develop a model estimate the associations between various predictors and systolic blood pressure (`SBP`) in a random sample of American adults. For this purpose, he has curated a dataset (`p3.csv`) which contains the following variables:
+
+
+`SBP`: Systolic blood pressure, in mmHg.
+
+`AGE`: Age in years.
+
+`GENDER`: Gender indicator; 0 = Male, 1 = Female.
+
+`EDUC`: Highest level of education attained. 0 = Primary School, 1 = Junior High, 2 = High School, 3 = College degree or higher.
+
+`DM`: Diabetes mellitus indicator; 0 = No, 1 = Yes.
+
+`SMOKE`: Smoking status indicator; 0 = No, 1 = Yes.
+
+`BMI`: Body mass index (kg/m\textsuperscript{2}).
+
+`STATIN`: Statin use indicator; 0 = No, 1 = Yes.
+
+
+\noindent \textbf{(a)} Your collaborator does not have model in mind, but he would like you to do some exploratory analyses as he believes many of the variables he has collected are important. Perform some model selection procedure of your choice to arrive at what you believe to be an adequate model. (For simplicity, do not consider any polynomial effects in this problem.)
+
+
+\textcolor{blue}{
+My point in this problem was to be open-ended. I think any reasonable model selection will end up with a couple interactions. 
+}
+
+```{r}
+df.p3 <- read.csv("data/p3.csv")
+
+interceptmodel <- lm(SBP~1,data=df.p3)
+mainmodel <- lm(SBP~.,data=df.p3)
+interactionmodel = lm(SBP~.^3,data=df.p3)
+
+interactionstep = step(mainmodel,
+                       scope=list(lower = formula(interceptmodel),
+                                  upper = formula(interactionmodel)),
+                       direction = "both",
+                       trace = 0)
+formula(interactionstep)
+summary(interactionstep)
+```
+
+
+
+\noindent \textbf{(b)} Explain your model selection approach and your final model to your collaborator. Remember, your collaborator is not a statistician, and some of the terms in your model might be difficult to explain. It might be helpful to explain some of the associations visually, and/or in particular subgroups.
+
+\textcolor{blue}{
+I want them to really think about
+}
+
+\noindent \textbf{(c)}  Should your collaborator be at all concerned about how he might interpret the p-values from your model?
+
+\textcolor{blue}{
+Yes, model selection compromises the p-values since your tests weren't pre-specified.
+}
+
+\clearpage
+
+\noindent \textbf{Problem 4} [25 points] 
+
+A year later, your collaborator returns to you, but he is no longer interested in estimating the associations between predictor variables and `SBP`. Instead, he is hoping you can help him to build a best predictive model. He has has many more observations in a new dataset (`p4.csv`) as well as some more variables. The entire dataset now consists of the following variables:
+
+`SBP`: Systolic blood pressure, in mmHg.
+
+`AGE`: Age in years.
+
+`GENDER`: Gender indicator; 0 = Male, 1 = Female.
+
+`EDUC`: Highest level of education attained. 0 = Primary School, 1 = Junior High, 2 = High School, 3 = College degree or higher.
+
+`DM`: Diabetes mellitus indicator; 0 = No, 1 = Yes.
+
+`SMOKE`: Smoking status indicator; 0 = No, 1 = Yes.
+
+`BMI`: Body mass index (kg/m\textsuperscript{2}).
+
+`STATIN`: Statin use indicator; 0 = No, 1 = Yes.
+
+`CVD`: History of cardiovascular event indicator; 0 = No, 1 = Yes.
+
+`HYPERTENSION`: Indicator of hypertension; 0 = No, 1 = Yes.
+
+`CHOL`: Total cholesterol, in mmol/L.
+
+`HDL`: HDL cholesterol, in mmol/L.
+
+`eGFR`: Estimated glomerular filtration rate, a measure of kidney function in mL/min (lower values indicate possible kidney damage).
+
+
+\noindent \textbf{(a)} Start by making sure your categorical variables are coded as factors.
+
+\noindent \textbf{(b)} Break the dataset into an 80-20 train-test split.
+
+\noindent \textbf{(c)} Using your training data and a $k$ of 5, perform $k$-fold cross validation with ridge regression to identify the value of $\lambda$ that produces the lowest mean RMSE for a full model that in include all main effects and 2-way interaction terms. Plot the MSE vs. $\ln(\lambda)$. Report the optimal $\lambda$ and the RMSE on your test data.
+
+\noindent \textbf{(d)} Repeat part c) using LASSO.

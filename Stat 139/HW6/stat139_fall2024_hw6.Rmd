@@ -546,14 +546,84 @@ The `cheddar` dataset (in the `faraway` package) contains data on a study of che
 
 \noindent \textbf{(a)} Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the 5\% level.
 
+```{r}
+library(faraway)
+library(dplyr)
+
+
+data(cheddar)
+str(cheddar)
+summary(cheddar)
+
+cheddar_model <- lm(taste ~ Acetic + H2S + Lactic, data = cheddar)
+
+
+summary(cheddar_model)
+
+
+coef_summary <- summary(cheddar_model)$coefficients
+significant_predictors <- coef_summary[coef_summary[,4] < 0.05, ]
+
+
+print("Significant predictors at 5% level:")
+print(significant_predictors)
+
+
+
+```
+
+
 \noindent \textbf{(b)} `Acetic` and `H2S` are measured on a log scale. Fit a linear model where all three predictors are measured on their original scale. Identify the predictors that are statistically significant at the 5\% level for this model.
+
+```{r}
+cheddar$Acetic_orig <- exp(cheddar$Acetic)
+cheddar$H2S_orig <- exp(cheddar$H2S)
+
+# Fit new model with transformed variables
+cheddar_model_orig <- lm(taste ~ Acetic_orig + H2S_orig + Lactic, data = cheddar)
+
+
+summary(cheddar_model_orig)
+
+
+coef_summary <- summary(cheddar_model_orig)$coefficients
+significant_predictors <- coef_summary[coef_summary[,4] < 0.05, ]
+
+
+print("Significant predictors at 5% level:")
+print(significant_predictors)
+
+
+
+```
 
 \noindent \textbf{(c)} Can we use an $F$-test to compare these two models? Explain. Which model provides a better fit to the data? Explain your reasoning.
 
+We CANNOT use an F-test to compare these models because they are non-nested models
+The models represent different functional forms of the relationship between predictors and response
+They are essentially different transformations of the predictor variables
+
+
 \noindent \textbf{(d)} If `HS2` is increased 0.01 for the model used in part \textbf{(a)}, what change in the `taste` would be expected?
+
+
+ when H2S increases by 0.01 units on the log scale, we expect taste to increase by approximately 0.039 units
+ 
+ 
 
 \noindent \textbf{(e)} What is the percentage change in `H2S` on the original scale corresponding to an additive increase of 0.01 on the (natural) log scale?
 
+```{r}
+# ratio
+ratio <- exp(0.01)
+
+# percentage change
+percent_change <- (ratio - 1) * 100
+print(percent_change)
+
+```
+
+an increase of 0.01 units on the natural log scale corresponds to approximately a 1.005% increase in the original scale.
 
 \clearpage
 
@@ -565,10 +635,229 @@ The `happy` dataset (in the `faraway` package) contains data on happiness from a
 
 \noindent \textbf{(a)} Which predictors are statistically significant at the 1\% level. 
 
+```{r}
+data(happy)
+str(happy)
+head(happy)
+
+
+happy_model <- lm(happy ~ money + sex + love + work, data = happy)
+
+# Get detailed summary statistics
+summary_stats <- summary(happy_model)
+print(summary_stats)
+
+coef_pvalues <- summary_stats$coefficients[, "Pr(>|t|)"]
+print("P-values for all predictors:")
+print(coef_pvalues)
+
+# Identify significant predictors at 1% level
+sig_predictors <- coef_pvalues[coef_pvalues < 0.01]
+print("\nPredictors significant at 1% level:")
+print(names(sig_predictors))
+
+
+
+```
+
 \noindent \textbf{(b)} Implement a permutation procedure to test the significance of the `money` predictor.  Do not use any existing packages here, write your own code instead.
+
+```{r}
+
+original_model <- lm(happy ~ money + sex + love + work, data = happy)
+observed_t <- summary(original_model)$coefficients["money", "t value"]
+print(paste("Observed t-statistic for money:", observed_t))
+
+
+perm_test <- function(n_perm = 10000) {
+  # Store t-statistics
+  t_stats <- numeric(n_perm)
+  
+  for(i in 1:n_perm) {
+    perm_data <- happy
+    perm_data$money <- sample(happy$money, replace = FALSE)
+    
+    perm_model <- lm(happy ~ money + sex + love + work, data = perm_data)
+    
+    t_stats[i] <- summary(perm_model)$coefficients["money", "t value"]
+  }
+  
+  p_value <- mean(abs(t_stats) >= abs(observed_t))
+  
+  return(list(
+    p_value = p_value,
+    t_stats = t_stats,
+    observed_t = observed_t
+  ))
+}
+
+set.seed(139) 
+results <- perm_test(10000)
+
+print(paste("Permutation test p-value:", results$p_value))
+
+```
 
 \noindent \textbf{(c)} Create a histogram of the permutation $t$-statistics. Make sure to use the probability rather than frequency version of the histogram. 
 
+```{r}
+par(mar = c(5, 5, 4, 2)) 
+hist(results$t_stats, 
+     breaks = 30,
+     probability = TRUE, 
+     main = "Distribution of Permuted t-statistics",
+     xlab = "t-statistic",
+     ylab = "Density",
+     col = "lightblue",
+     border = "white",
+     cex.lab = 1.2,    
+     cex.axis = 1.1)   
+
+
+lines(density(results$t_stats), col = "darkblue", lwd = 2)
+
+
+abline(v = results$observed_t, col = "red", lwd = 2, lty = 2)
+abline(v = -results$observed_t, col = "red", lwd = 2, lty = 2)
+
+
+legend("topright", 
+       legend = c("Density curve", "Observed t-statistic"),
+       col = c("darkblue", "red"),
+       lwd = c(2, 2),
+       lty = c(1, 2))
+
+
+grid(nx = NULL, ny = NULL, col = "gray", lty = "dotted")
+
+```
+
 \noindent \textbf{(d)} Overlay an appropriate $t$-distribution over your histogram. Hint: Use `grid <- seq(-3, 3, length = 300)` to create a grid of values, then use the `dt` function to compute the $t$-density over this grid and the `lines` function to superimpose the result.
 
+```{r} 
+df <- nrow(happy) - 5
+
+grid <- seq(-3, 3, length = 300)
+
+par(mar = c(5, 5, 4, 2)) 
+
+
+hist(results$t_stats, 
+     breaks = 30,
+     probability = TRUE,  
+     main = "Distribution of Permuted t-statistics with Theoretical t-distribution",
+     xlab = "t-statistic",
+     ylab = "Density",
+     col = "lightblue",
+     border = "white",
+     cex.lab = 1.2,
+     cex.axis = 1.1,
+     ylim = c(0, max(dt(0, df), max(density(results$t_stats)$y)))) 
+
+lines(density(results$t_stats), col = "darkblue", lwd = 2)
+
+lines(grid, dt(grid, df), col = "red", lwd = 2, lty = 2)
+
+
+abline(v = results$observed_t, col = "darkgreen", lwd = 2, lty = 3)
+abline(v = -results$observed_t, col = "darkgreen", lwd = 2, lty = 3)
+
+legend("topright", 
+       legend = c("Empirical density", 
+                 "Theoretical t-distribution", 
+                 "Observed t-statistic"),
+       col = c("darkblue", "red", "darkgreen"),
+       lwd = c(2, 2, 2),
+       lty = c(1, 2, 3))
+
+grid(nx = NULL, ny = NULL, col = "gray", lty = "dotted")
+
+
+```
+
 \noindent \textbf{(e)} Implement a bootstrap procedure to compute 90\% and 95\% confidence intervals for $\beta_{\text{money}}$. Do not use any existing packages here, write your own code instead. Does zero fall within these confidence intervals? Are these results consistent with the previous tests?
+
+```{r}
+
+
+
+bootstrap_beta <- function(data, n_boot = 10000) {
+  
+  beta_money <- numeric(n_boot)
+  
+  
+  n <- nrow(data)
+  
+  for(i in 1:n_boot) {
+    
+    boot_indices <- sample(1:n, size = n, replace = TRUE)
+    boot_data <- data[boot_indices, ]
+    
+    
+    boot_model <- lm(happy ~ money + sex + love + work, data = boot_data)
+    
+    
+    beta_money[i] <- coef(boot_model)["money"]
+  }
+  
+  
+  ci_90 <- quantile(beta_money, c(0.05, 0.95))
+  ci_95 <- quantile(beta_money, c(0.025, 0.975))
+  
+  return(list(
+    beta_money = beta_money,
+    ci_90 = ci_90,
+    ci_95 = ci_95
+  ))
+}
+
+
+boot_results <- bootstrap_beta(happy)
+
+
+original_model <- lm(happy ~ money + sex + love + work, data = happy)
+original_beta <- coef(original_model)["money"]
+
+
+print("Original beta coefficient for money:")
+print(original_beta)
+
+print("\n90% Confidence Interval:")
+print(boot_results$ci_90)
+
+print("\n95% Confidence Interval:")
+print(boot_results$ci_95)
+
+
+hist(boot_results$beta_money,
+     breaks = 30,
+     probability = TRUE,
+     main = "Bootstrap Distribution of beta money",
+     xlab = "beta coefficient",
+     ylab = "Density",
+     col = "lightblue",
+     border = "white")
+
+
+lines(density(boot_results$beta_money), col = "darkblue", lwd = 2)
+
+
+abline(v = boot_results$ci_90, col = "red", lwd = 2, lty = 2)
+abline(v = boot_results$ci_95, col = "darkgreen", lwd = 2, lty = 3)
+abline(v = 0, col = "black", lwd = 2, lty = 1)  # Add line at zero
+abline(v = original_beta, col = "purple", lwd = 2)
+
+
+legend("topright",
+       legend = c("Density curve", 
+                 "90% CI",
+                 "95% CI",
+                 "Zero line",
+                 "Original estimate"),
+       col = c("darkblue", "red", "darkgreen", "black", "purple"),
+       lwd = 2,
+       lty = c(1, 2, 3, 1, 1))
+```
+
+the intervals do not contain 0, so the coefficients are significant at the 95% level. this is consistent with our previous findings with the permutation test. we should reject the null hypothesis for 
+
