@@ -1,0 +1,108 @@
+---
+title: "Problem Set 8"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, December 6, 2024 at 11:59pm"
+output: pdf_document
+urlcolor: blue
+---
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+### Question 1
+
+Consider the following model:
+
+\[ Y_{ij} = \beta_0 + \alpha_j + \beta_1 x_{ij} + \varepsilon_{ij} \] 
+\[ i=1,\dots, n_j \]
+\[j=1, \dots, J\]
+\[\alpha_j \sim N(0,\sigma_\alpha^2) \perp\!\!\!\perp \varepsilon_{ij} \sim N(0,\sigma_{\varepsilon}^2) \]
+
+\vspace{1em}
+
+\noindent \textbf{a)} Compute $\text{Var}(Y_{ij})$.
+
+\noindent \textbf{b)} Compute $\text{Cov}(Y_{ij}, Y_{i'j'})$ where $i' \ne i$ and $j' \ne j$.
+
+\noindent \textbf{c)} Compute $\text{Cov}(Y_{ij}, Y_{i'j})$ where $i' \ne i$.
+
+\noindent \textbf{d)} The ratio of the answer to c) and the answer to a) is called the **intraclass correlation coefficient**. Explain in a sentence or two what this measures.
+
+
+\clearpage
+
+### Question 2
+
+The dataset `growth.csv` contains a certain type of growth data on a sample of 11 girls and 16 boys. Specifically, in this study, the distance between the center of the pituitary to the pteryomaxillary fissure (a teardrop-shaped opening located in the human skull) was measured at four occasions: at 8, 10, 12 and 14 years. The variables in the dataset are:
+
+\vspace{1em}
+
+`subjid`: a unique subject identifier
+
+`sex`: the sex of each child
+
+`distance_8`: the distance (in mm) at age 8
+
+`distance_10`: the distance (in mm) at age 10
+
+`distance_12`: the distance (in mm) at age 12
+
+`distance_14`: the distance (in mm) at age 14
+
+\vspace{1em}
+
+\noindent \textbf{a)} The data are currently in  "wide" format. Wrangle the dataset into "long" format that is suitable for analysis with, for example, the `lmer()` function. That is, there should be a column for age, and another for `distance`.
+
+\noindent \textbf{b)} Plot these data longitudinally, using different colored series for males and females. Comment on any strange observations you observe.
+
+
+\noindent \textbf{c)} Fit three mixed models that control for age, sex, and their interaction. The first model should incorporate a random intercept for age, the second model should have independent random intercepts and slopes for age, and the third model should have a random intercept and slope for age and allow for correlation between them. Pick which you think is the most appropriate model for these data using AIC or BIC.
+
+\noindent \textbf{d)} Use the model you selected from part b) to add the population average trends to your plot in part b) for both boys and girls separately.
+
+\noindent \textbf{e)} Formally test whether the distance between the pituitary to the pteryomaxillary fissure differs between boys and girls at birth (hint: you might want to use the `lmerTest` package).
+
+\noindent \textbf{f)} Formally test whether the change in distance over time is different for boys versus girls. 
+
+\clearpage
+
+### Problem 3
+
+You've been asked to determine how player performance, measured via batting average, progresses as major league baseball players age.  The belief is that players peak at different ages, and that the mean peak is around 30 years of age.  
+
+The dataset `mlb_batting_data.csv` contains year-by-year batting records for all positional players with at least one at-bat (an opportunity to record a hit) from 1980 until 2021.  A player's batting average (BA) is the proportion of at-bats in which he records a hit (BA = H/AB) will be the response variable, and a player's age in year (Age) will be the predictor.  A mixed model to predict BA from AGE will be used to model the career arc of each player.  
+
+Let $Y$ be batting average, and let $X$ be a player's age.  Then a reasonable mixed model for these data could be written as such: \vspace{-0.1in} \begin{align*}
+Y_{i,j} &\sim N\left(\beta_{0,j} + \beta_{1,j} X_{i,j}+ \beta_{2,j} X_{i,j}^2 , \sigma_y^2/n_{i,j}\right) \\
+ \beta_{0,j} &\sim N\left(\mu_0,\sigma_0^2\right) \\
+ \beta_{1,j} &\sim N\left(\mu_1,\sigma_1^2\right) \\
+ \beta_{2,j} &\sim N\left(\mu_2,\sigma_2^2\right)
+\end{align*} 
+for the $i^{th}$ measurement for the $j^{th}$ player.  For example the Red Sox's David Ortiz was 39 years old in 2015, his $19^{th}$ year in the league, and had a batting average of 0.273 in 528 at-bats.  Thus his measurements were $Y_{19,j'}=0.273, X_{19,j'}=39,\text{ and } n_{19,j'}=528$ (Ortiz is the $j'^{th}$ player in the database...the exact value for $j'$ is not easy to determine and not really important).
+
+\noindent \textbf{(a)} Determine how many unique players are in the data set.  Create a histogram of the variable \texttt{Age}.  Comment on what you notice.  
+
+\noindent \textbf{(b)} Create two plots: (i) the histogram of years played by individuals, and (ii) the scatterplot of career batting average vs. years played for each individual.  Briefly comment on what you notice.
+
+\noindent \textbf{(c)} Fit a quadratic regression model using the \texttt{lm} function in R to predict \texttt{BA} from \texttt{Age} and \texttt{Age}$^2$, using the argument \texttt{weight=AB} to account for the fact that there is more information/certainty in estimating the true batting average for players when they have more at-bats (which also mimics the stated variance $\sigma^2_y$ in the probabilistic model statement above).
+
+\noindent \textbf{(d)} Use the \texttt{lmer} function in the \texttt{lme4} package for R to fit the mixed model suggested in this study (this could be called a 'random intercept, slope, and quadratic term' model), and be sure to use the argument \texttt{weight=AB} here too.  Note: you can ignore the warnings, or you can attempt to fix them using more iterations in the optimization function.  
+
+\noindent \textbf{(e)} Use your estimates for the two models to plot the average 'career arc' for each model on one set of axes (line plots make the most sense).  Determine the estimated peaks of each arc.
+
+\noindent \textbf{(f)} Compare the results of the two models in the previous parts.  What is the interpretation of each?  Why do they differ in value?
+

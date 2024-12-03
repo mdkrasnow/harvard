@@ -1,0 +1,156 @@
+---
+title: "Problem Set 7"
+author: "STAT 139 (Fall 2024) Teaching Team"
+date: "Due Friday, November 15, 2024 at 11:59pm"
+output: pdf_document
+urlcolor: blue
+---
+
+
+
+
+\begin{small} 
+		
+\textbf{Problem set policies.} \textit{Please provide concise, clear answers for each question while making sure to fully explain your reasoning. For problems asking for calculations, show your work in addition to clearly indicating the final answer. For problems involving \texttt{R}, be sure to include the code and output in your solution.}
+
+\textit{Please submit the PDF of your knit solutions to Gradescope and be sure to assign which pages of your solution correspond to each problem. Make sure that the PDF is fully readable to the graders; e.g., make sure that lines don't run off the page margin.}
+
+\textit{We encourage you to discuss problems with other students (and, of course, with the teaching team), but you must write your final answer in your own words. Solutions prepared ``in committee'' are not acceptable. If you do collaborate with classmates on a problem, please list your collaborators on your solution. Be aware that simply copying answers found online, whether human-generated or machine-generated, is a violation of the Honor Code.}
+		
+\end{small}
+
+
+\clearpage
+
+
+
+
+### Question 1
+
+There are two datasets included that will be used for this problem:
+
+- a training dataset called `bosflights18.csv` which includes data on a subset of flights ($n=10,000$) in and out of Boston's Logan Airport in the year 2018. 
+
+- a test dataset called `bosflights18_test.csv` (note it is actually larger in size than `bosflights18.csv`)
+
+The important variables in these datasets are:
+
+\footnotesize
+
+`flight_time`: the total amount of time the flight takes from the time the plane takes off until the time it arrives at the destination gate.
+
+`year`: year of flight (they are all from 2018)
+
+`month`: month: 1 = January, 2 = February, etc.
+
+`dayofmonth`: the calendar day of the month, from 1 to 31.
+
+`weekday`: day of the week: 1 = Monday, 2 = Tuesday, etc.
+
+`carrier`: the unique 2-digit carrier code of the flight. For details, see the list here: \url{https://en.wikipedia.org/wiki/List_of_airlines_of_the_United_States}
+
+`tailnum`: the unique tail number of the aircraft
+
+`flightnum`: the carrier's specific flight number
+
+`origin`: the originating airport.  See \url{http://www.leonardsguide.com/us-airport-codes.shtml}.
+
+`dest`: the destination airport.
+
+`bos_depart`: an indicator if the flight departed out of Boston.
+
+`schedule_depart`: the scheduled departure time in minutes across the day ranging from 0 to 1439.  7pm is 1140, for example.
+
+`depart`: the actual departure time (in minutes)
+
+`wheels_off`: the time of day the plane took off (in minutes)     
+
+`distance`: the distance of the flight, in miles.
+
+`weather_delay`: an indicator if the delay is due to extreme weather.
+
+`nas_delay`: an indicator if the delay is due to the national aviation system (air traffic control, for example).
+
+`security_delay`: an indicator if the delay is due to a security issue at the terminal.
+
+`late_aircraft_delay`: an indicator if the delay is due to a late arrival of a previous flight with the same aircraft.
+
+`carrier_delay`: an indicator if the delay is due to a carrier (kind of a catch all if not the others).
+
+\normalsize
+
+More info on the delay indicators can be found at the Bureau of [Transportation Statistics (BTS)](https://www.bts.gov/topics/airlines-and-airports/airline-time-performance-and-causes-flight-delays).  
+
+We want to predict `flight_time` (untransformed) based on all of the other predictors in the data set (all other variables could be measured at some point before the flight takes off). 
+
+\vspace{0.1in}
+
+
+\clearpage
+
+\noindent \textbf{(a)} Fit the following three linear models and for each report (1) $R^2$ on the training data, (2) the number of non-`NA` $\beta$ estimates in the training model, and (3) the number of `NA` $\beta$ estimates in the training model: 
+
+- **lm1** that predicts flight time from the main effects of all of the included predictors (untransformed quantitative predictors, but be sure to handle categorical predictors appropriately).
+
+- **lm2** that predicts flight time from the main effects of all of the included predictors but treats `distance` with a $15^{th}$ order polynomial function (in this case, do NOT use the `raw=T` argument in `poly`).
+
+- **lm3** that predicts flight time from the main effects (treating `distance` with a $15^{th}$ order polynomial function) and the interactions of `bos_depart` with all the other predictors (including all polynomial terms of `distance`) [ignore other interactions].  
+
+
+**Note**: you should completely ignore 4 variables here: `year`, `day_of_month`, `flightnum`, and `tailnum`.
+
+\vspace{1em}
+
+\noindent \textbf{(b)} Why are there `NA` estimates (be specific to this dataset)?
+
+\vspace{1em}
+
+\noindent \textbf{(c)} Evaluate the three models in part (a) based on RMSE on both the train and test sets.  Interpret the results as to which model is best for prediction and which models may be overfit.
+
+
+\clearpage
+
+
+### Question 2
+
+\noindent \textbf{(a)} Fit well-tuned Ridge and LASSO regression models using `cv.glmnet` based on the predictors used in the **lm3** model from the previous problem. Hint: the \textsf{R} command `model.matrix` may be helpful to get you started.
+
+\vspace{1em}
+
+\noindent \textbf{(b)} For both the Ridge and LASSO models, plot the average MSE on the validation sets against the $\lambda$'s you considered in the previous part. Report the best $\lambda$'s. (This part should require almost no work if you did part (a)).
+
+\vspace{1em}
+
+\noindent \textbf{(c)} Provide the "$\widehat{\beta}$ trajectory" plots of the main effects from these models (plot each $\beta_j$ as a function of $\lambda$ as a curve, and do this for all main/linear effects). Interpret what you see in 2-3 sentences.
+
+\vspace{1em}
+
+\noindent \textbf{(d)} Choose a best regularized/penalized regression model and briefly justify your choice. Revisit the grid of $\lambda$'s that were used (either explicitly by you, or automatically by `R`) and comment on whether it's obvious that these penalized models will predict better than the original model.
+
+
+\clearpage
+
+### Question 3: Work on your EDA
+
+Question 3 allows you to start working on your final project EDA. Thus, if you find any issues with your data, you will be aware early! Evaluate the quality of your data by creating a table which, for each important continuous variable in your dataset reports:
+
+- The number of non-missing observations
+
+- The  number of missing observations
+
+- A measure(s) of the central tendency (i.e., mean, media)
+
+- A measure(s) of variability (i.e, sd, IQR)
+
+and for each important categorical variable in your dataset reports:
+
+- The levels of the variable
+
+- For each level:
+  
+  - The number of non-missing observations
+  
+  - The number of missing observations
+
+
+
