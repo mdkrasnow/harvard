@@ -1,0 +1,101 @@
+Token ID,Context,Register Type,Variant Type,Actual Usage,Academic Field,Gender,Location,Time/Situation
+1,Classroom Discussion,Academic,Lexical,"Therefore, the philosophical implications...",Philosophy,F,Emerson Hall,Morning Class
+2,Dorm Lounge,Casual,Lexical,"Like, it was super deep",Philosophy,F,Adams House,Evening Social
+3,Office Hours,Academic,Discourse,To elaborate further on that point,CS,M,Pierce Hall,Afternoon Meeting
+4,Dining Hall,Casual,Discourse,Ya know what I mean?,CS,M,Annenberg,Lunch Break
+5,Seminar,Academic,Syntactic,The methodology was extensively validated through multiple trials,Bio,F,Bio Labs,Morning Class
+6,Study Group,Casual,Syntactic,We just ran it a bunch of times,Bio,F,Cabot Library,Evening Study
+7,Presentation,Academic,Lexical,The quantitative analysis demonstrates,Economics,M,Baker Library,Afternoon Class
+8,Sports Practice,Casual,Lexical,The numbers basically show,Economics,M,Athletic Complex,Evening Practice
+9,Class Discussion,Academic,Discourse,"Moreover, considering the evidence",social studies,F,Robinson Hall,Morning Class
+10,Club Meeting,Casual,Discourse,"Plus, if you think about it",social studies,F,Student Center,Evening Meeting
+11,Lab Report,Academic,Syntactic,The experiment was conducted under controlled conditions,Chemistry,M,Mallinckrodt Lab,Afternoon Lab
+12,Dorm Room,Casual,Syntactic,We did it really carefully,Chemistry,M,Wigglesworth,Evening Social
+13,Thesis Meeting,Academic,Lexical,The methodology necessitates,English,F,Barker Center,Morning Meeting
+14,Coffee Chat,Casual,Lexical,We gotta do it this way,English,F,Starbucks,Afternoon Break
+15,Class Presentation,Academic,Discourse,"Furthermore, the analysis reveals",Physics,M,Jefferson Lab,Morning Class
+16,Study Break,Casual,Discourse,"Also, check this out",Physics,M,Leverett House,Evening Social
+17,Research Discussion,Academic,Syntactic,The data were analyzed using statistical methods,Psychology,F,William James Hall,Afternoon Meeting
+18,Dining Hall,Casual,Syntactic,We crunched the numbers,Psychology,F,Quincy House,Dinner Time
+19,Seminar,Academic,Lexical,The theoretical framework suggests,Sociology,M,William James Hall,Morning Class
+20,Common Room,Casual,Lexical,It basically means,Sociology,M,Eliot House,Evening Social
+21,Class Discussion,Academic,Discourse,In light of these findings,Math,F,Science Center,Morning Class
+22,Study Group,Casual,Discourse,So basically what we found,math,F,Cabot Library,Afternoon Study
+23,Presentation,Academic,Syntactic,The research was conducted over three months,Anthropology,M,Tozzer Library,Morning Class
+24,Club Meeting,Casual,Syntactic,We spent like three months on it,Anthropology,M,Student Center,Evening Meeting
+25,Office Hours,Academic,Lexical,The epistemological foundations,Philosophy,F,Emerson Hall,Afternoon Meeting
+26,Dorm Lounge,Casual,Lexical,The basic ideas,Philosophy,F,Matthews Hall,Evening Social
+27,Lab Meeting,Academic,Discourse,"Subsequently, we observed",Bio,M,Bio Labs,Morning Meeting
+28,Dining Hall,Casual,Discourse,Then we saw,Bio,M,Annenberg,Lunch Break
+29,Class Discussion,Academic,Syntactic,The literature demonstrates significant correlations,Psychology,F,William James Hall,Morning Class
+30,Study Break,Casual,Syntactic,Everything's totally connected,Psychology,F,Weld Hall,Evening Social
+31,Seminar,Academic,Lexical,The methodological approach,Sociology,M,William James Hall,Morning Class
+32,Common Room,Casual,Lexical,How we did it,Sociology,M,Kirkland House,Evening Social
+33,Research Presentation,Academic,Discourse,"Consequently, the data indicate",Economics,F,Baker Library,Afternoon Class
+34,Dining Hall,Casual,Discourse,"So yeah, it shows",Economics,F,Adams House,Dinner Time
+35,Lab Report,Academic,Syntactic,The experiment yielded consistent results,Chemistry,M,Mallinckrodt Lab,Morning Lab
+36,Study Group,Casual,Syntactic,It worked every time,Chemistry,M,Cabot Library,Evening Study
+37,Class Discussion,Academic,Lexical,The historical precedent suggests,social studies,F,Robinson Hall,Morning Class
+38,Club Meeting,Casual,Lexical,It's happened before,social studies,F,Student Center,Evening Meeting
+39,Thesis Meeting,Academic,Discourse,To contextualize this finding,English,M,Barker Center,Morning Meeting
+40,Coffee Chat,Casual,Discourse,To put it in perspective,English,M,Starbucks,Afternoon Break
+41,Lab Meeting,Academic,Syntactic,The results were analyzed using multivariate methods,Physics,F,Jefferson Lab,Morning Meeting
+42,Dorm Room,Casual,Syntactic,We looked at everything together,Physics,F,Holworthy,Evening Social
+43,Class Presentation,Academic,Lexical,The computational model demonstrates,CS,M,Pierce Hall,Morning Class
+44,Study Break,Casual,Lexical,The program shows,CS,M,Thayer Hall,Evening Social
+45,Research Discussion,Academic,Discourse,In conjunction with previous findings,math,F,Science Center,Afternoon Meeting
+46,Common Room,Casual,Discourse,Along with what we knew before,math,F,Mather House,Evening Social
+47,Seminar,Academic,Syntactic,The analysis revealed statistical significance,Anthropology,M,Tozzer Library,Morning Class
+48,Dining Hall,Casual,Syntactic,The numbers were important,Anthropology,M,Annenberg,Lunch Break
+49,Office Hours,Academic,Lexical,The theoretical implications suggest,Philosophy,F,Emerson Hall,Afternoon Meeting
+50,Study Group,Casual,Lexical,It probably means,Philosophy,F,Lamont Library,Evening Study
+51,Class Discussion,Academic,Discourse,To further elaborate on this point,Bio,M,Bio Labs,Morning Class
+52,Club Meeting,Casual,Discourse,Let me explain more,Bio,M,Student Center,Evening Meeting
+53,Lab Report,Academic,Syntactic,The experiment was replicated three times,Chemistry,F,Mallinckrodt Lab,Morning Lab
+54,Dorm Lounge,Casual,Syntactic,We did it three times,Chemistry,F,Pennypacker,Evening Social
+55,Research Presentation,Academic,Lexical,The empirical evidence indicates,Psychology,M,William James Hall,Afternoon Class
+56,Coffee Chat,Casual,Lexical,What we found shows,Psychology,M,Starbucks,Afternoon Break
+57,Thesis Meeting,Academic,Discourse,In consideration of these factors,English,F,Barker Center,Morning Meeting
+58,Study Break,Casual,Discourse,Thinking about all this,English,F,Grays Hall,Evening Social
+59,Class Discussion,Academic,Syntactic,The research methodology incorporated multiple approaches,Sociology,M,William James Hall,Morning Class
+60,Dining Hall,Casual,Syntactic,We tried different ways,Sociology,M,Leverett House,Dinner Time
+61,Lab Meeting,Academic,Lexical,The quantum mechanical interpretation,Physics,F,Jefferson Lab,Morning Meeting
+62,Common Room,Casual,Lexical,The way it works,Physics,F,Dunster House,Evening Social
+63,Class Presentation,Academic,Discourse,"Subsequently, our analysis revealed",Economics,M,Baker Library,Morning Class
+64,Study Group,Casual,Discourse,Then we found out,Economics,M,Widener Library,Evening Study
+65,Research Discussion,Academic,Syntactic,The data were processed using advanced algorithms,CS,F,Pierce Hall,Afternoon Meeting
+66,Club Meeting,Casual,Syntactic,We ran it through the program,CS,F,Student Center,Evening Meeting
+67,Seminar,Academic,Lexical,The methodological framework suggests,math,M,Science Center,Morning Class
+68,Dorm Room,Casual,Lexical,The way we did it shows,math,M,Matthews Hall,Evening Social
+69,Office Hours,Academic,Discourse,To contextualize these findings,social studies,F,Robinson Hall,Afternoon Meeting
+70,Coffee Chat,Casual,Discourse,To explain what this means,social studies,F,Starbucks,Afternoon Break
+71,Class Discussion,Academic,Syntactic,The literature review indicates substantial evidence,Anthropology,M,Tozzer Library,Morning Class
+72,Study Break,Casual,Syntactic,Everyone's been saying this,Anthropology,M,Straus Hall,Evening Social
+73,Lab Report,Academic,Lexical,The experimental protocol required,Bio,F,Bio Labs,Morning Lab
+74,Dining Hall,Casual,Lexical,We had to do it,Bio,F,Annenberg,Lunch Break
+75,Research Presentation,Academic,Discourse,"Furthermore, the analysis suggests",Chemistry,M,Mallinckrodt Lab,Afternoon Class
+76,Common Room,Casual,Discourse,"Also, we think",Chemistry,M,Eliot House,Evening Social
+77,Thesis Meeting,Academic,Syntactic,The research was conducted longitudinally,Psychology,F,William James Hall,Morning Meeting
+78,Study Group,Casual,Syntactic,We did it over time,Psychology,F,Lamont Library,Evening Study
+79,Class Discussion,Academic,Lexical,The philosophical discourse suggests,Philosophy,M,Emerson Hall,Morning Class
+80,Club Meeting,Casual,Lexical,People are saying,Philosophy,M,Student Center,Evening Meeting
+81,Lab Meeting,Academic,Discourse,"In conclusion, the data demonstrate",Physics,F,Jefferson Lab,Morning Meeting
+82,Coffee Chat,Casual,Discourse,"So basically, we can see",Physics,F,Starbucks,Afternoon Break
+83,Class Presentation,Academic,Syntactic,The analysis revealed significant correlations,Economics,M,Baker Library,Morning Class
+84,Dorm Lounge,Casual,Syntactic,Everything's connected,Economics,M,Wigglesworth,Evening Social
+85,Research Discussion,Academic,Lexical,The algorithmic implementation shows,CS,F,Pierce Hall,Afternoon Meeting
+86,Study Break,Casual,Lexical,The program does,CS,F,Canaday Hall,Evening Social
+87,Seminar,Academic,Discourse,"Moreover, the evidence suggests",math,M,Science Center,Morning Class
+88,Dining Hall,Casual,Discourse,"Plus, you can see",math,M,Adams House,Dinner Time
+89,Office Hours,Academic,Syntactic,The research methodology incorporated,social studies,F,Robinson Hall,Afternoon Meeting
+90,Study Group,Casual,Syntactic,We did it this way,social studies,F,Widener Library,Evening Study
+91,Class Discussion,Academic,Lexical,The anthropological perspective indicates,Anthropology,M,Tozzer Library,Morning Class
+92,Club Meeting,Casual,Lexical,Looking at it shows,Anthropology,M,Student Center,Evening Meeting
+93,Lab Report,Academic,Discourse,"Subsequently, the analysis revealed",Bio,F,Bio Labs,Morning Lab
+94,Common Room,Casual,Discourse,Then we found,Bio,F,Holworthy,Evening Social
+95,Research Presentation,Academic,Syntactic,The experiment was conducted systematically,Chemistry,M,Mallinckrodt Lab,Afternoon Class
+96,Coffee Chat,Casual,Syntactic,We did everything carefully,Chemistry,M,Starbucks,Afternoon Break
+97,Thesis Meeting,Academic,Lexical,The theoretical framework suggests,English,F,Barker Center,Morning Meeting
+98,Study Break,Casual,Lexical,The main idea is,English,F,Pennypacker,Evening Social
+99,Class Discussion,Academic,Discourse,In light of these findings,Sociology,M,William James Hall,Morning Class
+100,Dining Hall,Casual,Discourse,So when you look at it,Sociology,M,Quincy House,Dinner Time
