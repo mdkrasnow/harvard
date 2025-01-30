@@ -1,0 +1,263 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+
+\begin{center}
+\bf \Large
+Problem Set 1 \\[0.5 em]
+\large
+Due Wednesday, February 5, 2025
+\end{center}
+\begin{center}
+\bf \Large
+Matt Krasnow
+\end{center}
+
+\bigskip
+
+\begin{problem}
+(Exercise 1.1 in Rudin) 
+If $r$ is a non-zero rational number and $x$ is an irrational number, prove that $r + x$ and $r x$ are irrational. 
+\end{problem}
+
+
+\textbf{Proof:} I will prove this by contradiction.
+
+\section*{Proving that $r + x$ is irrational}  
+
+\textbf{Step 1: Assume the contrary.}  
+Assume, for contradiction, that $r + x$ is rational.  
+By definition of rational numbers, we can write:
+
+\[
+r = \frac{m}{n}, \quad m, n \in \mathbb{Z}, \quad n \neq 0
+\]
+
+\[
+r + x = \frac{a}{b}, \quad a, b \in \mathbb{Z}, \quad b \neq 0
+\]
+
+\textbf{Step 2: Solve for $x$.}  
+Rearranging the equation:
+
+\[
+x = \frac{a}{b} - \frac{m}{n}
+\]
+
+\textbf{Step 3: Simplify the expression.}  
+Since the rationals are closed under subtraction, we simplify:
+
+\[
+x = \frac{a n - m b}{b n}
+\]
+
+Since integers are closed under multiplication and subtraction, the numerator and denominator are integers.  
+Thus, $x$ is of the form $\frac{c}{d}$ where $c, d \in \mathbb{Z}$ and $d \neq 0$, meaning $x$ is rational.
+
+\textbf{Step 4: Contradiction.}  
+This contradicts our original assumption that $x$ is irrational.  
+Thus, our assumption that $r + x$ is rational must be false, and we conclude:
+
+\[
+r + x \text{ is irrational.}
+\]
+
+\section*{Proving that $r x$ is irrational}
+
+\textbf{Step 1: Assume the contrary.}  
+Assume, for contradiction, that $r x$ is rational.  
+By definition of rational numbers, we can write:
+
+\[
+r x = \frac{c}{d}, \quad c, d \in \mathbb{Z}, \quad d \neq 0
+\]
+
+\textbf{Step 2: Express $x$ explicitly.}  
+Since $r$ is rational, we substitute $r = \frac{m}{n}$:
+
+\[
+\frac{m}{n} x = \frac{c}{d}
+\]
+
+\textbf{Step 3: Solve for $x$.}  
+Rearranging,
+
+\[
+x = \frac{c n}{m d}
+\]
+
+\textbf{Step 4: Check rationality.}  
+Since integers are closed under multiplication, we see that $x$ is of the form:
+
+\[
+x = \frac{f}{g}, \quad f, g \in \mathbb{Z}, \quad g \neq 0
+\]
+
+which implies $x$ is rational.
+
+\textbf{Step 5: Contradiction.}  
+This contradicts our original assumption that $x$ is irrational.  
+Thus, our assumption that $r x$ is rational must be false, and we conclude:
+
+\[
+r x \text{ is irrational.}
+\]
+
+\qed
+
+\newpage
+
+\begin{problem}
+(Exercise 1.4 in Rudin) 
+Let $E$ be a non-empty subset of an ordered set. 
+Suppose $\alpha$ is a lower bound of $E$ and $\beta$ is an upper bound of $E$. 
+Prove that $\alpha \leq \beta$. 
+\end{problem}
+
+\textbf{Proof.} I will prove this directly.
+
+An ordered set is defined in Rudin 1.5 to have the following properties:
+
+\begin{enumerate}
+    \item If \( x, y \in S \), then exactly one of the following is true:
+    \[
+    x \leq y, \quad x \geq y, \quad x = y
+    \]
+
+    \item If \( x, y, z \in S \), if
+    \[
+    x < y \quad \text{and} \quad y < z
+    \]
+    then
+    \[
+    x < z.
+    \]
+\end{enumerate}
+
+By definition of a lower bound,
+\[
+\forall x \in E, \quad \alpha \leq x.
+\]
+
+By definition of an upper bound,
+\[
+\forall x \in E, \quad \beta \geq x.
+\]
+
+Let \( x_i \) be the \( i \)th value in \( E \),
+\[
+\alpha \leq x_i \quad \text{and} \quad x_i \leq \beta.
+\]
+
+Thus, by the transitive property,
+\[
+\alpha \leq \beta.
+\]
+
+\(\square\)
+
+
+\newpage 
+
+\begin{problem}
+(Exercise 1.5 in Rudin)
+Let $A$ be a non-empty set of real numbers which is bounded below. 
+Let $-A$ be the set of all numbers $-x$, where $x\in A$. 
+Prove that 
+\[
+\inf A = - \sup (-A).
+\]
+\end{problem}
+\textbf{Proof:} I will prove this directly.
+
+By definition,
+
+\[
+\inf(A) \leq X \quad \forall X \in A
+\]
+
+\[
+\sup(-A) \geq X \quad \forall X \in -A
+\]
+
+By negating a set, the order is reversed by definition.
+
+Thus, 
+
+the least number becomes the largest, the largest becomes the least, etc.
+
+Thus, it follows that
+
+\[
+- \sup(-A) \leq X \quad \forall X \in -(-A)
+\]
+
+because \( \sup(-A) \) is the greatest value in the set \( A \).
+
+By properties of fields, \( -(-X) = X \).
+
+Thus, \( -(-A) = A \).
+
+It follows that
+
+\[
+- \sup(-A) \leq X \quad \forall X \in A
+\]
+
+This is the same form as the \( \inf(A) \).
+
+Thus,
+
+\[
+\inf(A) = -\sup(-A)
+\]
+
+\(\square\)
+
+\newpage
+
+\begin{problem}
+Let $A \subset \mathbb{R}$ be a non-empty set of real numbers which is bounded above. 
+Prove that, for any positive real number $\epsilon > 0$, there exists $x \in A$ such that $\sup A - x \leq \epsilon$. 
+\end{problem}
+
+\section*{Proof}
+I will prove this directly using case work.
+
+\subsection*{Case 1: \( \sup(A) \in A \)}
+If \( \sup(A) \in A \), this implies that 
+\[
+\sup(A) - \sup(A) \leq \epsilon
+\]
+for any value \( \epsilon \in \mathbb{R}_{>0} \) because
+\[
+\sup(A) - \sup(A) = 0.
+\]
+
+\subsection*{Case 2: \( \sup(A) \notin A \)}
+Since \( A \) is bounded from above and is a subset of the real numbers, the values in \( A \) must approach but never achieve \( \sup(A) \). 
+
+This indicates that \( A \) is an infinitely long set which tends to \( \sup(A) \), getting infinitely closer in value.
+
+Since there exist infinitely close values to \( \sup(A) \) which are in \( A \),
+\[
+\sup(A) - x \text{ must be less than any value of } \epsilon \in \mathbb{R}_{>0} \text{ for some value of } x.
+\]
+
+
+
+\end{document}
