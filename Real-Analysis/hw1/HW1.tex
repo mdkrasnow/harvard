@@ -32,12 +32,15 @@ Matt Krasnow
 If \( r \) is a non-zero rational number and \( x \) is an irrational number, prove that \( r + x \) and \( r x \) are irrational.
 \end{problem}
 
-\textbf{Proof:} We will prove both parts by contradiction.
+\begin{proof}
+I will prove both parts by contradiction.
 
-\section*{Proof that \( r + x \) is irrational}
+\medskip
+
+\noindent\textbf{Proof that \( r + x \) is irrational}
 
 \textbf{Step 1: Assume the contrary.}\\
-Suppose, for the sake of contradiction, that \( r + x \) is rational. By definition, we can express:
+Suppose, for the sake of contradiction, that \( r + x \) is rational. By definition, I can express:
 \[
 r = \frac{m}{n}, \quad \text{with } m, n \in \mathbb{Z}, \; n \neq 0,
 \]
@@ -53,7 +56,7 @@ x = \frac{a}{b} - \frac{m}{n}.
 \]
 
 \textbf{Step 3: Simplify the expression.}\\
-Combining the fractions, we have:
+Combining the fractions, I have:
 \[
 x = \frac{a n - m b}{b n}.
 \]
@@ -65,10 +68,12 @@ This conclusion contradicts the assumption that \( x \) is irrational. Hence, th
 r + x \text{ is irrational.}
 \]
 
-\section*{Proof that \( r x \) is irrational}
+\medskip
+
+\noindent\textbf{Proof that \( r x \) is irrational}
 
 \textbf{Step 1: Assume the contrary.}\\
-Suppose, for the sake of contradiction, that \( r x \) is rational. Then we can write:
+Suppose, for the sake of contradiction, that \( r x \) is rational. Then I can write:
 \[
 r x = \frac{c}{d}, \quad \text{with } c, d \in \mathbb{Z}, \; d \neq 0.
 \]
@@ -100,8 +105,7 @@ This contradicts the hypothesis that \( x \) is irrational. Therefore, the assum
 \[
 r x \text{ is irrational.}
 \]
-
-\qed
+\end{proof}
 
 \newpage
 
@@ -112,48 +116,24 @@ Suppose $\alpha$ is a lower bound of $E$ and $\beta$ is an upper bound of $E$.
 Prove that $\alpha \leq \beta$. 
 \end{problem}
 
-\textbf{Proof.} I will prove this directly.
-
-An ordered set is defined in Rudin 1.5 to have the following properties:
-
-\begin{enumerate}
-    \item If \( x, y \in S \), then exactly one of the following is true:
-    \[
-    x \leq y, \quad x \geq y, \quad x = y
-    \]
-
-    \item If \( x, y, z \in S \), if
-    \[
-    x < y \quad \text{and} \quad y < z
-    \]
-    then
-    \[
-    x < z.
-    \]
-\end{enumerate}
-
-By definition of a lower bound,
+\begin{proof}
+I prove the statement directly. Since \( E \) is non-empty, choose an arbitrary element \( x \in E \). By the definition of a lower bound, I have
 \[
 \forall x \in E, \quad \alpha \leq x.
 \]
-
-By definition of an upper bound,
+Likewise, by the definition of an upper bound, it follows that
 \[
-\forall x \in E, \quad \beta \geq x.
+\forall x \in E, \quad x \leq \beta.
 \]
-
-Let \( x_i \) be the \( i \)th value in \( E \),
+Thus, for my chosen \( x \in E \), I obtain
 \[
-\alpha \leq x_i \quad \text{and} \quad x_i \leq \beta.
+\alpha \leq x \quad \text{and} \quad x \leq \beta.
 \]
-
-Thus, by the transitive property,
+By the transitive property of the order relation, I conclude that
 \[
 \alpha \leq \beta.
 \]
-
-\(\square\)
-
+\end{proof}
 
 \newpage 
 
@@ -166,82 +146,84 @@ Prove that
 \inf A = - \sup (-A).
 \]
 \end{problem}
-\textbf{Proof:} I will prove this directly.
 
-By definition,
+\begin{proof}
+I wish to show that \(-\sup(-A)\) is the greatest lower bound of \(A\).
 
+Since \(A\) is bounded below, the set \(A\) has an infimum, say \(m = \inf A\). Similarly, since \(A\) is non-empty and bounded below, the set \(-A\) is non-empty and bounded above, so it has a supremum, say \(s = \sup(-A)\).
+
+Recall the following two properties:
+\begin{enumerate}
+    \item For any \(x \in A\), I have \(m \le x\).
+    \item For any \(y \in -A\), I have \(y \le s\).
+\end{enumerate}
+
+Note that for every \(x \in A\), the corresponding element \(-x\) belongs to \(-A\). Thus, for every \(x \in A\) I have
 \[
-\inf(A) \leq X \quad \forall X \in A
+-x \le s.
+\]
+Multiplying the inequality by \(-1\) (which reverses the inequality), I obtain
+\[
+x \ge -s.
+\]
+This shows that \(-s\) is a lower bound for \(A\); that is,
+\[
+- \sup(-A) \le x \quad \forall x \in A.
 \]
 
+To establish that \(-s\) is in fact the greatest lower bound (i.e., the infimum of \(A\)), suppose \(m'\) is any lower bound for \(A\). Then for every \(x \in A\), I have
 \[
-\sup(-A) \geq X \quad \forall X \in -A
+m' \le x.
 \]
-
-By negating a set, the order is reversed by definition.
-
-Thus, 
-
-the least number becomes the largest, the largest becomes the least, etc.
-
-Thus, it follows that
-
+Multiplying by \(-1\) (and reversing the inequality) yields
 \[
-- \sup(-A) \leq X \quad \forall X \in -(-A)
+-m' \ge -x.
 \]
-
-because \( \sup(-A) \) is the greatest value in the set \( A \).
-
-By properties of fields, \( -(-X) = X \).
-
-Thus, \( -(-A) = A \).
-
-It follows that
-
+Since this holds for all \(x \in A\), I conclude that \(-m'\) is an upper bound for \(-A\). Hence, by the definition of supremum,
 \[
-- \sup(-A) \leq X \quad \forall X \in A
+-m' \ge \sup(-A) = s.
 \]
-
-This is the same form as the \( \inf(A) \).
-
-Thus,
-
+Multiplying by \(-1\) (again reversing the inequality) gives
 \[
-\inf(A) = -\sup(-A)
+m' \le -s.
 \]
-
-\(\square\)
+Thus, any lower bound \(m'\) of \(A\) satisfies \(m' \le -s\). Since I already showed that \(-s\) is itself a lower bound for \(A\), it follows that
+\[
+\inf A = -s = -\sup(-A).
+\]
+\end{proof}
 
 \newpage
 
 \begin{problem}
-Let $A \subset \mathbb{R}$ be a non-empty set of real numbers which is bounded above. 
-Prove that, for any positive real number $\epsilon > 0$, there exists $x \in A$ such that $\sup A - x \leq \epsilon$. 
+Let \( A \subset \mathbb{R} \) be a non-empty set of real numbers which is bounded above. 
+Prove that, for any positive real number \(\varepsilon > 0\), there exists \(x \in A\) such that \(\sup A - x \leq \varepsilon\).
 \end{problem}
 
-\section*{Proof}
-I will prove this directly using case work.
+\begin{proof}
+I prove the statement by considering two cases.
 
-\subsection*{Case 1: \( \sup(A) \in A \)}
-If \( \sup(A) \in A \), this implies that 
+\medskip
+
+\noindent\textbf{Case 1: \( \sup(A) \in A \)}\\
+If \( \sup(A) \in A \), I choose \( x = \sup(A) \). Then,
 \[
-\sup(A) - \sup(A) \leq \epsilon
+\sup(A) - x = \sup(A) - \sup(A) = 0 \leq \varepsilon,
 \]
-for any value \( \epsilon \in \mathbb{R}_{>0} \) because
+which holds for every \(\varepsilon > 0\).
+
+\medskip
+
+\noindent\textbf{Case 2: \( \sup(A) \notin A \)}\\
+Since \( A \) is bounded above by \( \sup(A) \) and \( \sup(A) \notin A \), by the definition of the supremum, for every \(\varepsilon > 0\) the number \( \sup(A) - \varepsilon \) is not an upper bound for \( A \). Hence, there exists some \( x \in A \) such that
 \[
-\sup(A) - \sup(A) = 0.
+x > \sup(A) - \varepsilon.
 \]
-
-\subsection*{Case 2: \( \sup(A) \notin A \)}
-Since \( A \) is bounded from above and is a subset of the real numbers, the values in \( A \) must approach but never achieve \( \sup(A) \). 
-
-This indicates that \( A \) is an infinitely long set which tends to \( \sup(A) \), getting infinitely closer in value.
-
-Since there exist infinitely close values to \( \sup(A) \) which are in \( A \),
+This inequality can be rewritten as
 \[
-\sup(A) - x \text{ must be less than any value of } \epsilon \in \mathbb{R}_{>0} \text{ for some value of } x.
+\sup(A) - x < \varepsilon.
 \]
-
-
+Thus, for any given \(\varepsilon > 0\), I have found an \( x \in A \) satisfying \(\sup A - x < \varepsilon\), which completes the proof.
+\end{proof}
 
 \end{document}
