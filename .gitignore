@@ -5,3 +5,12 @@ sophomore-fall/CS 109/final-project/merged_data.csv
 sophomore-fall/CS 109/final-project/Table_8_county_covariates.csv
 
 venv/
+
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz

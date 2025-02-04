@@ -1,5 +1,5 @@
 \documentclass[12pt,oneside]{article}
-\usepackage[margin = 1in]{geometry}
+\usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{physics}
@@ -9,16 +9,14 @@
 \theoremstyle{definition}
 \newtheorem{problem}{Problem}
 
-
 \begin{document}
 \pagestyle{fancy}
 \fancyhead[L]{Math 112: Introductory Real Analysis}
 \fancyhead[R]{Harvard University, Spring 2025}
 
-
 \begin{center}
 \bf \Large
-Problem Set 1 \\[0.5 em]
+Problem Set 1 \\[0.5em]
 \large
 Due Wednesday, February 5, 2025
 \end{center}
@@ -30,89 +28,75 @@ Matt Krasnow
 \bigskip
 
 \begin{problem}
-(Exercise 1.1 in Rudin) 
-If $r$ is a non-zero rational number and $x$ is an irrational number, prove that $r + x$ and $r x$ are irrational. 
+(Exercise 1.1 in Rudin)\\
+If \( r \) is a non-zero rational number and \( x \) is an irrational number, prove that \( r + x \) and \( r x \) are irrational.
 \end{problem}
 
+\textbf{Proof:} We will prove both parts by contradiction.
 
-\textbf{Proof:} I will prove this by contradiction.
+\section*{Proof that \( r + x \) is irrational}
 
-\section*{Proving that $r + x$ is irrational}  
-
-\textbf{Step 1: Assume the contrary.}  
-Assume, for contradiction, that $r + x$ is rational.  
-By definition of rational numbers, we can write:
-
+\textbf{Step 1: Assume the contrary.}\\
+Suppose, for the sake of contradiction, that \( r + x \) is rational. By definition, we can express:
 \[
-r = \frac{m}{n}, \quad m, n \in \mathbb{Z}, \quad n \neq 0
+r = \frac{m}{n}, \quad \text{with } m, n \in \mathbb{Z}, \; n \neq 0,
+\]
+and
+\[
+r + x = \frac{a}{b}, \quad \text{with } a, b \in \mathbb{Z}, \; b \neq 0.
 \]
 
+\textbf{Step 2: Solve for \( x \).}\\
+Subtracting \( r \) from both sides gives:
 \[
-r + x = \frac{a}{b}, \quad a, b \in \mathbb{Z}, \quad b \neq 0
+x = \frac{a}{b} - \frac{m}{n}.
 \]
 
-\textbf{Step 2: Solve for $x$.}  
-Rearranging the equation:
-
+\textbf{Step 3: Simplify the expression.}\\
+Combining the fractions, we have:
 \[
-x = \frac{a}{b} - \frac{m}{n}
+x = \frac{a n - m b}{b n}.
 \]
+Since \( a n - m b \) and \( b n \) are integers (with \( b n \neq 0 \)), \( x \) is a rational number.
 
-\textbf{Step 3: Simplify the expression.}  
-Since the rationals are closed under subtraction, we simplify:
-
-\[
-x = \frac{a n - m b}{b n}
-\]
-
-Since integers are closed under multiplication and subtraction, the numerator and denominator are integers.  
-Thus, $x$ is of the form $\frac{c}{d}$ where $c, d \in \mathbb{Z}$ and $d \neq 0$, meaning $x$ is rational.
-
-\textbf{Step 4: Contradiction.}  
-This contradicts our original assumption that $x$ is irrational.  
-Thus, our assumption that $r + x$ is rational must be false, and we conclude:
-
+\textbf{Step 4: Arrive at a contradiction.}\\
+This conclusion contradicts the assumption that \( x \) is irrational. Hence, the assumption that \( r + x \) is rational is false, so:
 \[
 r + x \text{ is irrational.}
 \]
 
-\section*{Proving that $r x$ is irrational}
+\section*{Proof that \( r x \) is irrational}
 
-\textbf{Step 1: Assume the contrary.}  
-Assume, for contradiction, that $r x$ is rational.  
-By definition of rational numbers, we can write:
-
+\textbf{Step 1: Assume the contrary.}\\
+Suppose, for the sake of contradiction, that \( r x \) is rational. Then we can write:
 \[
-r x = \frac{c}{d}, \quad c, d \in \mathbb{Z}, \quad d \neq 0
+r x = \frac{c}{d}, \quad \text{with } c, d \in \mathbb{Z}, \; d \neq 0.
 \]
 
-\textbf{Step 2: Express $x$ explicitly.}  
-Since $r$ is rational, we substitute $r = \frac{m}{n}$:
-
+\textbf{Step 2: Substitute the expression for \( r \).}\\
+Since \( r \) is a nonzero rational number, write:
 \[
-\frac{m}{n} x = \frac{c}{d}
+r = \frac{m}{n}, \quad \text{with } m, n \in \mathbb{Z}, \; n \neq 0 \text{ and } m \neq 0.
+\]
+Then, the equation becomes:
+\[
+\frac{m}{n} \cdot x = \frac{c}{d}.
 \]
 
-\textbf{Step 3: Solve for $x$.}  
-Rearranging,
-
+\textbf{Step 3: Solve for \( x \).}\\
+Multiplying both sides by \( \frac{n}{m} \) (which is valid because \( m \neq 0 \)) gives:
 \[
-x = \frac{c n}{m d}
+x = \frac{c n}{m d}.
 \]
 
-\textbf{Step 4: Check rationality.}  
-Since integers are closed under multiplication, we see that $x$ is of the form:
-
+\textbf{Step 4: Check rationality.}\\
+Since \( c n \) and \( m d \) are integers (with \( m d \neq 0 \)), \( x \) is rational. That is, \( x \) can be written in the form:
 \[
-x = \frac{f}{g}, \quad f, g \in \mathbb{Z}, \quad g \neq 0
+x = \frac{f}{g}, \quad \text{with } f, g \in \mathbb{Z}, \; g \neq 0.
 \]
 
-which implies $x$ is rational.
-
-\textbf{Step 5: Contradiction.}  
-This contradicts our original assumption that $x$ is irrational.  
-Thus, our assumption that $r x$ is rational must be false, and we conclude:
-
+\textbf{Step 5: Arrive at a contradiction.}\\
+This contradicts the hypothesis that \( x \) is irrational. Therefore, the assumption that \( r x \) is rational must be false, so:
 \[
 r x \text{ is irrational.}
 \]
