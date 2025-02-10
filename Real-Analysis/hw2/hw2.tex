@@ -1,0 +1,266 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+
+\begin{center}
+\bf \Large
+Problem Set 2 \\[0.5 em]
+\large
+Due Wednesday, February 12, 2025
+\end{center}
+
+\bigskip
+
+\begin{problem}
+(Exercise 1.6(a) in Rudin)
+Fix a real number $b > 1$. 
+If $m, n, p, q$ are integers with $n>0$, $q>0$, and $\frac{m}{n} = \frac{p}{q}$, then prove that
+\[
+(b^m)^{\frac{1}{n}} = (b^p)^{\frac{1}{q}}.
+\]
+\end{problem}
+
+
+\begin{proof}
+    We wish to show that if
+    \[
+    \frac{m}{n} = \frac{p}{q}
+    \]
+    with \(m,n,p,q\in\mathbb{Z}\), \(n>0\) and \(q>0\), then
+    \[
+    (b^m)^{\frac{1}{n}} = (b^p)^{\frac{1}{q}}.
+    \]
+    
+    \medskip
+    
+    \textbf{Step 1: Equate the rational exponents.}\\
+    Since
+    \[
+    \frac{m}{n} = \frac{p}{q},
+    \]
+    cross-multiplication yields
+    \[
+    m q = p n.
+    \]
+    
+    \medskip
+    
+    \textbf{Step 2: Define the two expressions.}\\
+    Let
+    \[
+    x = (b^m)^{\frac{1}{n}} \quad \text{and} \quad y = (b^p)^{\frac{1}{q}}.
+    \]
+    By definition, \(x\) is the unique positive real number satisfying
+    \[
+    x^n = b^m,
+    \]
+    and similarly, \(y\) is the unique positive real number satisfying
+    \[
+    y^q = b^p.
+    \]
+    
+    \medskip
+    
+    \textbf{Step 3: Raise both expressions to the power \(nq\).}\\
+    Raising \(x\) to the \(nq\)-th power, we obtain
+    \[
+    x^{nq} = \left((b^m)^{\frac{1}{n}}\right)^{nq} = (b^m)^q = b^{mq}.
+    \]
+    Similarly, raising \(y\) to the \(nq\)-th power yields
+    \[
+    y^{nq} = \left((b^p)^{\frac{1}{q}}\right)^{nq} = (b^p)^n = b^{pn}.
+    \]
+    
+    \medskip
+    
+    \textbf{Step 4: Use the equality from Step 1.}\\
+    Since \(mq = pn\), it follows that
+    \[
+    x^{nq} = b^{mq} = b^{pn} = y^{nq}.
+    \]
+    
+    \medskip
+    
+    \textbf{Step 5: Conclude the proof.}\\
+    Because the function \(f(t)=t^{nq}\) is strictly increasing on the positive real numbers, the equality \(x^{nq} = y^{nq}\) implies \(x=y\). Therefore,
+    \[
+    (b^m)^{\frac{1}{n}} = (b^p)^{\frac{1}{q}},
+    \]
+    which completes the proof.
+    \end{proof}
+
+
+
+
+
+
+
+
+\newpage
+\begin{problem}
+(Exercise 1.6(b) in Rudin)
+It follows from the previous problem that it makes sense to define $b^r = (b^m)^{\frac{1}{n}}$ for any rational number $r = \frac{m}{n}$. 
+For any rational numbers $r$ and $s$, prove that 
+\[
+b^{r+s} = b^{r}b^{s}.
+\]
+\end{problem}
+
+
+\begin{proof}
+    Let \( r = \frac{m}{n} \) and \( s = \frac{p}{q} \), where \( m, n, p, q \in \mathbb{Z} \) with \( n, q > 0 \). Then,
+    \[
+    r+s = \frac{m}{n} + \frac{p}{q} = \frac{mq + np}{nq}.
+    \]
+    By the definition of rational exponents,
+    \[
+    b^{r+s} = b^{\frac{mq+np}{nq}} = \left( b^{mq+np} \right)^{\frac{1}{nq}}.
+    \]
+    Using the law of exponents for integers, we have
+    \[
+    b^{mq+np} = b^{mq} \cdot b^{np}.
+    \]
+    Thus,
+    \[
+    b^{r+s} = \left( b^{mq} \cdot b^{np} \right)^{\frac{1}{nq}}.
+    \]
+    By the multiplicative property of \(nq\)-th roots,
+    \[
+    b^{r+s} = \left( b^{mq} \right)^{\frac{1}{nq}} \cdot \left( b^{np} \right)^{\frac{1}{nq}}.
+    \]
+    Notice that
+    \[
+    \left( b^{mq} \right)^{\frac{1}{nq}} = \left( \left(b^m\right)^q \right)^{\frac{1}{nq}} = \left( b^m \right)^{\frac{q}{nq}} = \left( b^m \right)^{\frac{1}{n}} = b^r,
+    \]
+    and similarly,
+    \[
+    \left( b^{np} \right)^{\frac{1}{nq}} = \left( \left(b^p\right)^n \right)^{\frac{1}{nq}} = \left( b^p \right)^{\frac{n}{nq}} = \left( b^p \right)^{\frac{1}{q}} = b^s.
+    \]
+    Therefore,
+    \[
+    b^{r+s} = b^r \cdot b^s,
+    \]
+    which completes the proof.
+    \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\begin{problem}
+(Exercise 1.6(c) in Rudin)
+For any real $x$, define
+\[
+B(x) := \{b^t \;\vert\; t\in \mathbb{Q}, t \leq x\}.
+\]
+Prove that
+\[
+b^r = \sup B(r)
+\]
+for any rational $r$. 
+\end{problem}
+
+
+
+\begin{proof}
+    Assume that $b>1$. Notice that the function
+    \[
+    t \mapsto b^t
+    \]
+    is strictly increasing when $b>1$. In other words, if $t_1, t_2 \in \mathbb{Q}$ with $t_1 \le t_2$, then
+    \[
+    b^{t_1} \le b^{t_2},
+    \]
+    and if $t_1 < t_2$, the inequality is strict:
+    \[
+    b^{t_1} < b^{t_2}.
+    \]
+    
+    Now, fix a rational number $r$. By the definition of $B(r)$, every element in $B(r)$ is of the form $b^t$ for some $t \in \mathbb{Q}$ with $t \le r$. Since the function is strictly increasing, it follows that for every such $t$, 
+    \[
+    b^t \le b^r.
+    \]
+    Thus, $b^r$ is an upper bound for the set $B(r)$.
+    
+    Moreover, because $r$ is a rational number and $r\le r$, we have $b^r \in B(r)$. Hence, there is no upper bound of $B(r)$ smaller than $b^r$. Therefore, $b^r$ is the least upper bound of $B(r)$; in other words,
+    \[
+    \sup B(r)=b^r.
+    \]
+    \end{proof}
+
+
+
+
+
+
+\newpage
+\begin{problem}
+(Exercise 1.6(d) in Rudin)
+It follows from the previous problem that it makes sense to define
+\[
+b^x := \sup B(x)
+\]
+for any real $x$. 
+Prove that $b^{x+y} = b^x b^y$. 
+\end{problem}
+
+
+\begin{proof}
+    We begin by noting that the rational numbers are dense in \(\mathbb{R}\). Hence, for any real numbers \(x\) and \(y\), there exist sequences \(\{r_n\}\) and \(\{s_n\}\) of rational numbers such that
+    \[
+    r_n \to x \quad \text{and} \quad s_n \to y \quad \text{as } n \to \infty.
+    \]
+    
+    In the previous problem it was shown that for any rational numbers \(r\) and \(s\) one has
+    \[
+    b^{r+s} = b^r\, b^s.
+    \]
+    Thus, for each \(n\) we have
+    \[
+    b^{r_n+s_n} = b^{r_n}\, b^{s_n}.
+    \]
+    
+    By the definition of \(b^x\) as the supremum of the set \(\{b^r : r \in \mathbb{Q},\, r < x\}\) and using the supremum approximation property (which states that for any \(\varepsilon>0\) there exists a rational number \(r\) with \(x-\varepsilon < r < x\)), we deduce that
+    \[
+    \lim_{n\to\infty} b^{r_n} = b^x \quad \text{and} \quad \lim_{n\to\infty} b^{s_n} = b^y.
+    \]
+    Similarly, since \(r_n+s_n\to x+y\), it follows that
+    \[
+    \lim_{n\to\infty} b^{r_n+s_n} = b^{x+y}.
+    \]
+    
+    Taking the limit in the identity \(b^{r_n+s_n} = b^{r_n}\, b^{s_n}\), we obtain
+    \[
+    b^{x+y} = b^x\, b^y.
+    \]
+    This completes the proof.
+    \end{proof}
+    
+
+    
+
+\end{document}
+
