@@ -21,6 +21,25 @@
 \usepackage{float}
 \usepackage{ifthen}
 \usepackage{bm}
+\usepackage[breakable]{tcolorbox}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{white},    % set background color
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red},
+    basicstyle=\ttfamily\footnotesize, % use a monospaced font
+    breakatwhitespace=false,           % automatic breaks
+    breaklines=true,                   % break long lines
+    captionpos=b,                      % position of the caption
+    keepspaces=true,                   % keep spaces in text
+    numbers=left,                      % line numbers on the left
+    numbersep=5pt,                     % spacing between numbers and code
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+}
 
 \usepackage[mmddyyyy,hhmmss]{datetime}
 
@@ -198,7 +217,104 @@ dictates how quickly the kernel decays).
 
 \newpage
 \begin{solution}
-	Your solution here.
+
+
+\begin{enumerate}
+  \item a) 
+
+  As $\tau$ increases, the model becomes smoother and less sensitive to noise.
+  Even as  $\tau$ gets extremely large, it still is able to capture some of the patterns in the data, which is not true for kNN; kNN converges to the mean of the dataset as $k \to N$. In this case, the kernelized model converges slower. 
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img_output/p1.1a.png}
+    \caption{Plot of the kNN model fits for different values of $k$.}
+  \end{figure}
+
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img_output/p1.2a.png}
+    \caption{Plot of the kernel modle fits for different values of $\tau$.}
+  \end{figure}
+
+  b)
+  \begin{lstlisting}[language=Python]
+
+    def model_mse(predictions, true):
+    """
+    Calculate the MSE for the given model predictions, with respect to the true values
+
+    :param predictions: predictions given by the model
+    :param true: corresponding true values
+    :return: the mean squared error
+    """
+    return np.mean((predictions - true) ** 2)
+
+    k_values = [1, 3, len(year_train) - 1]
+for k in k_values:
+    preds = predict_knn(year_test, k, year_train, temp_train)
+    mse = model_mse(preds, temp_test)
+    print(f"k = {k}, Test MSE = {mse}")
+
+    \end{lstlisting}
+
+    k = 1, Test MSE = 1.7406000000000004 \newline
+    k = 3, Test MSE = 3.8907662222222212 \newline
+    k = 56, Test MSE = 9.528571442602042
+
+  
+  \item 
+  
+
+  \[
+\text{MSE} = \frac{1}{M} \sum_{m=1}^{M} \left( y'_m - \frac{\sum_{n=1}^{N} K_\tau(x_n, x'_m) \, y_n}{\sum_{n=1}^{N} K_\tau(x_n, x'_m)} \right)^2
+\]
+
+
+
+  \item 
+  
+  After computing the test set MSEs for \(\tau = 1\), \(\tau = 50\), and \(\tau = 2500\), we observed that the model with \(\tau = 50\) yields the lowest MSE.
+
+
+  Conceptually, this makes sense because:
+  \begin{itemize}
+    \item A small \(\tau\) leads to overfitting, as the model becomes too sensitive to noise in the training data.
+    \item A large \(\tau\) leads to underfitting, as the model fails to capture the underlying patterns in the data; it just fits to the average values and does not weight the data points appropriately.
+  \end{itemize}
+
+  Choosing \(\tau\) based on \(\mathcal{D}_\texttt{train}\) rather than \(\mathcal{D}_\texttt{test}\) would be a bad idea because it would lead to overfitting on the training data. The test data is very helpful because it allows us to evaluate the model based on data it hasn't seen yet, but which is still representative of the real, unerlying data-generating process. If we choose \(\tau\) based on the training data, the tau with the loweest MSE would be the smallest tau tested because it would be the closest fit to the training data, but would not generalize to unseen data. 
+
+
+  \item d)
+  
+  Time complexity
+
+  To determine the time complexity, we need to understand what is occuring for each data point. For each data point, we must calculate the kernel for every other data point. Thus, the time complexity is \(O(N^2)\) because for every data point n in N, we have to do N calculations.$ N \times N = N^2$. 
+
+  Space complexity is \(O(N)\) because we need to store N data points.
+
+
+  \item e)
+  
+   \[
+    \lim_{\tau \to 0} f_\tau(x^*) = \frac{\sum_{n=1}^N \mathbb{I}\{x_n = x^*\}\, y_n}{\sum_{n=1}^N \mathbb{I}\{x_n = x^*\}},
+    \]
+
+    where \(\mathbb{I}\) is the indicator function.
+
+      If \(x_n = x^*\), then \(K_\tau(x_n, x^*) = 1\) and all other terms are 0. Thus, the limit is equal to the value of \(y_n\) for that data point.
+
+
+\end{enumerate}
+
+
+
+
+
+
+
 \end{solution}
 
 
@@ -245,7 +361,98 @@ expectation taken over the joint distribution $p(x,y)$. This essentially just me
 
 \newpage
 \begin{solution}
-	Your solution here.
+
+
+
+\begin{tcolorbox}[title=Solution,colback=white,colframe=black, breakable]
+
+\begin{enumerate}
+  \item a)
+
+  We want to minimize
+
+  \[
+  E_{x,y} \left[ (y - \hat{y})^2 \right]
+  \]
+  
+  \[
+  E_{x,y} \left[ (y - w x)^2 \right]
+  \]
+  
+  \[
+  E_{x,y} \left[ y^2 - 2wx y + w^2 x^2 \right] =
+  \]
+  
+  \[
+  E_{x,y} \left[ y^2 \right] - 2w E_{x,y} \left[ xy \right] + w^2 E_{x,y} \left[ x^2 \right]
+  \]
+  
+  We can find the minimum of this function by taking the derivative w.r.t. \( w \)
+  
+  \[
+  \frac{d MSE}{dw} = 2w E_{x,y} \left[ x^2 \right] - 2 E_{x,y} \left[ xy \right] = 0
+  \]
+  
+  \[
+  w = \frac{E_{x,y} \left[ xy \right]}{ E_{x,y} \left[ x^2 \right]}
+  \]
+
+  We can confirm this is the minimum by checking the second derivative.
+
+  \[
+  \frac{d^2 MSE}{dw^2} = 2 E_{x,y} \left[ x^2 \right] \text{ is always positive.}
+  \]
+  
+  Thus, it is convex \& this is a minimum.
+
+
+  \item b)
+
+  We can use method of moments estimators to estimate the values for these values.
+
+
+  MoM for \( E_{x,y} \left[ xy \right] \):
+
+\[
+\approx \frac{1}{n} \sum_{i=1}^{n} x_i y_i
+\]
+
+MoM for \( E_{x,y} \left[ x^2 \right] \):
+
+\[
+\approx \frac{1}{n} \sum_{i=1}^{n} x_i^2
+\]
+
+
+
+
+  \item c)
+
+  If we use method of moments estimators we get exactly the same as the closed-form OLS solution from HW0 for the one-dimensional (no-intercept) case. 
+  This is interesting because it shows that the theoretical derivation is equivalent to the practical implementation.
+
+
+
+
+  \item d)
+  
+  No, none of my derivations relied on the fact or the assumption that variables x and y would be jointly Gaussian. We never made any claim that or any assumption that they were Gaussian. In this case, using method of moments estimators simply is nonparametric and you do not need to define or assume that the data comes from a specific data generating process to use them and to find the values. In problem 2.1, the derivation for the optimal w is just found from deriving it algebraically without any assumptions.
+
+
+
+
+\end{enumerate}
+
+
+
+
+
+\end{tcolorbox}
+
+
+
+
+
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -327,7 +534,73 @@ expectation taken over the joint distribution $p(x,y)$. This essentially just me
 
 \newpage 
 \begin{solution}
-	Your solution here.
+
+
+
+
+
+
+  \begin{tcolorbox}[title=Solution,colback=white,colframe=black,breakable]
+
+  \begin{enumerate}
+    \item
+      \includegraphics[width=0.8\textwidth]{img_output/p3.1.png}
+  
+    \item 
+    Well, the MSE for the first three models is relatively similar to each other. Model number one seems to have a decent fit to the data. Model two is pretty underfit to the data. Model three is relatively well fit to the data. 
+    
+
+    It's obvious that the fourth model underfits the data because the test MSE is so high.
+    
+  
+    \item 
+  
+    The purpose of the F transforms is to map the data, which is not necessarily linear, into a space that is linear so that we can apply the properties of linear regression.
+    this allows us to use the very powerful tool of linear regression in a case where we normally would not be able to. One of the key assumptions of linear regression is that the data must be linear. This is extremely restrictive; using F transforms allows us to use this power, simple, and interpretable model. 
+
+  
+    \item 
+    
+    The space complexity of lienar regression is $O(ND)$ because we need to store N data points and D features. \newline 
+    Since X is a matrix of size N x w, finding $(X' X)$ is $O(Nw^2)$ and finding the inverse is $O(w^3)$ \newline
+    $(X' Y)$ takes$ O(n*w^2)$ time and gives us a $ w x w $ matrix \newline
+    finally the matrix multiplication takes $O(w^3)$ time \newline
+    so the overall time is $O(w^2*(n + w))$ 
+    \newline
+
+    The storage does not change with the size of the training set N; we only need to store the calucated coefficeints for the features w. So we only need to store w numbers.  \newline
+    The time to compute also does not change based onthe training size--the computation only relies on the final parameters w -- we are calcualting the dot product of $ y = w^Tx$ \newline
+
+    kNN \newline
+    Storage complexity is $O(N)$ because we need to store N data points. \newline
+    Time complexity is $O(Nw)$ or maybe $O(N log(w))$ because we need to find the k nearest neighbors -- the distance formula is the complex part. \newline
+
+
+    Kernelized regression \newline
+    Storage complexity is $O(N)$ because we need to store N data points. \newline
+    Prediction time we need to calculate the kernel for all of the points to each of hte other points. If the kernel function is $O(w)$, then the time complexity is $O(N*w)$ \newline
+
+    \item 
+    We have three different kinds of regressors. \newline
+
+    I don't think there is an objective "best" and "worst", but each is definetley situational and only applicable in certain cases. \newline
+
+    kNN is certainly limited in the sense that it is not able to extrapolate. It can only predict based on the data it has seen. \newline
+
+    Kernelized regression is a bit more flexible because it is able to use a kernel(a weighting function to determine different distances) but it is still limited in the sense that it is not able to extrapolate. It can only predict based on the data it has seen. \newline
+
+    Linear regression is able to extrapolate, but it is a parametric model and the data may need to be massaged (transformed) into being linear to fit the assumptions. There are quite a few assumptions for lienar regression which makes it a little less flexible. 
+
+
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+
+
+
+
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -380,19 +653,284 @@ Note that minimizing $\mathcal{L}_{lasso}(\boldw)$ is exactly what LASSO regress
 \end{problem}
 
 \newpage
-\begin{solution}
-	Your solution here.
-\end{solution}
+\begin{tcolorbox}[title=Solution, colback=white, colframe=black, breakable]
+  \begin{enumerate}
+      \item 
+      
+      First, we need to write out the likelihood function:
+
+\[
+y_n = \hat{\omega}^T x_n + \epsilon_n \quad \text{where} \quad \epsilon_n \sim \mathcal{N}(0, \sigma^2)
+\]
+
+Thus,
+
+\[
+\hat{y}_n | \hat{\omega} \sim \mathcal{N}(\hat{X} \hat{\omega}, \sigma^2 I)
+\]
+
+\[
+P(\hat{y}_n | \hat{\omega}) = \left( \frac{1}{\sqrt{(2\pi \sigma^2)^N}} \right) \exp \left( -\frac{1}{2\sigma^2} \|\hat{y} - \hat{X} \hat{\omega} \|_2^2 \right)
+\]
+
+We have a prior for \( \hat{\omega} \):
+
+\[
+\hat{\omega} \sim \mathcal{N} (\hat{0}, \frac{\sigma^2}{\lambda} I)
+\]
+
+\[
+P(\hat{\omega}) = \left( \frac{1}{\sqrt{(2\pi \frac{\sigma^2}{\lambda})^D}} \right) \exp \left( -\frac{\lambda}{2\sigma^2} \|\hat{\omega} \|_2^2 \right)
+\]
+
+\section*{Find the Posterior}
+
+\[
+P(\hat{\omega} | \hat{X}, \hat{y}) \propto \exp \left[ -\frac{1}{2\sigma^2} \left( \|\hat{y} - \hat{X} \hat{\omega} \|_2^2 + \lambda \|\hat{\omega} \|_2^2 \right) \right]
+\]
+
+Finding the Maximum A Posteriori is the same as minimizing the negative log-posterior:
+
+\[
+-\log \left[ P(\hat{\omega} | \hat{X}, \hat{y}) \right] \propto \frac{1}{2\sigma^2} \left[ \|\hat{y} - \hat{X} \hat{\omega} \|_2^2 + \lambda \|\hat{\omega} \|_2^2 \right]
+\]
+
+Dropping the multiplicative constant:
+
+\[
+\propto \|\hat{y} - \hat{X} \hat{\omega} \|_2^2 + \lambda \|\hat{\omega} \|_2^2
+\]
+
+Dividing both sides by 2:
+
+\[
+\frac{1}{2} \|\hat{y} - \hat{X} \hat{\omega} \|_2^2 + \frac{\lambda}{2} \|\hat{\omega} \|_2^2
+\]
+
+which is exactly the ridge regression loss function.
+
+MAP is equal to min ridge.
+
+
+
+
+      \item 
+      
+      Solving for \( \mathbf{\hat{w}} \) which minimizes \( L_{\text{ridge}} (\mathbf{w}) \).
+
+Take derivative of result from 1:
+
+\[
+\frac{dL_{\text{ridge}} (\mathbf{w})}{d\mathbf{w}}
+\]
+
+\[
+L_{\text{ridge}} (\mathbf{w}) = \frac{1}{2} (\mathbf{y} - X\mathbf{w})^T (\mathbf{y} - X\mathbf{w}) + \frac{\lambda}{2} \mathbf{w}^T \mathbf{w}
+\]
+
+Derivative of the first term:
+
+\[
+\nabla_{\mathbf{w}} f(\mathbf{w}) = -X^T (\mathbf{y} - X\mathbf{w})
+\]
+
+by the chain rule.
+
+Derivative of the second term:
+
+\[
+\nabla_{\mathbf{w}} \left( \frac{\lambda}{2} \mathbf{w}^T \mathbf{w} \right) = \lambda \mathbf{w}
+\]
+
+Thus,
+
+\[
+\nabla_{\mathbf{w}} L_{\text{ridge}} (\mathbf{w}) = -X^T (\mathbf{y} - X\mathbf{w}) + \lambda \mathbf{w}
+\]
+
+Rearrange:
+
+\[
+\nabla_{\mathbf{w}} L_{\text{ridge}} (\mathbf{w}) = X^T X \mathbf{w} - X^T \mathbf{y} + \lambda \mathbf{w}
+\]
+
+Set equal to 0 and solve for \( \mathbf{w} \):
+
+\[
+X^T \mathbf{y} = (X^T X + \lambda I) \mathbf{w}
+\]
+
+Assume \( X^T X + \lambda I \) is invertible, multiply both sides by its inverse to get:
+
+\[
+\mathbf{\hat{w}} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
+\]
+
+
+
+
+
+      \item 
+      
+      This is a very similar process to part 1 of this question. We will use the same setups before:
+
+      \[
+      P(\hat{y}_n | \hat{w}) = \left( \frac{1}{\sqrt{(2\pi \sigma^2)^N}} \right) \exp \left( \frac{-1}{2\sigma^2} \| \hat{y} - X\hat{w} \|_2^2 \right)
+      \]
+      
+      However, now our prior is different:
+      
+      \[
+      P(\hat{w}) = \frac{\lambda}{\sigma^2} \exp \left( \frac{-|\hat{w}|}{2\sigma^2 / \lambda} \right)
+      \]
+      
+      Now,
+      
+      \[
+      P(\hat{w} | X, \hat{y}) \propto \left( \frac{1}{\sqrt{(2\pi \sigma^2)^N}} \right) \exp \left( \frac{-1}{2\sigma^2} \| \hat{y} - X\hat{w} \|_2^2 \right)
+      \]
+      
+      \[
+      \frac{\lambda}{\sigma^2} \exp \left( \frac{-|\hat{w}|}{2\sigma^2 / \lambda} \right)
+      \]
+      
+      Taking the negative log of this and dropping multiplicative constants:
+      
+      \[
+      -\log P(\hat{w} | X, \hat{y}) \propto
+      \]
+      
+      \[
+      \left( \frac{1}{2\sigma^2} \| \hat{y} - X\hat{w} \|_2^2 \right) + \frac{\lambda |\hat{w}|}{2\sigma^2 / \lambda}
+      \]
+      
+      Rearranging and dropping the \(\sigma^2\) constant,
+      
+      \[
+      \propto \frac{1}{2} \| \hat{y} - X\hat{w} \|_2^2 + \frac{\lambda}{2} \| \hat{w} \|_1
+      \]
+      
+      Thus, they are equivalent.
+
+
+
+      \item There is no general closed form for LASSO because it is a non differentiable function. It contains an absolute value term which is not differentiable at 0. Thus, we must use other methods to solve for it.
+      \item 
+      \begin{lstlisting}[language=Python]
+  def find_lasso_weights(lam, X, y):
+      """
+      Fit the weights of a LASSO linear regression through the coordinate descent algorithm.
+      
+      :param lam: the lambda parameter
+      :param X: the design matrix with training set features (with first column as intercept)
+      :param y: the training set labels
+      :return: the fitted weights as a numpy array
+      """
+      n, d = X.shape
+      w = np.ones(d)
+      max_iter = 5000
+      tol = 1e-6  # convergence tolerance
+      
+      col_norm_sq = np.sum(X**2, axis=0)
+      
+      for iteration in range(max_iter):
+          w_old = w.copy()
+          for j in range(d):
+              # r_j = y - (Xw - w[j]*X[:, j])
+              r_j = y - (X.dot(w) - w[j] * X[:, j])
+              # rho_j = x_j^T r_j
+              rho_j = np.dot(X[:, j], r_j)
+              
+              if j == 0:
+                  w[j] = rho_j / col_norm_sq[j]
+              else:
+                  w[j] = np.sign(rho_j) * max(np.abs(rho_j) - lam/2, 0) / col_norm_sq[j]
+          
+          # convergence check
+          if np.max(np.abs(w - w_old)) < tol:
+              break
+              
+      return w
+      \end{lstlisting}
+  
+      \begin{lstlisting}[language=Python]
+  # Helper function for standardizing inputs to LASSO
+  def preprocess_lasso(X):
+      X = make_basis(X, part='d')
+      X[:, 1:] = (X[:, 1:] - X[:, 1:].mean(axis=0)) / X[:, 1:].std(axis=0)
+      return X
+      \end{lstlisting}
+  
+      \begin{lstlisting}[language=Python]
+  # Fit the weights for both models
+  phi_x_train = preprocess_lasso(year_train)
+  
+  lam1, lam2 = 1, 10
+  
+  w1 = find_lasso_weights(lam1, phi_x_train, temp_train)
+  w2 = find_lasso_weights(lam2, phi_x_train, temp_train)
+  
+  x_array = np.arange(400, 801)
+  phi_x_array = preprocess_lasso(x_array)
+  
+  y_pred1 = phi_x_array.dot(w1)
+  y_pred2 = phi_x_array.dot(w2)
+  
+  plt.figure(figsize=(10, 6))
+  plt.plot(x_array, y_pred1, label=f'LASSO (lambda = {lam1})', color='blue')
+  plt.plot(x_array, y_pred2, label=f'LASSO (lambda = {lam2})', color='green')
+  plt.scatter(year_train, temp_train, label="Training Data", color="red")
+  plt.xlabel("Year BCE (in thousands)")
+  plt.ylabel("Temperature")
+  plt.title("LASSO Regression using Coordinate Descent")
+  plt.xticks(np.arange(400, 901, 100))
+  plt.gca().invert_xaxis()
+  plt.legend()
+  plt.savefig("img_output/p4.5.png", bbox_inches="tight")
+  plt.show()
+      \end{lstlisting}
+  
+      \begin{lstlisting}[language=Python]
+  y_train_pred1 = phi_x_train.dot(w1)
+  y_train_pred2 = phi_x_train.dot(w2)
+  mse1 = np.mean((temp_train - y_train_pred1)**2)
+  mse2 = np.mean((temp_train - y_train_pred2)**2)
+  
+  print("MSE for LASSO with lambda = 1:", mse1)
+  print("MSE for LASSO with lambda = 10:", mse2)
+      \end{lstlisting}
+
+
+    FINAL ANSWER FOR PART 5: \newline
+
+ 
+
+    MSE for LASSO with lambda = 1: 1.9508996956712439 \newline
+    MSE for LASSO with lambda = 10: 3.136512716950103
+
+    Clearly, at a point, using LASSO with too high a lambda will degrade the quality of the model. We are essentially "overcorrecting" the fit of the data. As lambda is a hyperparameter, we would want to find an idealized lambda value which minimizes the validation / test MSE
+
+  
+  \end{enumerate}
+  \end{tcolorbox}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img_output/p4.5.png}
+    \caption{LASSO regression predictions using coordinate descent with $\lambda=1$ and $\lambda=10$.}
+  \end{figure}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection*{Name}
+\subsection*{Matt Krasnow}
 
 \subsection*{Collaborators and Resources}
 Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
+
+I worked with me myself and I because im cool
 
 
 \end{document}

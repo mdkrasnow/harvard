@@ -14,3 +14,6 @@ venv/
 *.log
 *.out
 *.synctex.gz
+
+
+.env
