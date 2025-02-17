@@ -1,0 +1,164 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+\newcommand{\set}[1]{\{#1\}}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\newtheorem{solution}{Solution}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 3 \\[0.5em]
+\large
+Due Wednesday, February 19, 2025
+\end{center}
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}
+(Exercise 2.2 in Rudin)\\[1mm]
+A complex number \( z \) is said to be \emph{algebraic} if there exists an integer \( n \ge 1 \) and integers 
+\[
+a_0, a_1, \dots, a_n \quad \text{with} \quad a_n \neq 0,
+\]
+such that
+\[
+a_n z^n + a_{n-1}z^{n-1} + \cdots + a_1z + a_0 = 0.
+\]
+Prove that the set of all algebraic numbers is countable.\\[1mm]
+(You may use the fact that the above equation has at most \( n \) solutions.)
+\end{problem}
+\newpage
+
+
+\begin{solution}
+I begin by noting that any polynomial of degree \( n \) with integer coefficients has at most \( n \) complex roots. Thus, for each fixed degree \( n \), each such polynomial yields only finitely many algebraic numbers.
+
+Next, I observe that the set of all polynomials with integer coefficients is countable. Since the integers \( \mathbb{Z} \) are countable and each polynomial is determined by a finite sequence of integers, I can list all such polynomials by partitioning them according to their degree (i.e., degree \( 1 \), degree \( 2 \), and so on). A countable union of finite sets is countable, so the set of all roots (i.e., the set of algebraic numbers) is a countable union of finite sets.
+
+Thus, I conclude that the set of all algebraic numbers is countable.
+
+\qed
+\end{solution}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}
+(Exercise 2.10 in Rudin)\\[1mm]
+Let \( X \) be an infinite set. For \( p, q \in X \), define
+\[
+d(p,q) :=
+\begin{cases}
+1 & \text{if } p \neq q, \\
+0 & \text{if } p = q.
+\end{cases}
+\]
+Prove that \( d \) is a metric. Which subsets of the resulting metric space are open?
+\end{problem}
+\newpage
+
+
+\begin{solution}
+I first verify that \( d \) is a metric on \( X \) by checking the following properties for all \( p, q, r \in X \):
+\begin{enumerate}
+    \item \textbf{Non-negativity:} \( d(p,q) \ge 0 \) since \( d(p,q) \) is either \( 0 \) or \( 1 \).
+    \item \textbf{Identity of indiscernibles:} \( d(p,q) = 0 \) if and only if \( p = q \) by definition.
+    \item \textbf{Symmetry:} \( d(p,q) = d(q,p) \) because the condition \( p \neq q \) is symmetric.
+    \item \textbf{Triangle inequality:} I must show that
+    \[
+    d(p,q) \le d(p,r) + d(r,q).
+    \]
+    If \( p = q \), then \( d(p,q)=0 \) and the inequality holds trivially. If \( p \neq q \), then \( d(p,q)=1 \). In this case, at least one of \( d(p,r) \) or \( d(r,q) \) must equal \( 1 \), so that \( d(p,r) + d(r,q) \ge 1 \). Thus, the triangle inequality is satisfied.
+\end{enumerate}
+
+Next, I determine the open subsets in the metric space \( (X,d) \). In this discrete metric, for any \( p \in X \) and any radius \( r \) satisfying \( 0 < r \le 1 \), the open ball centered at \( p \) is
+\[
+B(p, r) = \{ q \in X : d(p,q) < r \} = \{ p \}.
+\]
+Since every singleton \( \{p\} \) is an open ball, every subset \( A \subseteq X \) is open. Indeed, for each \( p \in A \), choosing \( r = 1/2 \) gives \( B(p,1/2) = \{p\} \subseteq A \).
+
+Thus, the topology induced by \( d \) is the discrete topology, in which every subset of \( X \) is open.
+
+\qed
+\end{solution}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}
+(Exercise 2.8 in Rudin)\\[1mm]
+Prove or disprove the following statement:
+\[
+\text{``Every point of every open set } E \subseteq \mathbb{R}^k \text{ is a limit point of } E.'' 
+\]
+Answer the same question for closed sets of \( \mathbb{R}^k \).
+\end{problem}
+\newpage
+
+
+\begin{solution}
+\textbf{Part 1: Open Sets}
+
+I claim that every point of every open set \( E \subseteq \mathbb{R}^k \) is a limit point of \( E \). To see this, let \( x \in E \). Since \( E \) is open, there exists an \( r > 0 \) such that the open ball
+\[
+B(x,r) = \{ y \in \mathbb{R}^k : \|y - x\| < r \}
+\]
+is contained in \( E \). Because any open ball in \( \mathbb{R}^k \) (with \( r > 0 \)) contains infinitely many points other than \( x \) (in fact, uncountably many), every open ball \( B(x,r) \) contains a point of \( E \) distinct from \( x \). Therefore, \( x \) is a limit point of \( E \).
+
+\bigskip
+\textbf{Part 2: Closed Sets}
+
+I now consider whether every point of every closed set \( E \subseteq \mathbb{R}^k \) is a limit point of \( E \). This is not true. For a counterexample, consider the closed set
+\[
+E = \{0\} \subset \mathbb{R}^k.
+\]
+Since \( E \) consists of a single point, there exists an \( r > 0 \) (for instance, \( r = 1 \)) such that
+\[
+B(0, r) \cap E = \{0\}.
+\]
+Thus, \( 0 \) is not a limit point of \( E \) because no point other than \( 0 \) lies in \( E \). 
+
+In summary, while every point of an open set in \( \mathbb{R}^k \) is a limit point of the set, the same is not true for closed sets.
+
+\qed
+\end{solution}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}
+(Exercise 2.6 in Rudin)\\[1mm]
+Let \( E \subseteq X \) be a subset of a metric space, and let \( E' \) be the set of all limit points of \( E \). Prove that \( E' \) is closed.
+\end{problem}
+\newpage
+
+\begin{solution}
+I wish to show that the set \( E' \) of limit points of \( E \) is closed, meaning that it contains all its limit points. Let \( E'' \) denote the set of limit points of \( E' \). It suffices to prove that \( E'' \subseteq E' \).
+
+So, let \( p \in E'' \). By definition, for every \( r > 0 \) there exists a point \( q \in B(p,r) \setminus \{p\} \) with \( q \in E' \). Since \( q \in E' \), by the definition of a limit point of \( E \), for every \( s > 0 \) there exists a point \( x \in B(q,s) \setminus \{q\} \) such that \( x \in E \). 
+
+Now, fix an arbitrary \( r > 0 \). Choose \( q \in B(p, r/2) \setminus \{p\} \) (which exists because \( p \in E'' \)), and then choose \( s = r/2 \). By the triangle inequality,
+\[
+d(p,x) \le d(p,q) + d(q,x) < \frac{r}{2} + \frac{r}{2} = r.
+\]
+Thus, for every \( r > 0 \), the open ball \( B(p,r) \) contains a point \( x \in E \) with \( x \neq p \). This shows that \( p \) is a limit point of \( E \), i.e., \( p \in E' \).
+
+Since \( p \in E'' \) was arbitrary, I conclude that \( E'' \subseteq E' \), and therefore,
+\[
+\overline{E'} = E' \cup E'' = E'.
+\]
+This means that \( E' \) is closed.
+
+\qed
+\end{solution}
+
+\end{document}
