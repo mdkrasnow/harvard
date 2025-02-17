@@ -1,0 +1,189 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+## make sure to run in RStudio; first go to tools -> global options -> code and select soft-wrap R source files
+```{r}
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+rm(list = ls()) # clear the workspace
+# first run
+install.packages(c('readstata13', 'sandwich', 'lmtest', 'pwr')) # need to install every new package before librarying it
+install.packages("TeachingDemos", repos="http://R-Forge.R-project.org")
+
+library(readstata13) # need to install; you need to library a package to make the functions available
+library(sandwich)    # used for robust standard errors
+library(lmtest)      # used for DISPLAYING the results with robust standard errors
+library(TeachingDemos) # used for txtStart, for logging
+
+setwd('/Users/mkrasnow/Desktop/HARVARD/Program Evaluation/PS2') # set working directory (you'll need to change this)
+
+if (interactive()) {
+  txtStart(file = 'pset1.txt') # store output in a file called pset1.txt; this diverts much more than sink does
+} else {
+  message("Not running interactively; output redirection skipped.")
+}
+
+```
+## set-up ####
+```{r}
+data <- read.dta13('krueger_class_size.dta') # read in the data and store it as an object called class
+# changed from class because class is already a function in R!!
+
+```
+
+
+# QUESTION 1
+
+```{r}
+library(pwr)
+res1 <- pwr.t.test(d = 0.20, sig.level = 0.05, power = 0.80,
+                   type = "two.sample", alternative = "two.sided")
+res1
+
+```
+
+## Q1 Interpretation:
+ 
+A 0.20 SD difference requires about 393 students per group ($\approx$ 786 total) to achieve 80% power at a 5% significance level.
+Because 0.20 is not a large effect, you still need several hundred participants per group to have an 80% chance (power) of detecting it, if it's really there
+
+
+
+# QUESTION 2
+```{r}
+
+res2 <- pwr.t.test(d = 0.10, sig.level = 0.05, power = 0.80,
+                   type = "two.sample", alternative = "two.sided")
+res2
+
+
+```
+
+## Q2 Interpretation:
+Halfing the effect to .10 SD requires roughly 1571 students per group ($\approx$ 3142 total). This is more than double the sample (4x) for a .20 SD difference because sample size scales with $1/(effect size)^2$.
+The power formula for a simple two-sample t-test indicates that required $n$ scales with $\frac{1}{\text{effect size}^2}$. So if the effect size is cut from 0.20 to 0.10, that ratio is $\frac{(0.20)^2}{(0.10)^2} = 4$. Meaning detecting a smaller effect demands a much larger sample, to ensure that you do not miss the effect due to random variation.
+
+# QUESTION 3
+```{r}
+m <- 250
+icc <- 0.18
+clusters <- 30
+n_arm <- clusters * m
+deff <- 1 + (m - 1) * icc
+n_eff <- n_arm / deff
+
+res3_cluster <- pwr.t.test(n = n_eff, sig.level = 0.05, power = 0.80,
+                           type = "two.sample", alternative = "two.sided")
+res3_indiv <- pwr.t.test(n = n_arm, sig.level = 0.05, power = 0.80,
+                         type = "two.sample", alternative = "two.sided")
+res3_cluster
+res3_indiv
+
+
+```
+
+## Q3 Interpretation:
+
+$DE = 1 + (m-1) \times ICC = 1 + (250-1) \times 0.18 \approx 45.82$
+
+With 7500 total students per arm (30 schools $\times$ 250 students), the real sample size is:
+
+$n_{effective} = \frac{7500}{45.82} \approx 164 \text{ per arm}$
+
+This means:
+
+  - With clusters: Can detect effects of 0.31 SD at 80% power
+- Without clusters: Could detect 0.046 SD at 80% power
+
+thus School-level grouping makes it harder to find small effects when ICC is high (0.18).
+
+
+With school-level randomization (30 schools per arm, 250 students each, ICC=0.18), the design effect reduces the effective sample size to ~164 per arm, yielding a minimum detectable effect of $\approx$ 0.31 SD. In contrast, individual randomization with 7500 students per arm would detect effects as small as $\approx 0.046$ SD.
+
+
+
+
+# Question 4
+
+```{r}
+data$cltype1 <- factor(data$cltype1, labels = c("regular", "small", "regular_aide"))
+reg_read <- lm(pread1g ~ relevel(cltype1, ref = "regular") + factor(schid1n), data = data)
+reg_math <- lm(pmath1g ~ relevel(cltype1, ref = "regular") + factor(schid1n), data = data)
+
+
+
+coeftest(reg_read, vcov = sandwich)
+coeftest(reg_math, vcov = sandwich)
+
+```
+
+
+## Q4 Interprtation:
+The (estimated) coefficients on the treatment indicators are:
+  
+Reading Percentile Score
+
+Small classroom: –8.13
+(Estimate $=$ –8.13, Robust SE $\approx$ 0.82)
+Regular with aide: –5.34
+(Estimate = –5.34, Robust SE $\approx$ 0.84)
+Math Percentile Score
+
+Small classroom: –8.64
+(Estimate = –8.64, Robust SE $\approx$ 0.80)
+Regular with aide: –7.23
+(Estimate = –7.23, Robust SE $\approx$ 0.83)
+
+- The measured difference in reading and math percentiles is lower (by about 8–9 points) for small classes compared to the “regular” category.
+- STAR experiment found a positive advantage for small classes, so these negative signs might reflect how the dataset is coded or labeled.
+
+
+## Question 5:
+The treatment effects estimated in question 4 are intent-to-treat (ITT) effects.
+
+ We used the randomly assigned class type (small vs. regular vs. regular+aide) as the explanatory , regardless of any noncompliance that might have happened  Thus, we are measuring the average effect of being assigned to each  type, not necessarily the effect of actually attending with that assignment.
+
+
+# Question 6
+
+In Table V the reduced form ITT estimates for 1st grade are consistently smaller in magnitude than the OLS estimates that use actual placement.
+
+If we used a regression on “actual class size” (instead of “assigned class size”), we might see a larger effect, because students who remain in small classes could be higher-achieving. That leads to positive selection into the small-class group. Thus we might be measuring all students including non compliers. It probably overstates the effect since the switches aren't random
+
+
+
+# Question 7:
+For AA students only, regress math scores on “teacher is African American.”
+For whte students only, regress math scores on teacher is white.”
+
+## Question 7a
+```{r}
+data$trace1 <- as.factor(data$trace1)
+data$same_race <- ifelse((data$white == 1 & data$trace1 == "White") |
+                         (data$black == 1 & data$trace1 == "African American"), 1, 0)
+
+```
+
+## Question 7b
+```{r}
+reg_aa <- lm(pmath1g ~ I(trace1 == "African American") + factor(schid1n), data = data, subset = (black == 1))
+reg_white <- lm(pmath1g ~ I(trace1 == "White") + factor(schid1n), data = data, subset = (white == 1))
+coeftest(reg_aa, vcov = sandwich)
+coeftest(reg_white, vcov = sandwich)
+
+```
+But is this relationship causal? we see corrlation but, that does NOT imply causation :)
+
+- Teacher race was NOT randomized -- may be some underlying factor which influences both
+
+
+## Question 7c
+
+The estimated coefficients for African American students (from reg_aa) and for White students (from reg_white) showthe association between having a teacher of the same race and 1st grade math scores, controling for school fixed effects.
+BUT! these estimates should be interpreted with caution as causal effects.
+Even though school fixed effects account for between school variation teacher assignment to students is not randomized within schools
+so unobserved student or classroom-level factors may **confound** the relationship.
+So while this might be helpful to push for more research, the estimates represent correlations rather than causal effects of student-teacher race match.
+
