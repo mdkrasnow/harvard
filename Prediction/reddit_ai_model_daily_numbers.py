@@ -4,21 +4,16 @@ import re
 import os
 from dotenv import load_dotenv
 
-
 def main():
     load_dotenv()
     reddit = praw.Reddit(
-        client_id=os.getenv('REDDIT_CLIENT_ID'),         
-        client_secret=os.getenv('REDDIT_CLIENT_SECRET'),   
-        user_agent=os.getenv('REDDIT_USER_AGENT'),        
+        client_id=os.getenv('REDDIT_CLIENT_ID'),
+        client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
+        user_agent=os.getenv('REDDIT_USER_AGENT'),
     )
 
-    # Define the search query.
-    # The quotes force an exact phrase match. We combine the AI models with OR.
-    query = '"ChatGPT" OR "Gemini" OR "Claude" OR "DeepSeek"'
-
-    # Search for posts in r/all from the past day.
-    posts = reddit.subreddit("all").search(query, sort='new', time_filter='day', limit=None)
+    # Fetch top posts in r/all from the past day.
+    posts = reddit.subreddit("all").top(time_filter='day', limit=1000)
 
     # Compile regex patterns (case-insensitive) for each AI model.
     patterns = {
@@ -31,14 +26,12 @@ def main():
     # Initialize a dictionary to keep counts for each model.
     counts = {model: 0 for model in patterns}
 
-    # Iterate through each post returned by the search.
+    # Iterate through each post returned.
     for post in posts:
-        # Combine the title and selftext (if available) for analysis.
+        # Use only the title (headline) for analysis.
         content = post.title
-        if hasattr(post, "selftext") and post.selftext:
-            content += " " + post.selftext
 
-        # Count occurrences for each model in the current post.
+        # Count occurrences for each model in the current headline.
         for model, pattern in patterns.items():
             matches = pattern.findall(content)
             counts[model] += len(matches)
@@ -47,11 +40,11 @@ def main():
     most_referenced = max(counts, key=counts.get)
 
     # Print out the counts and the most referenced AI model.
-    print("AI model reference counts for today:")
+    print("AI model reference counts for today (headlines only):")
     for model, count in counts.items():
         print(f"{model}: {count}")
     print("\n====================================")
-    print(f"The AI model referenced most on Reddit today is: {most_referenced} "
+    print(f"The AI model referenced most in today's Reddit headlines is: {most_referenced} "
           f"(with {counts[most_referenced]} references)")
 
 if __name__ == '__main__':
