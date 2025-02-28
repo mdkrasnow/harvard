@@ -1,4 +1,4 @@
-# sophomore sprint
+# sophomore spring
 Matt Krasnow's projects and assignments from his spring semester at Harvard studying machine learning, real analysis, education policy and education
 
 # sophomore fall
