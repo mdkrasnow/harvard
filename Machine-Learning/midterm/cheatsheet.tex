@@ -1,0 +1,233 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.4in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\pagestyle{empty}
+\setlength{\columnsep}{0.2in}
+\renewcommand{\arraystretch}{1.1}
+\begin{document}
+\footnotesize
+\begin{multicols}{2}
+
+\tcbset{
+  colback=white,
+  colframe=black,
+  boxrule=0.5pt,
+  arc=2mm,
+  left=2mm,
+  right=2mm,
+  top=1mm,
+  bottom=1mm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Supervised Learning Organization]
+\textbf{Bias Trick:} Augment the design matrix \(X\) with a column of 1’s so that the bias \(w_0\) is incorporated into \(w\).
+
+\textbf{kNN:}
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item \textbf{Basic:} Compute (e.g. Euclidean) distances from a new point to all training examples; classify by majority vote or average for regression.
+    \item \textbf{Kernelized:} Weight neighbors with a kernel (e.g. Gaussian) to smooth the influence of distant points.
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Common Patterns Across Models]
+\textbf{Modeling:} Decide whether to model \(p(y\mid x)\) (discriminative) or \(p(x,y)\) (generative).\\[1mm]
+\textbf{Loss Functions:} Examples include squared error, cross-entropy, hinge loss, etc.\\[1mm]
+\textbf{Optimization:} Solve in closed form (e.g. linear regression) or use gradient descent/backpropagation.\\[1mm]
+\textbf{Discriminative Models:} Directly model
+\[
+p(y\mid x;w).
+\]
+For binary logistic regression:
+\[
+p(y=1\mid x;w)=\sigma(w^T x),\quad \sigma(z)=\frac{1}{1+e^{-z}}.
+\]
+\textbf{Generative Models:} Model \(p(x,y)\) then apply Bayes’ rule to compute \(p(y\mid x)\).\\[1mm]
+\textbf{MLE \& MAP:}\\
+\[
+\begin{aligned}
+w_{\mathrm{MLE}} &= \arg\max_w \log\, p((x,y)\mid w),\\[1mm]
+w_{\mathrm{MAP}} &= \arg\max_w \Bigl\{\log\, p((x,y)\mid w)+\log\, p(w)\Bigr\},
+\end{aligned}
+\]
+with a Gaussian prior \(w\sim\mathcal{N}(0,\sigma_0^2 I)\) yielding ridge regression:
+\[
+w_{\mathrm{MAP}}=\arg\min_w \sum_{i=1}^N \left(y^{(i)}-w^T x^{(i)}\right)^2+\lambda\|w\|_2^2,\quad \lambda=\frac{\sigma^2}{\sigma_0^2}.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Optimal \(w\) \& Likelihood Functions]
+\textbf{Linear Regression:}
+\[
+w^*=(X^T X)^{-1}X^Ty,\quad p((x,y)\mid w)=\prod_{i=1}^N \mathcal{N}\bigl(y^{(i)}\mid w^T x^{(i)},\,\sigma^2\bigr).
+\]
+\textbf{Binary Logistic Regression:}
+\[
+p(y\mid x;w)=\sigma(w^T x)^y\,[1-\sigma(w^T x)]^{1-y},
+\]
+with log-likelihood
+\[
+\ell(w)=\sum_{i=1}^N \Bigl[y^{(i)}\log\sigma(w^T x^{(i)})+(1-y^{(i)})\log(1-\sigma(w^T x^{(i)}))\Bigr].
+\]
+\textbf{Multiclass (Softmax):}\\[0.5mm]
+\textit{Dataset Likelihood:}
+\[
+\mathcal{L}(\{v_\ell\}) = \prod_{i=1}^N \frac{\exp\bigl(v_{y^{(i)}}^T\phi(x^{(i)})\bigr)}{\sum_{\ell=1}^K \exp\bigl(v_\ell^T\phi(x^{(i)})\bigr)}.
+\]
+\textbf{Ridge Regression:}
+\[
+w^*=(X^TX+\lambda I)^{-1}X^Ty.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Loss Functions]
+\begin{itemize}[noitemsep, topsep=0pt]
+  \item \textbf{0/1 Loss:} \(L(y,\hat{y})=\mathbb{I}(y\neq\hat{y})\).
+  \item \textbf{Hinge Loss:} \(L(y,f(x))=\max(0,\,1-y\,f(x))\).
+  \item \textbf{L1 Loss:} \(L(y,\hat{y})=|y-\hat{y}|\).
+  \item \textbf{L2 Loss:} \(L(y,\hat{y})=(y-\hat{y})^2\).
+  \item \textbf{Binary Cross-Entropy:} \(L(y,\hat{y})=-\Bigl[y\log\hat{y}+(1-y)\log(1-\hat{y})\Bigr]\).
+  \item \textbf{Softmax Loss:} \(L=-\log\frac{\exp(v_k^T\phi(x))}{\sum_\ell \exp(v_\ell^T\phi(x))}\).
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Matrix Rules]
+\textbf{Algebra:}
+\[
+(AB)^T=B^TA^T,\quad (A^{-1})^T=(A^T)^{-1}.
+\]
+For column vectors \(a,b\): \(a^T b\) is scalar. If \(X\) is \(n\times d\) and \(w\) is \(d\times1\), then \(Xw\) is \(n\times1\).\\[1mm]
+\textbf{Derivatives:}
+\[
+\frac{\partial}{\partial w}(w^TAw)=(A+A^T)w\quad (\text{or }2Aw \text{ if }A\text{ is symmetric}),
+\]
+\[
+\frac{\partial}{\partial w}\frac{1}{2}\|y-Xw\|_2^2=-X^T(y-Xw).
+\]
+\textbf{Norms:}
+\[
+\|w\|_2=\sqrt{w^Tw},\quad \|w\|_1=\sum_i|w_i|.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Lagrangian Method]
+\textbf{Steps:}
+\begin{enumerate}[noitemsep, topsep=0pt]
+  \item Form the Lagrangian: \(\mathcal{L}(w,\lambda)=\text{Objective}(w)+\lambda\,(\text{Constraint}(w))\).
+  \item Differentiate with respect to \(w\) and \(\lambda\).
+  \item Set derivatives to zero and solve.
+\end{enumerate}
+\textbf{Example (SVM):}
+\[
+\mathcal{L}(w,b,\lambda)=\frac{1}{2}\|w\|_2^2-\sum_{i=1}^N\lambda_i\Bigl[y^{(i)}(w^Tx^{(i)}+b)-1\Bigr].
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Terminology]
+\textbf{Posterior:} \(p(w\mid(x,y))\) after observing data.\\[1mm]
+\textbf{Posterior Predictive:}
+\[
+p(y^*\mid x^*,(x,y))=\int p(y^*\mid x^*,w)\,p(w\mid(x,y))\,dw.
+\]
+\textbf{Marginal Likelihood:}
+\[
+p((x,y))=\int p((x,y)\mid w)\,p(w)\,dw.
+\]
+\textbf{Class-Conditional:} \(p(x\mid y)\).
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Bias--Variance]
+\textbf{Bias--Variance Tradeoff:} High bias → underfitting; high variance → overfitting. Regularization (e.g. ridge, lasso) can reduce variance.\\[1mm]
+\textbf{Neural Nets:}\\
+\(\bullet\) Activation functions: ReLU, Sigmoid, Softmax, etc.\\[0.5mm]
+\(\bullet\) Use backpropagation (chain rule) to update parameters.\\[0.5mm]
+\(\bullet\) Always include bias via the augmented input.\\[1mm]
+\textbf{SVMs:}\\
+\(\bullet\) \textbf{Hard-Margin SVM:}
+\[
+\min_{w,b}\;\frac{1}{2}\|w\|_2^2\quad\text{s.t. }y^{(i)}(w^Tx^{(i)}+b)\ge 1.
+\]
+\(\bullet\) \textbf{Kernels:} Linear, Polynomial, Gaussian (RBF):
+\[
+K(x,x')=\exp(-\gamma\|x-x'\|_2^2).
+\]
+\(\bullet\) Regularization parameter \(C\) balances margin width and classification errors.
+\end{tcolorbox}
+
+\end{multicols}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\footnotesize
+\begin{multicols}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Neural Networks]
+\textbf{Architecture:}\\
+\(\bullet\) Feedforward NN with one hidden layer: 
+\[
+h = \sigma(W_1 x + b_1),\quad f = W_2 h + b_2.
+\]
+\(\bullet\) For deep networks, multiple hidden layers allow feature reuse.\\[1mm]
+\textbf{Activation Functions:}\\
+Sigmoid, ReLU, tanh, etc. introduce non-linearity enabling universal approximation.\\[1mm]
+\textbf{Backpropagation:}\\
+Compute gradients via the chain rule:
+\[
+\frac{\partial L}{\partial W} = \frac{\partial L}{\partial f}\frac{\partial f}{\partial W}.
+\]
+\(\bullet\) Forward pass computes outputs; backward pass updates parameters.\\[1mm]
+\textbf{Key Points:}\\
+\(\bullet\) Neural networks learn adaptive basis functions.\\
+\(\bullet\) Overparameterization can improve gradient descent.
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Support Vector Machines (SVMs)]
+\textbf{Hard Margin SVM:}\\
+\[
+\min_{w,w_0} \frac{1}{2}\|w\|_2^2 \quad \text{s.t. } y^{(i)}(w^T x^{(i)}+w_0) \ge 1.
+\]
+\textbf{Soft Margin SVM:}\\
+\[
+\min_{w,w_0} \frac{1}{2}\|w\|_2^2 + C\sum_{i=1}^N \xi_i \quad \text{s.t. } y^{(i)}(w^T x^{(i)}+w_0) \ge 1-\xi_i,\quad \xi_i\ge0.
+\]
+\textbf{Dual Formulation \& Kernel Trick:}\\
+Express the solution as:
+\[
+w = \sum_{i=1}^N \alpha_i y^{(i)} x^{(i)},
+\]
+with \(\sum_{i}\alpha_i y^{(i)}=0\).\\[1mm]
+Replace inner products with kernels:
+\[
+K(x,z)=\phi(x)^T\phi(z),
+\]
+enabling nonlinear decision boundaries.
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[title=Regularization]
+\textbf{Ridge Regression:}\\
+\[
+w^*=(X^TX+\lambda I)^{-1}X^Ty.
+\]
+\textbf{Lasso Regression:}\\
+Minimize
+\[
+\sum_{i=1}^N \left(y^{(i)}-w^T x^{(i)}\right)^2+\lambda\|w\|_1.
+\]
+\end{tcolorbox}
+
+\end{multicols}
+\end{document}
