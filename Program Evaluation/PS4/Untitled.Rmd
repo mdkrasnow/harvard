@@ -1,0 +1,85 @@
+---
+title: "A164ps4"
+author: "Matt Krasnow"
+date: "April 2025"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(haven)
+library(dplyr)
+library(fixest)
+```
+
+```{r load_data}
+# Load data
+pathways <- read_dta("Pathways To Education.dta")
+```
+
+## Part 1: Pathways to Education
+
+### Question 1
+```{r q1}
+# Regent Park comparison between cohorts
+regent_data <- pathways %>% filter(regent_park == 1)
+q1_reg <- lm(graduated5 ~ cohort >= 2001, data = regent_data)
+summary(q1_reg)
+```
+
+**1a. Interpretation:** Students in Regent Park who entered 9th grade after the program was implemented (2001-2007) had graduation rates that were 21.1 percentage points higher than students who entered 9th grade before the program (2000). This difference is statistically significant (p < 0.001).
+
+**1b. Causal impact concerns:** This difference might not measure the causal impact of the program because it doesn't account for other factors or general trends in graduation rates that might have affected all schools/housing projects during this time period, not just Regent Park.
+
+### Question 2
+```{r q2}
+# DiD analysis excluding 2007 cohort
+did_data <- pathways %>% filter(cohort <= 2006)
+did_data <- did_data %>% mutate(post = ifelse(cohort >= 2001, 1, 0))
+q2_reg <- feols(graduated5 ~ regent_park*post, 
+                data = did_data, 
+                cluster = "project")
+summary(q2_reg)
+```
+
+**2a. Interpretation:** The difference-in-differences estimate of the program effect is 14.3 percentage points, indicating that the Pathways to Education program increased 5-year graduation rates in Regent Park by 14.3 percentage points relative to other housing projects. This effect is statistically significant (p < 0.001).
+
+**2b. Comparison with Question 1:** This estimate is smaller than the estimate in Question 1 (14.3 vs 21.1 percentage points) because the DiD approach accounts for general trends in graduation rates affecting all housing projects during this time period, not just trends specific to Regent Park.
+
+### Question 3
+```{r q3}
+# TWFE regression
+pathways <- pathways %>% 
+  mutate(treatment = case_when(
+    regent_park == 1 & cohort >= 2001 ~ 1,
+    (lawrence_heights == 1 | thistletown == 1) & cohort == 2007 ~ 1,
+    TRUE ~ 0
+  ))
+
+q3_reg <- feols(graduated5 ~ treatment | cohort + project, 
+                data = pathways, 
+                cluster = "project")
+summary(q3_reg)
+```
+
+**3. Interpretation:** The two-way fixed effects estimate indicates that the Pathways to Education program increased graduation rates by 12.2 percentage points across all treated locations. This effect is statistically significant (p < 0.001).
+
+### Question 4
+```{r q4}
+# Extract cohort fixed effects
+cohort_fe <- fixef(q3_reg)$cohort
+cohort_fe
+```
+
+**4. Graduation Rate Trends:** Graduation rates are generally increasing over time, as evidenced by the increasing values of the cohort fixed effects from 2000 (0.543) to 2007 (0.679), with only a small dip in 2005.
+
+### Question 5
+**5. Variable controlled by cohort fixed effects:** Economic conditions in Toronto in the year students entered 9th grade. This variable is controlled for by cohort fixed effects because it affects all students who entered 9th grade in the same year, regardless of which housing project they lived in. The assumption required is that these economic conditions had similar effects on students across all housing projects.
+
+### Question 6
+**6. Variable controlled by project fixed effects:** Quality of the local elementary schools that feed into high schools from each housing project. This is controlled for by project fixed effects because it's a characteristic of the housing project that remains relatively constant over the study period. The assumption required is that the quality of these feeder schools did not change significantly during the years of the study.
+
+### Question 7
+**7a. Variable not controlled by either fixed effects:** Changes in the quality or resources of individual high schools over time that specifically affect students from certain housing projects. This isn't controlled for because it varies both across projects (if students from different projects attend different high schools) and over time.
+
+**7b. Potential bias:** This omitted variable could bias our treatment effect estimate if high schools serving Regent Park students improved their quality or resources around the same time the Pathways program was implemented. If this occurred, part of what we attribute to the Pathways program might actually be due to improvements in school quality. The bias would likely be positive (upward), making the program appear more effective than it actually was. However, if the program caused high schools to allocate more resources to Regent Park students, this would be part of the treatment effect we want to capture.
