@@ -1,0 +1,230 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+\theoremstyle{remark}
+\newtheorem*{solution}{Solution}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 6 \\[0.5 em]
+\large
+Due Wednesday, April 9, 2025
+\end{center}
+
+\bigskip
+
+\begin{problem}[10 points]
+Determine if the following series converges. 
+If it converges, determine if it converges absolutely. 
+\[
+\sum_{n=1}^{\infty} \frac{(-1)^n}{n + \sqrt{n}}
+\]
+\end{problem}
+
+\begin{solution}
+We begin by writing the series in the form 
+\[
+\sum_{n=1}^{\infty} (-1)^n b_n, \quad \text{with} \quad b_n = \frac{1}{n+\sqrt{n}}.
+\]
+\textbf{Step 1. (Alternating Series Test)}\\
+The Alternating Series Test (see, e.g., Theorem 3.21 in \emph{Principles of Mathematical Analysis} by Rudin) states that if \(\{b_n\}\) is a decreasing sequence of nonnegative numbers with \(\lim_{n\to\infty}b_n=0\), then the series \(\sum (-1)^n b_n\) converges. Here, note that:
+\[
+n+\sqrt{n} \text{ is increasing } \Longrightarrow b_n \text{ is decreasing},
+\]
+and clearly,
+\[
+\lim_{n\to\infty}\frac{1}{n+\sqrt{n}} = 0.
+\]
+Thus, the series converges.
+
+\medskip
+\textbf{Step 2. (Absolute Convergence)}\\
+Consider the absolute series:
+\[
+\sum_{n=1}^{\infty}\left|\frac{(-1)^n}{n+\sqrt{n}}\right| = \sum_{n=1}^{\infty}\frac{1}{n+\sqrt{n}}.
+\]
+Since \(n+\sqrt{n} \leq 2n\) for all \(n\geq 1\), we have:
+\[
+\frac{1}{n+\sqrt{n}} \geq \frac{1}{2n}.
+\]
+The series \(\sum_{n=1}^{\infty}\frac{1}{n}\) is the harmonic series and diverges. Hence, by the Comparison Test, the absolute series diverges.
+
+\medskip
+\textbf{Conclusion:} The series converges \emph{conditionally} but not absolutely.
+\end{solution}
+
+\begin{problem}[10 points]
+Suppose \(f : \mathbb{R} \rightarrow \mathbb{R}\) is a function which satisfies
+\[
+\lim_{h\rightarrow 0}\Bigl(f(x+h)-f(x-h)\Bigr) = 0
+\]
+for every \(x\in \mathbb{R}\). 
+Does this imply that \(f\) is continuous? Explain your answer. 
+\end{problem}
+
+\begin{solution}
+The condition only concerns the symmetric difference \(f(x+h)-f(x-h)\). It does not require that the one--sided limits of \(f(x+h)\) and \(f(x-h)\) individually approach \(f(x)\).
+
+\medskip
+\textbf{Counterexample:} Define the function
+\[
+f(x) = \begin{cases}
+0 & \text{if } x=0,\\[1mm]
+1 & \text{if } x\neq 0.
+\end{cases}
+\]
+Then for every \(x\neq 0\) and for all sufficiently small \(h\) (so that \(x\pm h\neq 0\)), we have
+\[
+f(x+h)-f(x-h)=1-1=0.
+\]
+At \(x=0\), for any \(h\neq0\) we have
+\[
+f(0+h)-f(0-h)=f(h)-f(-h)=1-1=0.
+\]
+Thus, the given condition holds for every \(x\in \mathbb{R}\). However, \(f\) is discontinuous at \(x=0\) since 
+\[
+\lim_{x\to 0}f(x)=1 \quad \text{but} \quad f(0)=0.
+\]
+
+\medskip
+\textbf{Conclusion:} The condition does not imply that \(f\) is continuous.
+\end{solution}
+
+\begin{problem}[10 points]
+If \(f:X \rightarrow Y\) is a continuous map between metric spaces \(X\) and \(Y\), prove that
+\[
+f(\overline{E}) \subseteq \overline{f(E)}
+\]
+for every subset \(E\subseteq X\). 
+\end{problem}
+
+\begin{solution}
+Let \(x\in \overline{E}\). By the definition of closure, for every \(\delta>0\) there exists a point \(y\in E\) with \(d_X(x,y)<\delta\).
+
+Since \(f\) is continuous at \(x\), for every \(\varepsilon>0\) there exists a \(\delta>0\) such that
+\[
+d_X(x,y)<\delta \quad \Longrightarrow \quad d_Y\bigl(f(x),f(y)\bigr)<\varepsilon.
+\]
+Thus, for every \(\varepsilon>0\), every neighborhood of \(f(x)\) contains some point \(f(y)\) with \(y\in E\). This implies \(f(x)\) is a limit point of \(f(E)\), so \(f(x)\in \overline{f(E)}\).
+
+Therefore,
+\[
+f(\overline{E}) \subseteq \overline{f(E)}.
+\]
+\end{solution}
+
+\begin{problem}[10 points]
+Let \(f\) and \(g\) be continuous maps from a metric space \(X\) to a metric space \(Y\), and let \(E\) be a dense subset of \(X\) (i.e. \(\overline{E} = X\)). 
+Prove that if \(f(p) = g(p)\) for all \(p\in E\), then \(f\) and \(g\) are identical maps (i.e. \(f(p) = g(p)\) for all \(p\in X\)). 
+\end{problem}
+
+\begin{solution}
+Let \(x\in X\). Because \(E\) is dense in \(X\), there exists a sequence \(\{p_n\} \subset E\) such that
+\[
+\lim_{n\to\infty} p_n = x.
+\]
+Since \(f\) and \(g\) are continuous, we have
+\[
+\lim_{n\to\infty}f(p_n)=f(x) \quad \text{and} \quad \lim_{n\to\infty}g(p_n)=g(x).
+\]
+But by the hypothesis, \(f(p_n)=g(p_n)\) for all \(n\). Therefore,
+\[
+f(x)=\lim_{n\to\infty} f(p_n)=\lim_{n\to\infty} g(p_n)=g(x).
+\]
+Since \(x\) was arbitrary, we conclude that \(f(x)=g(x)\) for all \(x\in X\).
+\end{solution}
+
+\begin{problem}[Extra Credit; 10 points]
+Let \(\{a_n\}_{n=1}^{\infty}\) be a complex sequence, and define its arithmetic means \(\mu_n\) by
+\[
+\mu_n := \frac{a_1 + a_2 + \cdots + a_n}{n}.
+\]
+\begin{enumerate}
+\item[(a)] If \(\displaystyle \lim_{n\rightarrow \infty} a_n = a\), prove that \(\displaystyle \lim_{n\rightarrow \infty} \mu_n = a\). 
+\item[(b)] Put \(d_n = a_{n+1} - a_{n}\) for \(n\geq 1\). 
+Assume that \(\displaystyle \lim_{n\rightarrow \infty} n\, d_n = 0\) and that \(\{\mu_n\}\) converges. 
+Prove that \(\{a_n\}\) converges. 
+\emph{Hint:} You can show that
+\[
+a_n - \mu_n = \frac{1}{n}\sum_{k=1}^{n-1} k\, d_k.
+\]
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+\textbf{(a) Convergence of the Means.}\\[1mm]
+Since \(\lim_{n\to\infty} a_n = a\), for every \(\varepsilon > 0\) there exists \(N\) such that for all \(n\geq N\),
+\[
+|a_n - a| < \varepsilon.
+\]
+Write the arithmetic mean as
+\[
+\mu_n = \frac{1}{n}\sum_{k=1}^{n} a_k.
+\]
+Split the sum into two parts:
+\[
+\mu_n = \frac{1}{n}\sum_{k=1}^{N-1} a_k + \frac{1}{n}\sum_{k=N}^{n} a_k.
+\]
+Then,
+\[
+\mu_n - a = \frac{1}{n}\sum_{k=1}^{N-1} (a_k - a) + \frac{1}{n}\sum_{k=N}^{n} (a_k - a).
+\]
+For the fixed finite sum, as \(n\to\infty\) the term
+\[
+\frac{1}{n}\sum_{k=1}^{N-1} (a_k - a)
+\]
+tends to 0. For the other term, since \(|a_k - a| < \varepsilon\) for all \(k\ge N\),
+\[
+\left|\frac{1}{n}\sum_{k=N}^{n} (a_k - a)\right| \le \frac{1}{n}\sum_{k=N}^{n} \varepsilon \le \varepsilon.
+\]
+Hence, \(|\mu_n-a|\) can be made arbitrarily small, proving that
+\[
+\lim_{n\rightarrow \infty} \mu_n = a.
+\]
+This result is sometimes known as the \emph{Ces\`aro Mean Theorem}.
+
+\medskip
+\textbf{(b) Convergence of the Sequence \(\{a_n\}\).}\\[1mm]
+We are given the hint:
+\[
+a_n - \mu_n = \frac{1}{n}\sum_{k=1}^{n-1} k\, d_k, \quad \text{with } d_k = a_{k+1} - a_k.
+\]
+Assume that \(\lim_{n\to\infty} n\, d_n = 0\). This means that for every \(\varepsilon>0\), there is an index \(N\) such that for all \(k\ge N\),
+\[
+|k\,d_k| < \varepsilon.
+\]
+Now, split the sum in the formula for \(a_n - \mu_n\) into two parts:
+\[
+\frac{1}{n}\sum_{k=1}^{n-1} k\, d_k = \frac{1}{n}\sum_{k=1}^{N-1} k\, d_k + \frac{1}{n}\sum_{k=N}^{n-1} k\, d_k.
+\]
+- The first term is a fixed finite sum divided by \(n\), so it tends to 0 as \(n\to\infty\).  
+- For the second term, using the bound \(|k\,d_k| < \varepsilon\) for all \(k\ge N\), we have:
+\[
+\left|\frac{1}{n}\sum_{k=N}^{n-1} k\, d_k\right| \le \frac{1}{n}\sum_{k=N}^{n-1} |k\,d_k| < \frac{n-N}{n}\varepsilon \le \varepsilon.
+\]
+Thus, for sufficiently large \(n\), \(|a_n - \mu_n|\) can be made arbitrarily small.
+
+Since by hypothesis \(\{\mu_n\}\) converges (say to some limit \(L\)) and \(|a_n - \mu_n|\to 0\), it follows that
+\[
+a_n = \mu_n + (a_n - \mu_n) \to L.
+\]
+Therefore, the sequence \(\{a_n\}\) converges.
+
+\medskip
+\textbf{Conclusion:} Under the stated conditions, the convergence of the arithmetic means and the control on the differences \(d_n\) ensure the convergence of the original sequence \(\{a_n\}\).
+\end{solution}
+
+\end{document}
