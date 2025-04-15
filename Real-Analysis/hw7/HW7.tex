@@ -1,0 +1,97 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14.49998pt}
+\addtolength{\topmargin}{-2.49998pt}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 7 \\[0.5 em]
+\large
+Due Wednesday, April 16, 2025
+\end{center}
+
+\bigskip
+
+\begin{problem}[10 points]
+Suppose $f : X \rightarrow Y$ is a uniformly continuous map between metric spaces $X$ and $Y$. 
+Prove that, if $\{x_n\}$ is a Cauchy sequence in $X$, then $f(x_n)$ is a Cauchy sequence in $Y$. 
+\end{problem}
+
+\textbf{Solution.} Let $\varepsilon > 0$. Since $f$ is uniformly continuous, there exists $\delta > 0$ such that for all $x, x' \in X$,
+\[
+d_X(x, x') < \delta \Rightarrow d_Y(f(x), f(x')) < \varepsilon.
+\]
+Since $\{x_n\}$ is Cauchy in $X$, there exists $N$ such that for all $m,n \geq N$, we have $d_X(x_m, x_n) < \delta$. By uniform continuity, $d_Y(f(x_m), f(x_n)) < \varepsilon$. Hence, $\{f(x_n)\}$ is Cauchy in $Y$.
+
+\bigskip
+
+\begin{problem}[10 points]
+Let $f$ be a real-valued, uniformly continuous function on a bounded set $E \subset \mathbb{R}$. 
+Prove that $f$ is a bounded function.
+\end{problem}
+
+\textbf{Solution.} Since $E$ is bounded, it is totally bounded in $\mathbb{R}$ (Rudin Thm 2.36). Hence, for any $\delta > 0$, there exists a finite $\delta$-net $\{x_1, \dots, x_n\} \subset E$ such that
+\[
+E \subset \bigcup_{i=1}^n B(x_i, \delta).
+\]
+Let $\delta > 0$ correspond to uniform continuity of $f$, so that for all $x, y \in E$, $|x - y| < \delta \Rightarrow |f(x) - f(y)| < 1$. Then for any $x \in E$, there exists $x_i$ with $|x - x_i| < \delta$, so
+\[
+|f(x)| \leq |f(x_i)| + 1.
+\]
+Set $M = \max_i |f(x_i)| + 1$. Then $|f(x)| \leq M$ for all $x \in E$. So $f$ is bounded.
+
+\bigskip
+
+\begin{problem}[10 points]
+Let $E$ be a compact subset of $\mathbb{R}$ and let $f$ be a real-valued function on $E$. 
+The \emph{graph} of $f$ is defined as:
+\[
+\Gamma_f := \{(x,f(x)) \in \mathbb{R}^2\;\vert\; x \in E\}.
+\]
+Prove that $f$ is continuous if and only if its graph $\Gamma_f$ is compact. 
+\end{problem}
+
+\textbf{Solution.} ($\Rightarrow$) If $f$ is continuous, then $x \mapsto (x, f(x))$ is continuous from $E$ to $\mathbb{R}^2$. Since $E$ is compact and continuous images of compact sets are compact (Rudin Thm 2.35), $\Gamma_f$ is compact.
+
+($\Leftarrow$) Suppose $\Gamma_f$ is compact. Let $x_n \to x$ in $E$, and consider $(x_n, f(x_n)) \in \Gamma_f$. Since $\Gamma_f$ is compact, some subsequence $(x_{n_k}, f(x_{n_k})) \to (x', y') \in \Gamma_f$. But $x_{n_k} \to x$, so $x' = x$, and thus $y' = f(x)$. Hence, $f(x_n) \to f(x)$, so $f$ is continuous.
+
+\bigskip
+
+\begin{problem}[10 points]
+Let $I = [0,1]$ be the closed unit interval. Suppose $f : I \rightarrow I$ is continuous. Prove that $f(x) = x$ for some $x \in I$. 
+\end{problem}
+
+\textbf{Solution.} Define $g(x) = f(x) - x$. Then $g$ is continuous on $[0,1]$. Note:
+\[
+g(0) = f(0) - 0 \geq 0, \quad g(1) = f(1) - 1 \leq 0.
+\]
+By the Intermediate Value Theorem (Rudin Thm 4.23), there exists $x \in [0,1]$ such that $g(x) = 0$, i.e., $f(x) = x$.
+
+\bigskip
+
+\begin{problem}[Extra Credit; 10 points]
+Let $E$ be a dense subset of a metric space $X$, and let $f$ be a uniformly continuous real function on $E$. Prove that $f$ has a continuous extension from $E$ to $X$. 
+\end{problem}
+
+\textbf{Solution.} For each $x \in X$, I'll define:
+\[
+F(x) = \lim_{n \to \infty} f(x_n), \quad \text{where } x_n \in E, \, x_n \to x.
+\]
+To show well-definedness, let $x_n, y_n \to x$ in $E$. Since $f$ is uniformly continuous, for $\varepsilon > 0$ there exists $\delta > 0$ such that $d(x_n, y_n) < \delta \Rightarrow |f(x_n) - f(y_n)| < \varepsilon$. Since $x_n, y_n \to x$, I get $|f(x_n) - f(y_n)| \to 0$. Thus, the limit exists and is independent of sequence. I define $F(x)$ to be this limit.
+
+Then for $x_n \to x$ in $X$, $F(x_n) \to F(x)$ by similar argument. So $F$ is continuous, and extends $f$.
+
+\end{document}
