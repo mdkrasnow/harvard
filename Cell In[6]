@@ -1,5 +1,0 @@
-import os
-
-# Create img_output directory if it doesn't exist
-os.makedirs('img_output', exist_ok=True)
-plt.savefig(f'img_output/{filename}') 

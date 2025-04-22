@@ -1,0 +1,287 @@
+\documentclass[10pt,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.4in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\usepackage[breakable]{tcolorbox}
+\usepackage{enumitem}
+
+\pagestyle{empty}
+\setlength{\columnsep}{0.2in}
+\renewcommand{\arraystretch}{1.1}
+\begin{document}
+\footnotesize
+
+% --------------------- Page 1 ---------------------
+\begin{multicols}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Common Patterns Across Models]
+\begin{enumerate}
+    \item \textbf{Modeling:} Decide whether to model \(p(y\mid x)\) (discriminative) or \(p(x,y)\) (generative).\\[1mm]
+    \item \textbf{Loss Functions:} Examples include squared error, cross-entropy, hinge loss, etc.\\[1mm]
+    \item \textbf{Optimization:} Solve in closed form (e.g. linear regression) or use iterative methods such as gradient descent/backpropagation.\\[1mm] 
+\end{enumerate}
+
+\textbf{Discriminative Models:} Directly model
+\[
+p(y\mid x;w).
+\]
+For binary logistic regression:
+\[
+p(y=1\mid x;w)=\sigma(w^T x),\quad \sigma(z)=\frac{1}{1+e^{-z}}.
+\]
+\textbf{Generative Models:} Model \(p(x,y)\) then apply Bayes' rule to compute \(p(y\mid x)\).\\[1mm]
+\textbf{MLE \& MAP:}\\
+\[
+\begin{aligned}
+w_{\mathrm{MLE}} &= \arg\max_w \log\, p((x,y)\mid w),\\[1mm]
+w_{\mathrm{MAP}} &= \arg\max_w \Bigl\{\log\, p((x,y)\mid w)+\log\, p(w)\Bigr\},
+\end{aligned}
+\]
+with a Gaussian prior \(w\sim\mathcal{N}(0,\sigma_0^2 I)\) yielding ridge regression:
+\[
+w_{\mathrm{MAP}}=\arg\min_w \sum_{i=1}^N \left(y^{(i)}-w^T x^{(i)}\right)^2+\lambda\|w\|_2^2,\quad \lambda=\frac{\sigma^2}{\sigma_0^2}.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Optimal \(w\) \& Likelihood Functions]
+\textbf{Linear Regression:}
+\[
+w^*=(X^T X)^{-1}X^Ty,\quad p((x,y)\mid w)=\prod_{i=1}^N \mathcal{N}\bigl(y^{(i)}\mid w^T x^{(i)},\,\sigma^2\bigr).
+\]
+\textbf{Binary Logistic Regression:}
+\[
+p(y\mid x;w)=\sigma(w^T x)^y\,[1-\sigma(w^T x)]^{1-y},
+\]
+with log-likelihood
+\[
+\ell(w)=\sum_{i=1}^N \Bigl[y^{(i)}\log\sigma(w^T x^{(i)})+(1-y^{(i)})\log(1-\sigma(w^T x^{(i)}))\Bigr].
+\]
+\textbf{Multiclass (Softmax):}\\[1mm]
+\textit{Dataset Likelihood:}
+\[
+\mathcal{L}(\{w_\ell\}) = \prod_{i=1}^N \prod_{k=1}^K \left(\frac{\exp\bigl(w_k^T x^{(i)}\bigr)}{\sum_{\ell=1}^K \exp\bigl(w_\ell^T x^{(i)}\bigr)}\right)^{\mathbb{I}\{y^{(i)}=k\}}.
+\]
+Taking the logarithm gives the log-likelihood:
+\[
+\ell(\{w_\ell\}) = \sum_{i=1}^N \left[ w_{y^{(i)}}^T x^{(i)} - \log\left(\sum_{\ell=1}^K \exp\bigl(w_\ell^T x^{(i)}\bigr)\right) \right].
+\]
+\textbf{Ridge Regression:}
+\[
+w^*=(X^TX+\lambda I)^{-1}X^Ty.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Loss Functions]
+\begin{itemize}[noitemsep, topsep=0pt]
+  \item \textbf{0/1 Loss:} \(L(y,\hat{y})=\mathbb{I}(y\neq\hat{y})\).
+  \item \textbf{Hinge Loss:} \(L(y,f(x))=\max(0,\,1-y\,f(x))\).
+  \item \textbf{L1 Loss:} \(L(y,\hat{y})=|y-\hat{y}|\).
+  \item \textbf{L2 Loss:} \(L(y,\hat{y})=(y-\hat{y})^2\).
+  \item \textbf{Binary Cross-Entropy:} \(L(y,\hat{y})=-\Bigl[y\log\hat{y}+(1-y)\log(1-\hat{y})\Bigr]\).
+  \item \textbf{Softmax Loss:} \(L=-\log\frac{\exp(w_k^T x)}{\sum_\ell \exp(w_\ell^T x)}\).
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Gradient Descent]
+\textbf{Gradient Descent:}
+\begin{itemize}[noitemsep, topsep=0pt]
+  \item Iteratively update parameters by moving opposite to the gradient:
+  \[
+  w \leftarrow w - \eta \nabla L(w),
+  \]
+  where \(\eta\) is the learning rate.
+  \item A proper choice of \(\eta\) is crucial: if too high, updates overshoot minima; if too low, convergence is slow.
+\end{itemize}
+\textbf{Stochastic Gradient Descent (SGD):}
+\begin{itemize}[noitemsep, topsep=0pt]
+  \item Approximates the full gradient using a single (or a mini-batch of) training example(s):
+  \[
+  w \leftarrow w - \eta \nabla L^{(i)}(w),
+  \]
+  where \(L^{(i)}(w)\) is the loss for the \(i\)th example.
+  \item Benefits: faster iterations and potential to escape shallow local minima.
+  \item Trade-off: introduces variance in updates, often requiring a decaying learning rate schedule.
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Matrix Rules]
+\textbf{Algebra:}
+\[
+(AB)^T=B^TA^T,\quad (A^{-1})^T=(A^T)^{-1}.
+\]
+For column vectors \(a,b\): \(a^T b\) is scalar. If \(X\) is \(n\times d\) and \(w\) is \(d\times1\), then \(Xw\) is \(n\times1\).\\[1mm]
+\textbf{Derivatives:}
+\[
+\frac{\partial}{\partial w}(w^TAw)=(A+A^T)w\quad (\text{or }2Aw \text{ if }A\text{ is symmetric}),
+\]
+\[
+\frac{\partial}{\partial w}\frac{1}{2}\|y-Xw\|_2^2=-X^T(y-Xw).
+\]
+\textbf{Norms:}
+\[
+\|w\|_2=\sqrt{w^Tw},\quad \|w\|_1=\sum_i|w_i|.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Lagrangian Method]
+\textbf{Steps:}
+\begin{enumerate}[noitemsep, topsep=0pt]
+  \item Form the Lagrangian: \(\mathcal{L}(w,\lambda)=\text{Objective}(w)+\lambda\,(\text{Constraint}(w))\).
+  \item Differentiate with respect to \(w\) and \(\lambda\).
+  \item Set derivatives to zero and solve.
+\end{enumerate}
+\textbf{Example (SVM):}
+\[
+\mathcal{L}(w,b,\lambda)=\frac{1}{2}\|w\|_2^2-\sum_{i=1}^N\lambda_i\Bigl[y^{(i)}(w^Tx^{(i)}+b)-1\Bigr].
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Terminology \& Notation]
+\textbf{Terminology:}\\[1mm]
+\textbf{Posterior:} \(p(w\mid(x,y))\) after observing data.\\[1mm]
+\textbf{Posterior Predictive:}
+\[
+p(y^*\mid x^*,(x,y))=\int p(y^*\mid x^*,w)\,p(w\mid(x,y))\,dw.
+\]
+\textbf{Marginal Likelihood:}
+\[
+p((x,y))=\int p((x,y)\mid w)\,p(w)\,dw.
+\]
+\textbf{Class-Conditional:} \(p(x\mid y)\).\\[2mm]
+\textbf{Notation:}\\[1mm]
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item \(N\): Number of training examples.
+    \item \(K\): Number of classes.
+    \item \(x^{(i)}\): \(i\)th input data point.
+    \item \(y^{(i)}\): Label corresponding to \(x^{(i)}\).
+    \item \(X\): Design matrix whose rows are \(x^{(i)}\).
+    \item \(w\), \(w_\ell\): Weight vector(s); \(w_\ell\) denotes the weight for class \(\ell\) in multiclass models.
+    \item \(w_0\) or \(b\): Bias term.
+    \item \(\eta\): Learning rate in gradient descent.
+    \item \(\lambda\): Regularization parameter (ridge: \(\ell_2\), lasso: \(\ell_1\)).
+    \item \(C\): SVM regularization parameter trading off margin and classification errors.
+    \item \(\xi_i\): Slack variable for the \(i\)th example in soft-margin SVM.
+    \item \(\phi(x)\): Feature mapping or basis function.
+    \item \(\sigma(z)\): Sigmoid function, \(\frac{1}{1+e^{-z}}\).
+    \item \(\mathbb{I}\{\cdot\}\): Indicator function.
+    \item \(L\): Generic loss function.
+    \item \(\ell\): Often denotes log-likelihood.
+\end{itemize}
+\end{tcolorbox}
+
+\end{multicols}
+
+% --------------------- Page 2 ---------------------
+\newpage
+\begin{multicols}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Bias--Variance \& Regularization]
+\textbf{Bias--Variance Tradeoff:} High bias \(\rightarrow\) underfitting; high variance \(\rightarrow\) overfitting. Regularization (e.g. ridge, lasso) can reduce variance.\\[2mm]
+\textbf{Ridge Regression:}\\
+\[
+w^*=(X^TX+\lambda I)^{-1}X^Ty.
+\]
+\textbf{Lasso Regression:}\\
+Minimize
+\[
+\sum_{i=1}^N \left(y^{(i)}-w^T x^{(i)}\right)^2+\lambda\|w\|_1.
+\]
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Neural Networks]
+\textbf{Architecture:}\\
+\(\bullet\) Feedforward NN with one hidden layer: 
+\[
+h = \sigma(W_1 x + b_1),\quad f = W_2 h + b_2.
+\]
+\(\bullet\) Deep networks with multiple hidden layers enable hierarchical feature learning.\\[1mm]
+\textbf{Activation Functions:}\\
+Introduce non-linearity (e.g. Sigmoid, ReLU, tanh) to enable universal approximation.\\[1mm]
+\textbf{Backpropagation:}\\
+Compute gradients via the chain rule:
+\[
+\frac{\partial L}{\partial W} = \frac{\partial L}{\partial f}\frac{\partial f}{\partial W}.
+\]
+Performs a forward pass to compute outputs and a backward pass to update parameters.\\[1mm]
+\textbf{Additional Points:}
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item \textbf{Model Selection:} Techniques such as cross-validation and regularization are key for avoiding overfitting.
+    \item \textbf{Loss Functions:} Choice depends on the task—least squares for regression; softmax loss for classification.
+    \item \textbf{Task Adaptation:} Neural networks can be tailored for both regression and classification tasks.
+    \item \textbf{Bias Inclusion:} Always incorporate the bias term via the augmented input (see Supervised Learning Organization).
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Support Vector Machines (SVMs)]
+\textbf{Maximum Margin Classifier:}\\
+Finds the hyperplane that maximizes the distance (margin) between classes.\\[1mm]
+\textbf{Hard Margin SVM:}\\
+\[
+\min_{w,b} \frac{1}{2}\|w\|_2^2 \quad \text{s.t. } y^{(i)}(w^T x^{(i)}+b) \ge 1.
+\]
+\textbf{Soft Margin SVM:}\\
+\[
+\min_{w,b} \frac{1}{2}\|w\|_2^2 + C\sum_{i=1}^N \xi_i \quad \text{s.t. } y^{(i)}(w^T x^{(i)}+b) \ge 1-\xi_i,\quad \xi_i\ge0.
+\]
+\textbf{Additional Points:}
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item \textbf{Hinge Loss:} Penalizes points within the margin, defined as \(L(y, f(x))=\max(0,\,1-y\,f(x))\).
+    \item \textbf{Regularization (\(C\)):} A higher \(C\) emphasizes minimizing classification errors, potentially at the cost of a smaller margin.
+    \item \textbf{Kernel Trick:} Replaces inner products \(x^Tz\) with \(K(x,z)=\phi(x)^T\phi(z)\) to handle nonlinearly separable data. Common kernels include linear, polynomial, and RBF.
+    \item \textbf{Example Kernel:} For RBF, \(K(x,x')=\exp(-\gamma\|x-x'\|_2^2)\).
+    \item \textbf{Support Vectors:} The data points that lie closest to the decision boundary; they determine the position of the hyperplane.
+    \item \textbf{Decision Boundaries:} SVMs often yield sharper boundaries compared to logistic regression.
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Naive Bayes \& Bayesian Linear Regression]
+\textbf{Naive Bayes:}\\[1mm]
+\(\bullet\) \textbf{Modeling:} A generative model that estimates \(p(x,y)\) by assuming feature independence given the class:
+\[
+p(x\mid y) = \prod_{j} p(x_j \mid y).
+\]
+\(\bullet\) \textbf{Classification:} Compute the posterior via Bayes' rule:
+\[
+p(y\mid x) \propto p(y)\,p(x\mid y).
+\]
+\(\bullet\) \textbf{Characteristics:} Simple, fast, and effective in high-dimensional settings, though it relies on the independence assumption.
+
+\vspace{1mm}
+\textbf{Working with Generative Models for Classification:}\\[1mm]
+\(\bullet\) Estimate class priors \(p(y)\) and class-conditional likelihoods \(p(x\mid y)\) from the data.\\
+\(\bullet\) Apply Bayes' rule to obtain \(p(y\mid x)\) and classify by choosing the class with maximum posterior probability.
+
+\vspace{1mm}
+\textbf{Discriminative vs. Generative Models:}\\[1mm]
+\(\bullet\) \textbf{Discriminative models} (e.g., Logistic Regression) directly model \(p(y\mid x)\) focusing on the decision boundary.\\
+\(\bullet\) \textbf{Generative models} (e.g., Naive Bayes) model the joint distribution \(p(x,y)\) and derive \(p(y\mid x)\) using Bayes' rule.\\
+\(\bullet\) Discriminative models often achieve higher asymptotic accuracy, while generative models can perform better with limited data or when model assumptions hold.
+
+\vspace{1mm}
+\textbf{Bayesian Linear Regression:}\\[1mm]
+\(\bullet\) \textbf{Concept:} Treats weights \(w\) as random variables with a prior (commonly Gaussian).\\
+\(\bullet\) \textbf{Posterior:} Update beliefs with:
+\[
+p(w\mid D) \propto p(D\mid w)\,p(w).
+\]
+\(\bullet\) \textbf{Prediction:} Integrate over the posterior to obtain:
+\[
+p(y^*\mid x^*,D)=\int p(y^*\mid x^*,w)\,p(w\mid D)\,dw.
+\]
+\end{tcolorbox}
+
+\end{multicols}
+
+\end{document}

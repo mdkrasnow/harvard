@@ -1,0 +1,229 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 1 \\[0.5em]
+\large
+Due Wednesday, February 5, 2025
+\end{center}
+\begin{center}
+\bf \Large
+Matt Krasnow
+\end{center}
+
+\bigskip
+
+\begin{problem}
+(Exercise 1.1 in Rudin)\\
+If \( r \) is a non-zero rational number and \( x \) is an irrational number, prove that \( r + x \) and \( r x \) are irrational.
+\end{problem}
+
+\begin{proof}
+I will prove both parts by contradiction.
+
+\medskip
+
+\noindent\textbf{Proof that \( r + x \) is irrational}
+
+\textbf{Step 1: Assume the contrary.}\\
+Suppose, for the sake of contradiction, that \( r + x \) is rational. By definition, I can express:
+\[
+r = \frac{m}{n}, \quad \text{with } m, n \in \mathbb{Z}, \; n \neq 0,
+\]
+and
+\[
+r + x = \frac{a}{b}, \quad \text{with } a, b \in \mathbb{Z}, \; b \neq 0.
+\]
+
+\textbf{Step 2: Solve for \( x \).}\\
+Subtracting \( r \) from both sides gives:
+\[
+x = \frac{a}{b} - \frac{m}{n}.
+\]
+
+\textbf{Step 3: Simplify the expression.}\\
+Combining the fractions, I have:
+\[
+x = \frac{a n - m b}{b n}.
+\]
+Since \( a n - m b \) and \( b n \) are integers (with \( b n \neq 0 \)), \( x \) is a rational number.
+
+\textbf{Step 4: Arrive at a contradiction.}\\
+This conclusion contradicts the assumption that \( x \) is irrational. Hence, the assumption that \( r + x \) is rational is false, so:
+\[
+r + x \text{ is irrational.}
+\]
+
+\medskip
+
+\noindent\textbf{Proof that \( r x \) is irrational}
+
+\textbf{Step 1: Assume the contrary.}\\
+Suppose, for the sake of contradiction, that \( r x \) is rational. Then I can write:
+\[
+r x = \frac{c}{d}, \quad \text{with } c, d \in \mathbb{Z}, \; d \neq 0.
+\]
+
+\textbf{Step 2: Substitute the expression for \( r \).}\\
+Since \( r \) is a nonzero rational number, write:
+\[
+r = \frac{m}{n}, \quad \text{with } m, n \in \mathbb{Z}, \; n \neq 0 \text{ and } m \neq 0.
+\]
+Then, the equation becomes:
+\[
+\frac{m}{n} \cdot x = \frac{c}{d}.
+\]
+
+\textbf{Step 3: Solve for \( x \).}\\
+Multiplying both sides by \( \frac{n}{m} \) (which is valid because \( m \neq 0 \)) gives:
+\[
+x = \frac{c n}{m d}.
+\]
+
+\textbf{Step 4: Check rationality.}\\
+Since \( c n \) and \( m d \) are integers (with \( m d \neq 0 \)), \( x \) is rational. That is, \( x \) can be written in the form:
+\[
+x = \frac{f}{g}, \quad \text{with } f, g \in \mathbb{Z}, \; g \neq 0.
+\]
+
+\textbf{Step 5: Arrive at a contradiction.}\\
+This contradicts the hypothesis that \( x \) is irrational. Therefore, the assumption that \( r x \) is rational must be false, so:
+\[
+r x \text{ is irrational.}
+\]
+\end{proof}
+
+\newpage
+
+\begin{problem}
+(Exercise 1.4 in Rudin) 
+Let $E$ be a non-empty subset of an ordered set. 
+Suppose $\alpha$ is a lower bound of $E$ and $\beta$ is an upper bound of $E$. 
+Prove that $\alpha \leq \beta$. 
+\end{problem}
+
+\begin{proof}
+I prove the statement directly. Since \( E \) is non-empty, choose an arbitrary element \( x \in E \). By the definition of a lower bound, I have
+\[
+\forall x \in E, \quad \alpha \leq x.
+\]
+Likewise, by the definition of an upper bound, it follows that
+\[
+\forall x \in E, \quad x \leq \beta.
+\]
+Thus, for my chosen \( x \in E \), I obtain
+\[
+\alpha \leq x \quad \text{and} \quad x \leq \beta.
+\]
+By the transitive property of the order relation, I conclude that
+\[
+\alpha \leq \beta.
+\]
+\end{proof}
+
+\newpage 
+
+\begin{problem}
+(Exercise 1.5 in Rudin)
+Let $A$ be a non-empty set of real numbers which is bounded below. 
+Let $-A$ be the set of all numbers $-x$, where $x\in A$. 
+Prove that 
+\[
+\inf A = - \sup (-A).
+\]
+\end{problem}
+
+\begin{proof}
+I wish to show that \(-\sup(-A)\) is the greatest lower bound of \(A\).
+
+Since \(A\) is bounded below, the set \(A\) has an infimum, say \(m = \inf A\). Similarly, since \(A\) is non-empty and bounded below, the set \(-A\) is non-empty and bounded above, so it has a supremum, say \(s = \sup(-A)\).
+
+Recall the following two properties:
+\begin{enumerate}
+    \item For any \(x \in A\), I have \(m \le x\).
+    \item For any \(y \in -A\), I have \(y \le s\).
+\end{enumerate}
+
+Note that for every \(x \in A\), the corresponding element \(-x\) belongs to \(-A\). Thus, for every \(x \in A\) I have
+\[
+-x \le s.
+\]
+Multiplying the inequality by \(-1\) (which reverses the inequality), I obtain
+\[
+x \ge -s.
+\]
+This shows that \(-s\) is a lower bound for \(A\); that is,
+\[
+- \sup(-A) \le x \quad \forall x \in A.
+\]
+
+To establish that \(-s\) is in fact the greatest lower bound (i.e., the infimum of \(A\)), suppose \(m'\) is any lower bound for \(A\). Then for every \(x \in A\), I have
+\[
+m' \le x.
+\]
+Multiplying by \(-1\) (and reversing the inequality) yields
+\[
+-m' \ge -x.
+\]
+Since this holds for all \(x \in A\), I conclude that \(-m'\) is an upper bound for \(-A\). Hence, by the definition of supremum,
+\[
+-m' \ge \sup(-A) = s.
+\]
+Multiplying by \(-1\) (again reversing the inequality) gives
+\[
+m' \le -s.
+\]
+Thus, any lower bound \(m'\) of \(A\) satisfies \(m' \le -s\). Since I already showed that \(-s\) is itself a lower bound for \(A\), it follows that
+\[
+\inf A = -s = -\sup(-A).
+\]
+\end{proof}
+
+\newpage
+
+\begin{problem}
+Let \( A \subset \mathbb{R} \) be a non-empty set of real numbers which is bounded above. 
+Prove that, for any positive real number \(\varepsilon > 0\), there exists \(x \in A\) such that \(\sup A - x \leq \varepsilon\).
+\end{problem}
+
+\begin{proof}
+I prove the statement by considering two cases.
+
+\medskip
+
+\noindent\textbf{Case 1: \( \sup(A) \in A \)}\\
+If \( \sup(A) \in A \), I choose \( x = \sup(A) \). Then,
+\[
+\sup(A) - x = \sup(A) - \sup(A) = 0 \leq \varepsilon,
+\]
+which holds for every \(\varepsilon > 0\).
+
+\medskip
+
+\noindent\textbf{Case 2: \( \sup(A) \notin A \)}\\
+Since \( A \) is bounded above by \( \sup(A) \) and \( \sup(A) \notin A \), by the definition of the supremum, for every \(\varepsilon > 0\) the number \( \sup(A) - \varepsilon \) is not an upper bound for \( A \). Hence, there exists some \( x \in A \) such that
+\[
+x > \sup(A) - \varepsilon.
+\]
+This inequality can be rewritten as
+\[
+\sup(A) - x < \varepsilon.
+\]
+Thus, for any given \(\varepsilon > 0\), I have found an \( x \in A \) satisfying \(\sup A - x < \varepsilon\), which completes the proof.
+\end{proof}
+
+\end{document}

@@ -1,0 +1,258 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Perfect Sets and the Cantor Set: An Undergraduate Introduction}
+\author{}
+\date{}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+In this report, we explore the fascinating world of perfect sets in topology, with special emphasis on the famous Cantor set. These mathematical objects may initially seem abstract, but they have profound implications in various fields including analysis, dynamical systems, and even computer science.
+
+The Cantor set, named after the German mathematician Georg Cantor (1845-1918), is one of the most intriguing objects in mathematics. It demonstrates how a relatively simple construction can lead to a structure with remarkable and sometimes counterintuitive properties. Perfect sets, of which the Cantor set is the most famous example, are fundamental objects in topology and analysis that help us understand the structure of real numbers and continuous functions.
+
+\section{Metric Spaces and Topological Concepts}
+
+Before diving into perfect sets, we need to establish some foundational concepts from topology and metric spaces.
+
+\subsection{Metric Spaces}
+
+A \textbf{metric space} is a set equipped with a notion of distance between its elements.
+
+\textbf{Definition:} A metric space is a pair $(X,d)$ where $X$ is a set and 
+\[
+d: X \times X \rightarrow \mathbb{R}
+\]
+is a function (called a metric) that satisfies:
+\begin{enumerate}
+    \item $d(x,y) \geq 0$ for all $x,y \in X$ (non-negativity)
+    \item $d(x,y) = 0$ if and only if $x = y$ (identity of indiscernibles)
+    \item $d(x,y) = d(y,x)$ for all $x,y \in X$ (symmetry)
+    \item $d(x,z) \leq d(x,y) + d(y,z)$ for all $x,y,z \in X$ (triangle inequality)
+\end{enumerate}
+
+\textbf{Example:} The real line $\mathbb{R}$ with the standard metric 
+\[
+d(x,y) = |x-y|
+\]
+is a metric space.
+
+\subsection{Open and Closed Sets}
+
+\textbf{Definition:} Let $(X,d)$ be a metric space. For any point $x \in X$ and any real number $r > 0$, the \textbf{open ball} centered at $x$ with radius $r$ is the set:
+\[
+B(x,r) = \{y \in X : d(x,y) < r\}.
+\]
+
+\textbf{Definition:} A subset $U$ of $X$ is called \textbf{open} if for each point $x \in U$, there exists an $r > 0$ such that $B(x,r) \subseteq U$.
+
+\textbf{Definition:} A subset $F$ of $X$ is called \textbf{closed} if its complement $X \setminus F$ is open.
+
+\textbf{Example:} On the real line $\mathbb{R}$:
+\begin{itemize}
+    \item The interval $(0,1)$ is open.
+    \item The interval $[0,1]$ is closed.
+    \item The interval $[0,1)$ is neither open nor closed.
+\end{itemize}
+
+\subsection{Limit Points and Derived Sets}
+
+\textbf{Definition:} A point $x \in X$ is a \textbf{limit point} of a set $A \subseteq X$ if every open ball $B(x,r)$ contains a point of $A$ different from $x$.
+
+\textbf{Definition:} The set of all limit points of $A$ is called the \textbf{derived set} of $A$, denoted by $A'$.
+
+\textbf{Example:} For the set 
+\[
+A = \{1/n : n \in \mathbb{N}\} \subset \mathbb{R},
+\]
+the derived set is 
+\[
+A' = \{0\}
+\]
+because 0 is the only limit point of $A$.
+
+\textbf{Definition:} The \textbf{closure} of a set $A$, denoted by $\overline{A}$, is the union of $A$ and its derived set:
+\[
+\overline{A} = A \cup A'.
+\]
+
+\section{Perfect Sets: Definition and Properties}
+
+Now we can introduce the concept of perfect sets, which are central to our discussion.
+
+\subsection{Definition and Basic Properties}
+
+\textbf{Definition:} A set $P$ in a metric space is \textbf{perfect} if it is closed and equals its derived set, i.e., 
+\[
+P = P'.
+\]
+In simpler terms, a perfect set is closed and every point in it is a limit point of the set.
+
+\textbf{Proposition 1:} A non-empty perfect set contains no isolated points.
+
+\textit{Proof:} An isolated point would have a neighborhood containing no other points of the set, contradicting the definition of a limit point. Since every point in a perfect set is a limit point, there can be no isolated points.
+
+\textbf{Proposition 2:} Every perfect set in $\mathbb{R}$ is uncountable.
+
+\textit{Proof sketch:} This follows from the Baire Category Theorem, as a countable set of points would be a countable union of nowhere dense sets, which cannot contain a perfect set.
+
+\subsection{Real-World Analogy for Perfect Sets}
+
+Think of a perfect set as a collection of points where each point is ``surrounded'' by other points from the same set, with no ``lonely'' or isolated points. 
+
+Imagine a heavily populated city where every neighborhood, no matter how small, contains multiple residents. If you pick any resident, you'll find other residents living arbitrarily close to them. This city would be analogous to a perfect set---every point (resident) has other points of the set nearby.
+
+\subsection{Examples of Perfect Sets}
+
+\begin{enumerate}
+    \item \textbf{The Real Line:} $\mathbb{R}$ itself is a perfect set.
+    \item \textbf{Closed Intervals:} Any closed interval $[a,b]$ where $a < b$ is a perfect set.
+    \item \textbf{Circle:} The unit circle in $\mathbb{R}^2$ is a perfect set.
+\end{enumerate}
+
+But these examples are somewhat trivial. The Cantor set provides a much more interesting example of a perfect set.
+
+\section{The Cantor Set: Construction and Properties}
+
+The Cantor set, often denoted by $C$, is a remarkable perfect set with many counterintuitive properties.
+
+\subsection{Construction}
+
+The Cantor set can be constructed by an iterative process of removing middle thirds from intervals:
+\begin{enumerate}
+    \item Start with the closed interval 
+    \[
+    C_0 = [0,1].
+    \]
+    \item Remove the middle third open interval to get 
+    \[
+    C_1 = [0,1/3] \cup [2/3,1].
+    \]
+    \item Remove the middle third of each remaining interval to get 
+    \[
+    C_2 = [0,1/9] \cup [2/9,1/3] \cup [2/3,7/9] \cup [8/9,1].
+    \]
+    \item Continue this process indefinitely.
+\end{enumerate}
+The Cantor set $C$ is the intersection of all these sets:
+\[
+C = \bigcap_{n=0}^{\infty} C_n.
+\]
+
+Visually, the first few steps look like:
+\begin{itemize}
+    \item $C_0 = [0,1]$: A single line segment.
+    \item $C_1 = [0,1/3] \cup [2/3,1]$: Two line segments.
+    \item $C_2 = [0,1/9] \cup [2/9,1/3] \cup [2/3,7/9] \cup [8/9,1]$: Four line segments.
+\end{itemize}
+
+\subsection{Properties of the Cantor Set}
+
+\textbf{Property 1:} The Cantor set is closed.
+
+\textit{Proof:} The Cantor set is the intersection of closed sets $C_n$, and the intersection of any collection of closed sets is closed.
+
+\bigskip
+
+\textbf{Property 2:} The Cantor set has no isolated points, making it a perfect set.
+
+\textit{Proof:} For any point $x \in C$ and any $\epsilon > 0$, we can find another point $y \in C$ such that 
+\[
+0 < |x - y| < \epsilon.
+\]
+
+\bigskip
+
+\textbf{Property 3:} The Cantor set has Lebesgue measure zero.
+
+\textit{Proof:} The total length removed in the construction is:
+\[
+\frac{1}{3} + \frac{2}{9} + \frac{4}{27} + \cdots = \frac{1}{3} \sum_{n=0}^{\infty} \left(\frac{2}{3}\right)^n = \frac{1}{3} \cdot \frac{1}{1-2/3} = 1.
+\]
+So the measure of what remains (the Cantor set) is $1 - 1 = 0$.
+
+\bigskip
+
+\textbf{Property 4:} Despite having measure zero, the Cantor set is uncountable.
+
+\textit{Proof:} We can establish a bijection between the Cantor set and the interval $[0,1]$ using ternary (base-3) expansions.
+
+\subsection{Real-World Analogies for the Cantor Set}
+
+\begin{enumerate}
+    \item \textbf{Fractal Dust:} The Cantor set resembles a ``dust'' of points spread in a self-similar pattern. Each part of the Cantor set, when magnified, looks like the whole set.
+    \item \textbf{Swiss Cheese with Infinitely Many Holes:} Imagine starting with a block of cheese and cutting out holes, then cutting more holes in what remains, continuing infinitely. The Cantor set is what would theoretically remain.
+    \item \textbf{Digital Signal Processing:} The Cantor set can be seen as the set of all possible infinite sequences of 0s and 2s in base 3, which has applications in signal processing and information theory.
+\end{enumerate}
+
+\subsection{Ternary Representation}
+
+Every point in the Cantor set can be represented as a ternary (base-3) expansion using only the digits 0 and 2. For example:
+\begin{itemize}
+    \item $0$ in the Cantor set is represented as $0.000\ldots_3$.
+    \item $1$ in the Cantor set is represented as $0.222\ldots_3$.
+    \item $1/3$ in the Cantor set is represented as $0.020202\ldots_3$.
+\end{itemize}
+This representation provides an elegant way to understand the structure of the Cantor set.
+
+\section{Applications and Extensions}
+
+\subsection{Cantor Function (Devil's Staircase)}
+
+The \textbf{Cantor function} $f:[0,1] \rightarrow [0,1]$ is a continuous function that:
+\begin{itemize}
+    \item Increases from 0 to 1 over the interval $[0,1]$.
+    \item Has a derivative equal to 0 almost everywhere.
+    \item Is constant on each interval removed in the construction of the Cantor set.
+\end{itemize}
+This function demonstrates how a function can increase without having a positive derivative almost anywhere, a counterintuitive property that challenges our intuition about calculus.
+
+\subsection{Applications in Dynamical Systems}
+
+Perfect sets and especially the Cantor set appear naturally in the study of dynamical systems:
+\begin{enumerate}
+    \item \textbf{Strange Attractors:} Many chaotic systems have attractors with a Cantor-like structure.
+    \item \textbf{Symbolic Dynamics:} The set of all possible sequences in symbolic dynamics often forms a Cantor set in the space of sequences.
+\end{enumerate}
+
+\textbf{Example:} Consider the logistic map 
+\[
+f(x) = rx(1-x)
+\]
+for certain values of $r$ (e.g., $r \approx 3.84$). The set of points that remain bounded under iteration forms a Cantor-like set.
+
+\subsection{Other Cantor-like Sets}
+
+\begin{enumerate}
+    \item \textbf{Smith-Volterra-Cantor Set:} A variation of the Cantor set with positive measure but still nowhere dense.
+    \item \textbf{Cantor Dust:} A two-dimensional analog of the Cantor set.
+    \item \textbf{Menger Sponge:} A three-dimensional analog, which is a perfect set in $\mathbb{R}^3$.
+\end{enumerate}
+
+\section{Exercises}
+
+\begin{enumerate}
+    \item Prove that the intersection of any collection of closed sets is closed.
+    \item Show that the union of two perfect sets is not necessarily perfect.
+    \item Prove that every point in the Cantor set can be written using only the digits 0 and 2 in its base-3 expansion.
+    \item Calculate the Hausdorff dimension of the Cantor set. (Hint: It's $\frac{\log(2)}{\log(3)} \approx 0.631$.)
+    \item Construct a continuous function $f:[0,1] \rightarrow \mathbb{R}$ that is differentiable at exactly the points not in the Cantor set.
+\end{enumerate}
+
+\section{References}
+
+\begin{enumerate}
+    \item Rudin, W. (1976). \textit{Principles of Mathematical Analysis}. McGraw-Hill.
+    \item Munkres, J. R. (2000). \textit{Topology}. Prentice Hall.
+    \item Falconer, K. (2003). \textit{Fractal Geometry: Mathematical Foundations and Applications}. John Wiley \& Sons.
+    \item Devaney, R. L. (2003). \textit{An Introduction to Chaotic Dynamical Systems}. Westview Press.
+    \item Strogatz, S. H. (2018). \textit{Nonlinear Dynamics and Chaos}. CRC Press.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,217 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis | Matt Krasnow}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 8 \\[0.5 em]
+\large
+Due Wednesday, April 23, 2025
+\end{center}
+
+\bigskip
+
+
+\begin{problem}[10 points]
+Suppose $f$ is a real function on $\mathbb{R}$ such that
+\[
+|f(x) - f(y)| \leq (x-y)^2
+\]
+for all real $x$ and $y$. 
+Prove that $f$ is constant. 
+\end{problem}
+
+\begin{proof}
+We will prove that $f$ is constant by showing that its derivative is zero at every point, and then applying the Mean Value Theorem.
+
+Fix any point $a \in \mathbb{R}$. We need to show that $f'(a) = 0$. Consider the difference quotient:
+\begin{align}
+\left|\frac{f(a+h) - f(a)}{h}\right| &\leq \frac{|f(a+h) - f(a)|}{|h|} \\
+&\leq \frac{(a+h-a)^2}{|h|} \quad \text{(by the given condition)} \\
+&= \frac{h^2}{|h|} \\
+&= |h|
+\end{align}
+
+Now, as $h \to 0$, we have $|h| \to 0$. Since the above inequality holds for all $h \neq 0$, we can take the limit as $h \to 0$ to get:
+\begin{align}
+\lim_{h \to 0} \left|\frac{f(a+h) - f(a)}{h}\right| \leq \lim_{h \to 0} |h| = 0
+\end{align}
+
+This means that the absolute value of the difference quotient approaches 0, which implies that the difference quotient itself must approach 0. Therefore:
+\begin{align}
+f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h} = 0
+\end{align}
+
+Since $a$ was arbitrary, we have shown that $f'(x) = 0$ for all $x \in \mathbb{R}$.
+
+Now we can use the Mean Value Theorem. For any two points $p, q \in \mathbb{R}$ with $p < q$, the Mean Value Theorem guarantees the existence of a point $c \in (p, q)$ such that:
+\begin{align}
+f(q) - f(p) = f'(c)(q - p)
+\end{align}
+
+Since we've established that $f'(c) = 0$, we have:
+\begin{align}
+f(q) - f(p) = 0 \cdot (q - p) = 0
+\end{align}
+
+Therefore, $f(p) = f(q)$ for any two points $p, q \in \mathbb{R}$, which means that $f$ is constant on $\mathbb{R}$.
+\end{proof}
+
+\begin{problem}[10 points]
+Suppose $g$ is a real, differentiable function on $\mathbb{R}$ with bounded derivative (i.e. $g'$ is a bounded function). 
+For $\epsilon > 0$, define
+\[
+f_{\epsilon} (x) = x + \epsilon g(x). 
+\]
+Prove that $f_{\epsilon}$ is one-to-one (i.e. $f_{\epsilon}(x) = f_{\epsilon}(y)$ implies $x = y$) if $\epsilon$ is small enough. 
+\end{problem}
+
+\begin{proof}
+We'll show that for sufficiently small $\epsilon > 0$, the function $f_{\epsilon}(x) = x + \epsilon g(x)$ is strictly monotonic, which implies that it's one-to-one.
+
+Since $g$ is differentiable on $\mathbb{R}$, $f_{\epsilon}$ is also differentiable on $\mathbb{R}$. Let's compute the derivative of $f_{\epsilon}$:
+\begin{align}
+f_{\epsilon}'(x) = \frac{d}{dx}[x + \epsilon g(x)] = 1 + \epsilon g'(x)
+\end{align}
+
+We're given that $g'$ is bounded on $\mathbb{R}$. This means there exists a constant $M > 0$ such that $|g'(x)| \leq M$ for all $x \in \mathbb{R}$. Therefore:
+\begin{align}
+|f_{\epsilon}'(x) - 1| = |\epsilon g'(x)| = \epsilon |g'(x)| \leq \epsilon M
+\end{align}
+
+This implies:
+\begin{align}
+1 - \epsilon M \leq f_{\epsilon}'(x) \leq 1 + \epsilon M
+\end{align}
+
+Now, we want to ensure that $f_{\epsilon}'(x) > 0$ for all $x \in \mathbb{R}$, which would make $f_{\epsilon}$ strictly increasing and thus one-to-one. From the inequality above, we need:
+\begin{align}
+1 - \epsilon M > 0 \\
+\Rightarrow \epsilon M < 1 \\
+\Rightarrow \epsilon < \frac{1}{M}
+\end{align}
+
+So if we choose $\epsilon < \frac{1}{M}$, then $f_{\epsilon}'(x) > 0$ for all $x \in \mathbb{R}$, making $f_{\epsilon}$ strictly increasing.
+
+Now, to show that a strictly increasing function is one-to-one: suppose $f_{\epsilon}(x) = f_{\epsilon}(y)$ for some $x, y \in \mathbb{R}$. If $x < y$, then by the strict monotonicity of $f_{\epsilon}$, we would have $f_{\epsilon}(x) < f_{\epsilon}(y)$, which contradicts our assumption. Similarly, if $x > y$, we'd have $f_{\epsilon}(x) > f_{\epsilon}(y)$, again contradicting our assumption. Thus, we must have $x = y$.
+
+Therefore, for any $\epsilon$ satisfying $0 < \epsilon < \frac{1}{M}$, the function $f_{\epsilon}$ is one-to-one.
+\end{proof}
+
+\begin{problem}[10 points]
+If
+\[
+c_0 + \frac{c_1}{2} + \cdots + \frac{c_{n-1}}{n} + \frac{c_n}{n+1} = 0,
+\]
+where $c_0, \cdots, c_n$ are real constants, 
+prove that the equation 
+\[
+c_0 + c_1 x + \cdots + c_{n-1}x^{n-1} + c_n x^n = 0
+\]
+has at least one real root between $0$ and $1$. 
+\end{problem}
+
+\begin{proof}
+Let's define the polynomial function:
+\[
+P(x) = c_0 + c_1 x + \cdots + c_{n-1}x^{n-1} + c_n x^n
+\]
+
+We need to prove that there exists some $r \in [0,1]$ such that $P(r) = 0$.
+
+Consider the definite integral of $P(x)$ from $0$ to $1$:
+\begin{align}
+I &= \int_0^1 P(x) \, dx \\
+&= \int_0^1 (c_0 + c_1 x + \cdots + c_{n-1}x^{n-1} + c_n x^n) \, dx \\
+\end{align}
+
+We can integrate each term separately:
+\begin{align}
+I &= \int_0^1 c_0 \, dx + \int_0^1 c_1 x \, dx + \cdots + \int_0^1 c_{n-1}x^{n-1} \, dx + \int_0^1 c_n x^n \, dx \\
+&= c_0 \int_0^1 dx + c_1 \int_0^1 x \, dx + \cdots + c_{n-1} \int_0^1 x^{n-1} \, dx + c_n \int_0^1 x^n \, dx \\
+\end{align}
+
+For each term, we compute:
+\begin{align}
+\int_0^1 x^k \, dx = \left[ \frac{x^{k+1}}{k+1} \right]_0^1 = \frac{1}{k+1}
+\end{align}
+
+Therefore:
+\begin{align}
+I &= c_0 \cdot 1 + c_1 \cdot \frac{1}{2} + \cdots + c_{n-1} \cdot \frac{1}{n} + c_n \cdot \frac{1}{n+1} \\
+&= c_0 + \frac{c_1}{2} + \cdots + \frac{c_{n-1}}{n} + \frac{c_n}{n+1}
+\end{align}
+
+By the given condition, this sum equals zero. So we have $I = 0$.
+
+Now, we apply the Mean Value Theorem for Integrals, which states that if a function $f$ is continuous on a closed interval $[a,b]$, then there exists a point $c \in (a,b)$ such that:
+\[
+\int_a^b f(x) \, dx = f(c) \cdot (b-a)
+\]
+
+In our case, $P(x)$ is a polynomial, which is continuous on $[0,1]$. Therefore, there exists a point $r \in (0,1)$ such that:
+\begin{align}
+\int_0^1 P(x) \, dx &= P(r) \cdot (1-0) \\
+\Rightarrow 0 &= P(r) \cdot 1 \\
+\Rightarrow P(r) &= 0
+\end{align}
+
+This proves that there exists at least one real value $r \in (0,1)$ such that $P(r) = 0$, which means the equation $c_0 + c_1 x + \cdots + c_{n-1}x^{n-1} + c_n x^n = 0$ has at least one real root between $0$ and $1$.
+\end{proof}
+
+\begin{problem}[10 points]
+Suppose $f$ is a real function defined and differentiable at every $x > 0$. 
+Suppose that\footnote{In other words, for any $\epsilon > 0$, there exists $M$ such that $|f'(x)| < \epsilon$ whenever $x > M$.}
+\[
+\lim_{x \rightarrow +\infty}f'(x) = 0.
+\]
+Put $g(x) := f(x+1) - f(x)$. 
+Prove that
+\[
+\lim_{x\rightarrow +\infty} g(x) = 0.
+\]
+\end{problem}
+
+\begin{proof}
+We are given that $f$ is differentiable for all $x > 0$ and that $\lim_{x \rightarrow +\infty}f'(x) = 0$. We need to prove that $\lim_{x\rightarrow +\infty} g(x) = 0$, where $g(x) = f(x+1) - f(x)$.
+
+We'll apply the Mean Value Theorem to the function $f$ on the interval $[x, x+1]$ for $x > 0$. The Mean Value Theorem states that if a function is continuous on a closed interval $[a,b]$ and differentiable on the open interval $(a,b)$, then there exists a point $c \in (a,b)$ such that:
+\[
+f'(c) = \frac{f(b) - f(a)}{b-a}
+\]
+
+Since $f$ is differentiable for all $x > 0$, it is continuous for all $x > 0$ as well. Therefore, for each $x > 0$, there exists a point $c_x \in (x, x+1)$ such that:
+\begin{align}
+f'(c_x) &= \frac{f(x+1) - f(x)}{(x+1) - x} \\
+&= \frac{f(x+1) - f(x)}{1} \\
+&= f(x+1) - f(x) \\
+&= g(x)
+\end{align}
+
+So we have established that $g(x) = f'(c_x)$ for some $c_x \in (x, x+1)$.
+
+Now, as $x \rightarrow +\infty$, we also have $c_x \rightarrow +\infty$ (since $c_x > x$). By the given limit condition, we know that $\lim_{x \rightarrow +\infty}f'(x) = 0$. Therefore:
+\begin{align}
+\lim_{x\rightarrow +\infty} g(x) = \lim_{x\rightarrow +\infty} f'(c_x) = \lim_{c_x\rightarrow +\infty} f'(c_x) = 0
+\end{align}
+
+The last equality follows from the fact that as $x \rightarrow +\infty$, $c_x \rightarrow +\infty$ as well, and we're given that $\lim_{x \rightarrow +\infty}f'(x) = 0$.
+
+Therefore, we have proven that $\lim_{x\rightarrow +\infty} g(x) = 0$, as required.
+\end{proof}
+
+
+\end{document}

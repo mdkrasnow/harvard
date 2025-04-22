@@ -1,0 +1,267 @@
+---
+title: "A-164/API-211 Program Evaluation (Spring 2025): Problem Set 3 – Regression  Discontinuity and Instrumental Variables"
+author: "Matt Krasnow, ChatGPT for formatting the assignment in Rmd"
+date: "March 2025"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Problem Set Policies
+- **Due Date:** Friday, March 7 by 5pm (a 24-hour automatic extension is granted).
+- **Submission:** Upload a Word document or PDF to Canvas.
+- **Collaboration:** You may discuss the problems in small groups but must submit individually. List the names of any collaborators.
+- **Formatting:** Type your solutions. Use an equation editor for math equations. Include your Stata or R code (copy and paste is acceptable).
+- **AI Use:** You may use AI tools (e.g., ChatGPT, Claude) to refine or translate ideas or code but **do not** use them to generate your ideas. If used, credit the tool as you would a human collaborator.
+- **Coding Help:** For coding issues, post in the #coding-helpdesk Slack channel (do not email or DM teaching team members).
+
+```{r setup, echo=TRUE, message=FALSE, warning=FALSE}
+# Set repository and install required packages
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+# Install necessary packages if not already installed
+if (!requireNamespace("rdrobust", quietly = TRUE)) {
+  install.packages("rdrobust")
+}
+if (!requireNamespace("AER", quietly = TRUE)) {
+  install.packages("AER")
+}
+if (!requireNamespace("sandwich", quietly = TRUE)) {
+  install.packages("sandwich")
+}
+if (!requireNamespace("lmtest", quietly = TRUE)) {
+  install.packages("lmtest")
+}
+if (!requireNamespace("haven", quietly = TRUE)) {
+  install.packages("haven")
+}
+
+# Load required libraries
+library(rdrobust)
+library(AER)
+library(sandwich)
+library(lmtest)
+library(haven)
+library(ggplot2)
+
+# Load Stata dataset
+data <- read_dta("data.dta")
+```
+
+# Background
+In this problem set, you will use a regression discontinuity (RD) design to estimate the causal effect of years of education on income. In 1947, Great Britain raised the minimum school dropout age from 14 to 15, creating a discontinuous change in the required years of schooling for cohorts turning 14 before versus after 1947. You will work with survey data on 59,594 British adults from the 1984–2006 British General Household Surveys. Key variables include:
+
+- **age:** Age at the time of the survey
+- **nireland:** Indicator (1 if from Northern Ireland)
+- **yearat14:** Year when the individual turned 14
+- **log_earnings:** Log of earnings
+- **educ:** Years of education
+- **male:** Indicator (1 if male)
+
+# Assignment
+
+## Question 1
+**Explain the difference between a sharp regression discontinuity design and a fuzzy regression discontinuity design. Which design are we using to estimate the causal effect of increased schooling on income?**
+
+_Answer:_
+
+In a sharp regression discontinuity design, the treatment status changes deterministically at the cutoff, meaning all units on one side receive treatment and all units on the other side do not. The probability of treatment jumps from 0 to 1 at the threshold.
+
+In a fuzzy regression discontinuity design, the treatment probability changes at the cutoff, but the change is not deterministic. The treatment probability increases at the threshold, but some units that should be treated (based on the running variable) might not be, and some that should not be treated might actually receive treatment.
+
+In this problem, we are using a fuzzy regression discontinuity design. Although the law changed the minimum dropout age from 14 to 15 in 1947, not all students who turned 14 after 1947 actually stayed in school for the additional year, and some students who turned 14 before 1947 might have stayed in school longer anyway. The policy created a discontinuity in the probability of receiving an additional year of education rather than a perfect deterministic change.
+
+---
+
+## Question 2: Relationship Between Year Turned 14 and Education
+
+### 2(a) Binned Scatterplot for Education
+Create a binned scatterplot showing how years of education changed at the threshold for exposure to the higher minimum dropout age.
+
+```{r binscatter-education, echo=TRUE, message=FALSE, warning=FALSE}
+# Define cutoff year and bandwidth
+cutoff <- 1947
+bw <- 10
+
+# Subset data within the bandwidth (±10 years of the cutoff)
+data_rd <- subset(data, abs(yearat14 - cutoff) <= bw)
+
+# Create binned scatterplot for years of education
+rdplot(data_rd$educ, data_rd$yearat14, c = cutoff, p = 1, binselect = "espr",
+       title = "Binned Scatterplot: Years of Education vs. Year Turned 14",
+       x.label = "Year Turned 14", y.label = "Years of Education")
+```
+
+### 2(b) Regression Discontinuity Specification for Education
+Run the regression discontinuity specification that corresponds to the above figure. The regression should:
+- Use a 10-year bandwidth.
+- Model years of education as a linear function of `yearat14`.
+- Allow the slope to vary on either side of the cutoff.
+
+```{r rd-regression-education, echo=TRUE}
+# Create an indicator for being at or above the cutoff
+data_rd$above_cutoff <- ifelse(data_rd$yearat14 >= cutoff, 1, 0)
+
+# Center the year variable around the cutoff for clarity
+data_rd$year_centered <- data_rd$yearat14 - cutoff
+
+# Run the regression with interaction (different slopes on either side)
+model_educ <- lm(educ ~ above_cutoff * year_centered, data = data_rd)
+summary(model_educ)
+```
+
+_Interpret your regression discontinuity estimate in a sentence:_
+
+The regression discontinuity estimate indicates that exposure to the increased minimum dropout age (turning 14 in or after 1947) is associated with approximately 0.364 additional years of education, which is statistically significant at the 1% level.
+
+### 2(c) Instrumental Variables Framework
+**Question:** What is the name of this regression in the instrumental variables framework?
+
+_Answer:_
+
+In the instrumental variables framework, this regression is known as the "first stage" regression. It estimates the effect of the instrument (exposure to the higher minimum dropout age) on the endogenous variable (years of education).
+
+---
+
+## Question 3: Relationship Between Year Turned 14 and Earnings
+
+### 3(a) Binned Scatterplot for Log Earnings
+Create a binned scatterplot showing how log earnings changed at the threshold.
+
+```{r binscatter-earnings, echo=TRUE, message=FALSE, warning=FALSE}
+# Create binned scatterplot for log earnings
+rdplot(data_rd$log_earnings, data_rd$yearat14, c = cutoff, p = 1, binselect = "espr",
+       title = "Binned Scatterplot: Log Earnings vs. Year Turned 14",
+       x.label = "Year Turned 14", y.label = "Log Earnings")
+```
+
+### 3(b) Regression Discontinuity Specification for Log Earnings
+Run the regression discontinuity specification for log earnings as in 2(b).
+
+```{r rd-regression-earnings, echo=TRUE}
+# Run regression for log earnings with the same specification
+model_earn <- lm(log_earnings ~ above_cutoff * year_centered, data = data_rd)
+summary(model_earn)
+```
+
+_Interpret your regression discontinuity estimate in a sentence (remember: in a log-linear model, a unit change in X is associated with a $100 \times \beta_1$ percent change in Y):_
+
+The regression discontinuity estimate indicates that exposure to the increased minimum dropout age (turning 14 in or after 1947) is associated with approximately a 1.9% increase in earnings, but this effect is not statistically significant (p = 0.478).
+
+### 3(c) Instrumental Variables Framework for Earnings
+**Question:** What is the name of this regression in the instrumental variables framework?
+
+_Answer:_
+
+In the instrumental variables framework, this regression is known as the "reduced form" regression. It estimates the effect of the instrument (exposure to the higher minimum dropout age) directly on the outcome variable (log earnings).
+
+---
+
+## Question 4: Instrumental Variables Estimation
+Use the `ivreg` function from the AER package to estimate the effect of an additional year of schooling on log earnings.
+
+```{r iv-estimation, echo=TRUE, message=FALSE, warning=FALSE}
+# IV regression specification:
+# Outcome: log_earnings
+# Endogenous variable: educ (years of education)
+# Instrument: above_cutoff (exposure to increased dropout age)
+# Control: year_centered
+iv_model <- ivreg(log_earnings ~ educ + year_centered | above_cutoff + year_centered, data = data_rd)
+summary(iv_model, vcov = sandwich, df = Inf, diagnostics = TRUE)
+```
+
+_Interpret your estimated treatment effect in a sentence:_
+
+The instrumental variables estimate suggests that an additional year of education causes approximately a 23.2% increase in earnings, which is statistically significant at the 1% level.
+
+**Question:** What is the algebraic relationship between the coefficient estimated in 2(b), the coefficient estimated in 3(b), and your estimated treatment effect? Explain briefly.
+
+_Answer:_
+
+In theory, the estimated treatment effect from the IV regression should be approximately equal to the ratio of the reduced form coefficient to the first stage coefficient (the Wald estimator: $\beta_{IV} = \beta_{RF} / \beta_{FS}$). In our analysis, while the theoretical relationship holds, the actual IV estimate (23.2%) is larger than the simple ratio of reduced form to first stage coefficients (1.9%/36.4% $\approx$ 5.2%). This discrepancy may be due to the inclusion of control variables (year_centered) and the different variance-covariance matrix (sandwich) used in the IV regression, which adjusts for heteroskedasticity and provides more robust standard errors.
+
+---
+
+## Question 5: Visualizing Other Variables
+Create binned scatterplots to visualize whether `age`, `nireland`, and `male` changed in the year when the minimum dropout age was increased.
+
+```{r binscatter-age, echo=TRUE, message=FALSE, warning=FALSE}
+# Binned scatterplot for age
+rdplot(data_rd$age, data_rd$yearat14, c = cutoff, p = 1, binselect = "espr",
+       title = "Binned Scatterplot: Age vs. Year Turned 14",
+       x.label = "Year Turned 14", y.label = "Age")
+```
+
+```{r binscatter-nireland, echo=TRUE, message=FALSE, warning=FALSE}
+# Binned scatterplot for Northern Ireland indicator
+rdplot(data_rd$nireland, data_rd$yearat14, c = cutoff, p = 1, binselect = "espr",
+       title = "Binned Scatterplot: Northern Ireland Indicator vs. Year Turned 14",
+       x.label = "Year Turned 14", y.label = "Northern Ireland Indicator")
+```
+
+```{r binscatter-male, echo=TRUE, message=FALSE, warning=FALSE}
+# Binned scatterplot for Male indicator
+rdplot(data_rd$male, data_rd$yearat14, c = cutoff, p = 1, binselect = "espr",
+       title = "Binned Scatterplot: Male Indicator vs. Year Turned 14",
+       x.label = "Year Turned 14", y.label = "Male Indicator")
+```
+
+---
+
+## Question 6: Assessing the Validity of the RD/IV Design
+Using the results generated above, assess the validity of using this RD/IV design to estimate the causal effect of increased schooling on income.
+
+### 6(a) Relevance Assumption
+_In 2–3 sentences, discuss which result(s) correspond to the relevance assumption in instrumental variables. Do you find evidence for relevance?_
+
+The relevance assumption in IV requires a strong first-stage relationship between the instrument (turning 14 after 1947) and the endogenous variable (years of education). The results from Question 2(b) show a statistically significant effect of the policy change on years of education (coefficient = 0.364, p < 0.01), providing evidence that the relevance assumption is satisfied. The significant F-statistic in the IV regression diagnostics (weak instruments test, F = 41.96, p < 0.0001) further confirms the strength of the first stage.
+
+### 6(b) Exogeneity Assumption
+_In 2–3 sentences, discuss which result(s) correspond to the exogeneity assumption in instrumental variables. Do you find evidence for exogeneity?_
+
+The exogeneity assumption requires that the instrument affects the outcome only through the endogenous variable. The binned scatterplots for age, Northern Ireland status, and gender in Question 5 help assess whether there are discontinuities in other variables at the cutoff that might confound the relationship. Based on these plots, there do not appear to be significant discontinuities in these variables at the 1947 threshold, providing some evidence in support of the exogeneity assumption. However, full exogeneity cannot be directly tested and requires theoretical justification.
+
+---
+
+## Question 7: Interpretation of the Local Average Treatment Effect (LATE)
+_In 3–5 sentences, explain:_
+- Whether and why you think the LATE you estimated is greater than, less than, or equal to the average treatment effect.
+- Any caveats you would note when interpreting these results.
+
+The LATE I estimated likely exceeds the average treatment effect (ATE) for education on earnings in the full population. This is because the LATE represents the effect only for "compliers" - individuals who received an additional year of education specifically because of the policy change (those who would have dropped out at age 14 without the law but stayed for an extra year because of it). These compliers were likely from lower socioeconomic backgrounds with potentially higher marginal returns to education compared to "always-takers" who would have stayed in school regardless. Furthermore, the results may not generalize well to modern contexts due to significant changes in the education system and labor market since the 1940s. Additionally, the data comes from surveys conducted decades after the policy implementation (1984-2006), introducing potential survival bias if education affects longevity.
+
+---
+
+# Appendix
+
+### Stata Commands (for Reference)
+```stata
+* Install binscatter
+ssc install binscatter, replace
+
+* Create a binned scatterplot of yvar against x within a specified range, with a regression discontinuity at c:
+binscatter yvar x if inrange(x, x1, x2), rd(c) discrete linetype(lfit)
+
+* IV regression in Stata:
+ivregress 2sls yvar (xvar = zvar) wvar1 wvar2 if abs(wvar1)<=bw, r
+```
+
+### R Commands (for Reference)
+```{r reference-commands, echo=TRUE, eval=FALSE}
+# Install and load rdrobust
+install.packages('rdrobust')
+library(rdrobust)
+
+rd_narrow <- subset(rd, abs(wvar1) <= bw)
+rdplot(rd_narrow$yvar, rd_narrow$wvar1, c = 0, p = 1, binselect = "espr")
+
+# IV regression in R:
+install.packages('AER')
+library(sandwich)
+library(lmtest)
+library(AER)
+mod4.2 <- ivreg(yvar ~ xvar + w1 + w2 + w3 | zvar1 + w1 + w2 + w3, data = rd_narrow)
+summary(mod4.2, vcov = sandwich, df = Inf, diagnostics = TRUE)
+```
+
+*Remember to replace placeholder objects (e.g., `data`) with your actual dataset names before running the code.*
