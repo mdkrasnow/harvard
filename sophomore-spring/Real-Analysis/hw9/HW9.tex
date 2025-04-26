@@ -1,0 +1,159 @@
+\documentclass[12pt,oneside]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{physics}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead[L]{Math 112: Introductory Real Analysis}
+\fancyhead[R]{Harvard University, Spring 2025}
+
+\begin{center}
+\bf \Large
+Problem Set 9\\[0.5em]
+\large
+Due Wednesday, April 30, 2025
+\end{center}
+
+\bigskip
+
+\begin{problem}[10 points]
+Suppose $a \le x_0 \le b$ and
+\[
+f(x)=
+\begin{cases}
+1,&x=x_0,\\
+0,&x\neq x_0.
+\end{cases}
+\]
+Prove that $f$ is integrable on $[a,b]$ and that $\int_a^b f(x)\,dx=0$.
+\end{problem}
+\textbf{Proof.}
+By Theorem 6.13 of Rudin, a bounded function with only finitely many points of discontinuity on a closed interval is Riemann integrable.  Here $f$ is discontinuous only at the single point $x_0$, so $f$ is integrable on $[a,b]$.
+
+Next, given any $\varepsilon>0$, choose a partition $P$ of $[a,b]$ which includes $x_0$ as an endpoint of one subinterval of length $<\varepsilon$.  On that small subinterval $\Delta x<\varepsilon$, the supremum $M_i=1$ and on every other subinterval $M_j=0$.  Hence
+\[
+U(f,P)=1\cdot\Delta x+0\le\varepsilon,
+\qquad
+L(f,P)=0.
+\]
+Since $\overline{\int_a^b}f\le U(f,P)<\varepsilon$ and $\underline{\int_a^b}f=0$, letting $\varepsilon\to0$ shows
+\[
+\int_a^b f(x)\,dx=0.
+\]
+\hfill$\square$
+
+\bigskip
+
+\begin{problem}[10 points]
+Suppose $f$ is continuous on $[a,b]$, $f\ge0$, and $\displaystyle\int_a^b f(x)\,dx=0$. Prove that $f(x)=0$ for all $x\in[a,b]$.
+\end{problem}
+\textbf{Proof.}
+By the Extreme Value Theorem (Rudin Thm 4.18), $f$ attains a minimum and maximum on $[a,b]$.  If there were some $c\in[a,b]$ with $f(c)=\delta>0$, then by continuity there exists $\eta>0$ such that $f(x)>\delta/2$ for all $x\in(c-\eta,c+\eta)\cap[a,b]$.  Hence
+\[
+\int_a^b f(x)\,dx
+\ge \int_{c-\eta}^{c+\eta} f(x)\,dx
+\ge \int_{c-\eta}^{c+\eta}\!\frac\delta2\,dx
+= \delta\eta >0,
+\]
+contradicting the hypothesis.  Therefore no such $c$ exists and $f\equiv0$.
+\hfill$\square$
+
+\bigskip
+
+\begin{problem}[10 points]
+Let
+\[
+f(x)=
+\begin{cases}
+1,&x\in\mathbb{Q},\\
+0,&x\notin\mathbb{Q}.
+\end{cases}
+\]
+Prove that $f$ is not integrable on $[a,b]$ for any $a<b$.
+\end{problem}
+\textbf{Proof.}
+On every nonempty subinterval $[x_{i-1},x_i]\subset[a,b]$, both rationals and irrationals are dense.  Thus for each $i$, the supremum $M_i=1$ and the infimum $m_i=0$.  For any partition $P$, 
+\[
+U(f,P)=\sum_i 1\cdot\Delta x_i = b-a,
+\qquad
+L(f,P)=\sum_i 0\cdot\Delta x_i =0.
+\]
+Hence the upper integral is $b-a$ and the lower integral is $0$, so they do not agree.  Therefore $f$ is not Riemann integrable.
+\hfill$\square$
+
+\bigskip
+
+\begin{problem}[10 points]
+Suppose $f$ is bounded on $[a,b]$ and $f^2$ is integrable on $[a,b]$.
+\begin{enumerate}
+  \item Does it follow that $f$ is integrable on $[a,b]$?
+  \item Does the answer change if instead we assume $f^3$ is integrable?
+\end{enumerate}
+Justify your answers.
+\end{problem}
+\textbf{Answer.}
+\begin{enumerate}
+\item Not in general.  Consider the function
+\[
+g(x)=
+\begin{cases}
+1,&x\in\mathbb{Q},\\
+-1,&x\notin\mathbb{Q},
+\end{cases}
+\]
+on $[a,b]$.  Then $g^2(x)\equiv1$, so $g^2$ is integrable, but $g$ is discontinuous everywhere, hence not integrable.
+
+\item Yes, if $f^3$ is integrable then $f$ must be integrable.  The mapping $\varphi(u)=u^3$ has derivative $\varphi'(u)=3u^2$, which is bounded on the range of $f$ since $f$ is bounded.  Thus $\varphi$ is Lipschitz on that range, and by the Lipschitz composition theorem (Rudin Thm 6.15), $f^3=\varphi\circ f$ integrable implies $f$ integrable.
+\end{enumerate}
+\hfill$\square$
+
+\bigskip
+
+\begin{problem}[Extra Credit; 10 points]
+For any integrable $f$ on $[a,b]$ define
+\[
+\|f\|_2 := \Bigl(\int_a^b |f(x)|^2\,dx\Bigr)^{1/2}.
+\]
+For integrable $f,g,h$, prove the triangle inequality
+\[
+\|f-h\|_2 \;\le\;\|f-g\|_2 + \|g-h\|_2.
+\]
+\end{problem}
+\textbf{Proof.}
+Let
+\[
+u = f-g,\quad v = g-h,
+\]
+so $f-h = u+v$.  Then
+\[
+\|u+v\|_2^2
+= \int_a^b (u+v)^2
+= \int_a^b u^2 + 2uv + v^2
+= \|u\|_2^2 + 2\langle u,v\rangle + \|v\|_2^2.
+\]
+By the Cauchy–Schwarz inequality (Rudin Thm 3.14),
+\[
+|\langle u,v\rangle|
+\le \|u\|_2\,\|v\|_2,
+\]
+so
+\[
+\|u+v\|_2^2
+\le \|u\|_2^2 + 2\|u\|_2\|v\|_2 + \|v\|_2^2
+= \bigl(\|u\|_2 + \|v\|_2\bigr)^2.
+\]
+Taking square roots yields
+\[
+\|f-h\|_2 = \|u+v\|_2 \le \|u\|_2 + \|v\|_2
+= \|f-g\|_2 + \|g-h\|_2.
+\]
+\hfill$\square$
+
+\end{document}
