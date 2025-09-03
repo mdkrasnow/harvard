@@ -1,0 +1,1142 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+
+\geometry{margin=1in}
+
+\title{Machine Learning: Comprehensive Study Guide}
+\author{Based on CS181 Course Materials}
+\date{\today}
+
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{property}{Property}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This study guide provides a comprehensive overview of key machine learning concepts covered in the course. For each topic, we provide definitions, mathematical formulations, intuitions, and examples to help solidify understanding.
+
+\section{Regression}
+
+\subsection{Linear Regression Basics}
+Linear regression aims to model the relationship between a scalar dependent variable $y$ and one or more explanatory variables $x$ by fitting a linear equation to observed data.
+
+\subsubsection{The Bias Trick}
+\begin{definition}[Bias Trick]
+The bias trick is a technique where we append a constant feature $x_0 = 1$ to all of our data points, which allows us to incorporate the bias term $w_0$ into our weight vector, simplifying our equations.
+\end{definition}
+
+With the bias trick, we can rewrite:
+\begin{align}
+f(x, w) &= w_0 + w_1x_1 + ... + w_Dx_D\\
+&= w^Tx
+\end{align}
+where $x$ now includes $x_0 = 1$ and $w$ includes the bias term $w_0$.
+
+\subsubsection{Least Squares Loss Function}
+\begin{definition}[Least Squares Loss]
+The least squares loss function measures the squared difference between the actual values and the predicted values:
+\begin{align}
+L(w) = \frac{1}{2}\sum_{n=1}^{N}(y_n - w^Tx_n)^2
+\end{align}
+\end{definition}
+
+The factor of $\frac{1}{2}$ is included to make the derivative cleaner.
+
+\subsubsection{Derivation of Optimal Weights}
+To find the optimal weights $w^*$ that minimize the least squares loss function, we take the derivative of the loss with respect to $w$, set it to zero, and solve:
+
+\begin{align}
+\nabla L(w) &= \sum_{n=1}^{N}(y_n - w^Tx_n)(-x_n) = 0\\
+\Rightarrow \sum_{n=1}^{N}y_nx_n - \sum_{n=1}^{N}(w^Tx_n)x_n &= 0
+\end{align}
+
+In matrix form, with design matrix $X$ (where each row is a data point $x_n^T$) and target vector $y$:
+\begin{align}
+X^Ty - X^TXw &= 0\\
+\Rightarrow w^* &= (X^TX)^{-1}X^Ty
+\end{align}
+
+This is known as the normal equation for linear regression.
+
+\subsection{Basis Functions}
+\begin{definition}[Basis Function]
+A basis function $\phi(x)$ is a transformation applied to the input data to change its representation before applying linear regression. This allows linear models to capture non-linear relationships in the original feature space.
+\end{definition}
+
+The transformed linear regression model becomes:
+\begin{align}
+y(x,w) = w^T\phi(x)
+\end{align}
+
+Common basis functions include:
+\begin{itemize}
+\item Polynomial: $\phi(x) = (1, x, x^2, x^3, ...)$
+\item Radial Basis Functions (RBF): $\phi(x) = \exp\left(-\frac{||x-\mu||^2}{2\sigma^2}\right)$
+\item Sigmoid: $\phi(x) = \frac{1}{1+\exp(-x)}$
+\end{itemize}
+
+Basis functions allow us to fit more complex patterns while still using the machinery of linear regression.
+
+\subsection{Regularization}
+\begin{definition}[Regularization]
+Regularization is a technique used to prevent overfitting by adding a penalty term to the loss function that discourages large parameter values.
+\end{definition}
+
+Regularization is used when:
+\begin{itemize}
+\item The model is too complex and might overfit
+\item The data is noisy
+\item The features are correlated (multicollinearity)
+\item We want to enforce sparsity in the solution
+\end{itemize}
+
+\subsubsection{Ridge Regression (L2 Regularization)}
+The loss function with L2 regularization:
+\begin{align}
+L(w) = \frac{1}{2}\sum_{n=1}^{N}(y_n - w^Tx_n)^2 + \frac{\lambda}{2}||w||_2^2
+\end{align}
+
+The closed-form solution for ridge regression is:
+\begin{align}
+w_{ridge}^* = (X^TX + \lambda I)^{-1}X^Ty
+\end{align}
+
+Ridge regression prevents any individual weight from becoming too large, providing a solution with moderate values.
+
+\subsubsection{Lasso Regression (L1 Regularization)}
+The loss function with L1 regularization:
+\begin{align}
+L(w) = \frac{1}{2}\sum_{n=1}^{N}(y_n - w^Tx_n)^2 + \lambda||w||_1
+\end{align}
+
+Lasso regression tends to produce sparse solutions (many weights set to exactly zero), effectively performing feature selection.
+
+\subsubsection{Elastic Net Regularization}
+Elastic Net combines L1 and L2 regularization:
+\begin{align}
+L(w) = \frac{1}{2}\sum_{n=1}^{N}(y_n - w^Tx_n)^2 + \lambda_1||w||_1 + \lambda_2||w||_2^2
+\end{align}
+
+It balances the sparsity-inducing property of L1 with the stability of L2 regularization.
+
+\subsection{Bias-Variance Tradeoff}
+\begin{definition}[Bias-Variance Tradeoff]
+The bias-variance tradeoff describes the balance between two sources of error that prevent supervised learning algorithms from generalizing beyond their training set:
+\begin{itemize}
+\item High bias: Model is too simple and underfits the data
+\item High variance: Model is too complex and overfits the data
+\end{itemize}
+\end{definition}
+
+The mean squared error of a model can be decomposed as:
+\begin{align}
+\text{MSE} = \text{noise} + \text{bias}^2 + \text{variance}
+\end{align}
+
+\begin{itemize}
+\item Adding more features or using more complex basis functions reduces bias but increases variance.
+\item Increasing regularization increases bias but reduces variance.
+\item Increasing training set size typically reduces variance without increasing bias.
+\end{itemize}
+
+\subsection{Bayesian Linear Regression}
+In Bayesian linear regression, we place a prior distribution on the weights $w$:
+\begin{align}
+p(w) = \mathcal{N}(w|0, S_0^{-1})
+\end{align}
+
+The likelihood of the data is:
+\begin{align}
+p(y|X, w, \beta) = \mathcal{N}(y|Xw, \beta^{-1}I)
+\end{align}
+
+By Bayes' rule, the posterior distribution of weights is:
+\begin{align}
+p(w|X, y, \beta) \propto p(y|X, w, \beta)p(w)
+\end{align}
+
+With a normal prior and normal likelihood, the posterior is also normal:
+\begin{align}
+p(w|X, y, \beta) = \mathcal{N}(w|\mu_N, S_N^{-1})
+\end{align}
+where:
+\begin{align}
+S_N &= S_0 + \beta X^TX\\
+\mu_N &= S_N^{-1}(S_0\mu_0 + \beta X^Ty)
+\end{align}
+
+The connection to regularization: the prior in Bayesian linear regression is equivalent to adding regularization. A zero-mean Gaussian prior corresponds to L2 regularization, with the prior precision controlling the regularization strength.
+
+\subsubsection{Posterior Predictive Distribution}
+The posterior predictive distribution gives us uncertainty in our predictions for new inputs $x_*$:
+\begin{align}
+p(y_*|x_*, X, y) = \int p(y_*|x_*, w)p(w|X, y)dw = \mathcal{N}(y_*|x_*^T\mu_N, \sigma_N^2(x_*))
+\end{align}
+where $\sigma_N^2(x_*) = \beta^{-1} + x_*^TS_N^{-1}x_*$.
+
+\subsubsection{Marginal Likelihood}
+The marginal likelihood (evidence) is:
+\begin{align}
+p(y|X) = \int p(y|X,w)p(w)dw
+\end{align}
+This measures how well a model explains the observed data, marginalizing over all possible parameter values.
+
+\section{Classification}
+
+\subsection{Loss Functions for Classification}
+Classification aims to predict discrete class labels rather than continuous values. Several loss functions are used for classification:
+
+\subsubsection{0/1 Loss}
+\begin{definition}[0/1 Loss]
+The 0/1 loss assigns a loss of 1 for misclassification and 0 for correct classification.
+\end{definition}
+
+While intuitive, 0/1 loss is non-differentiable and thus difficult to optimize.
+
+\subsubsection{Hinge Loss}
+\begin{definition}[Hinge Loss]
+The hinge loss is defined as:
+\begin{align}
+L(w) = \sum_{i=1}^{N}\max(0, 1 - y_i(w^Tx_i))
+\end{align}
+where $y_i \in \{-1, 1\}$.
+\end{definition}
+
+Hinge loss penalizes not only misclassifications but also correct classifications with low confidence (margin). It is convex and thus easier to optimize than 0/1 loss.
+
+\subsubsection{Logistic Loss}
+\begin{definition}[Logistic Loss]
+The logistic loss (cross-entropy loss) for binary classification is:
+\begin{align}
+L(w) = -\sum_{i=1}^{N}\{y_i\log(\hat{y}_i) + (1-y_i)\log(1-\hat{y}_i)\}
+\end{align}
+where $\hat{y}_i = \sigma(w^Tx_i)$ and $\sigma$ is the sigmoid function.
+\end{definition}
+
+\subsection{Gradient Descent}
+\begin{definition}[Gradient Descent]
+Gradient descent is an iterative optimization algorithm for finding the minimum of a function by moving in the direction of steepest descent.
+\end{definition}
+
+The update rule for gradient descent is:
+\begin{align}
+w^{(t+1)} = w^{(t)} - \eta\nabla L(w^{(t)})
+\end{align}
+where $\eta > 0$ is the learning rate.
+
+Gradient descent works intuitively by:
+\begin{itemize}
+\item Computing the direction of steepest increase in loss (the gradient)
+\item Moving in the opposite direction to decrease loss
+\item Taking steps proportional to the learning rate $\eta$
+\end{itemize}
+
+If the learning rate is too high, the algorithm might overshoot the minimum and diverge. If it's too low, convergence will be very slow.
+
+\subsubsection{Batch vs. Stochastic Gradient Descent}
+\begin{itemize}
+\item \textbf{Batch Gradient Descent}: Computes the gradient using the entire dataset at each step.
+\item \textbf{Stochastic Gradient Descent (SGD)}: Computes the gradient using a single randomly selected data point at each step.
+\item \textbf{Mini-batch Gradient Descent}: Computes the gradient using a small random subset of the data at each step.
+\end{itemize}
+
+SGD has several advantages:
+\begin{itemize}
+\item Faster updates (especially with large datasets)
+\item Can escape local minima due to the noise in the gradient estimates
+\item Can be used for online learning
+\end{itemize}
+
+\subsection{Perceptron Algorithm}
+The perceptron is a linear binary classifier that updates weights when misclassifications occur.
+
+The perceptron update rule for a misclassified point $(x_i, y_i)$ is:
+\begin{align}
+w^{(t+1)} = w^{(t)} + \eta x_i y_i
+\end{align}
+
+\begin{property}
+If the data is linearly separable, the perceptron algorithm is guaranteed to converge to a solution that perfectly separates the classes in a finite number of steps.
+\end{property}
+
+\subsection{Logistic Regression}
+\begin{definition}[Logistic Regression]
+Logistic regression is a probabilistic discriminative model that estimates the probability of a binary class using the logistic sigmoid function:
+\begin{align}
+p(y=1|x;w) = \sigma(w^Tx) = \frac{1}{1+\exp(-w^Tx)}
+\end{align}
+\end{definition}
+
+The decision boundary of logistic regression is linear in the feature space, defined by the equation $w^Tx = 0$.
+
+For binary classification, the log-likelihood is:
+\begin{align}
+\log p(\{y_i\}_{i=1}^{N}|w) = \sum_{i=1}^{N}\{y_i\log\hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\}
+\end{align}
+
+The gradient of the negative log-likelihood is:
+\begin{align}
+\nabla E(w) = \sum_{i=1}^{N}(\hat{y}_i - y_i)x_i
+\end{align}
+
+\subsubsection{Multi-class Logistic Regression}
+For multi-class problems, we use the softmax function:
+\begin{align}
+p(y=k|x;W) = \frac{\exp(w_k^Tx)}{\sum_{j=1}^{K}\exp(w_j^Tx)}
+\end{align}
+
+The cross-entropy loss becomes:
+\begin{align}
+E(W) = -\sum_{i=1}^{N}\sum_{k=1}^{K}y_{ik}\log\hat{y}_{ik}
+\end{align}
+
+The gradient with respect to $w_j$ is:
+\begin{align}
+\nabla_{w_j}E(W) = \sum_{i=1}^{N}(\hat{y}_{ij} - y_{ij})x_i
+\end{align}
+
+\subsection{Generative vs. Discriminative Models}
+\begin{definition}[Discriminative Model]
+A discriminative model learns the conditional probability $p(y|x)$ directly, focusing on finding the decision boundary between classes.
+\end{definition}
+
+\begin{definition}[Generative Model]
+A generative model learns the joint probability $p(x,y) = p(x|y)p(y)$, modeling how the data was generated from each class.
+\end{definition}
+
+\subsubsection{Generative Models for Classification}
+In generative models for classification:
+\begin{itemize}
+\item We model the class prior $p(y)$
+\item We model the class-conditional distribution $p(x|y)$
+\item We use Bayes' rule to get $p(y|x) = \frac{p(x|y)p(y)}{p(x)}$
+\end{itemize}
+
+\subsubsection{Naive Bayes}
+\begin{definition}[Naive Bayes]
+Naive Bayes assumes that features are conditionally independent given the class:
+\begin{align}
+p(x|y) = \prod_{d=1}^{D}p(x_d|y)
+\end{align}
+\end{definition}
+
+Despite this strong independence assumption, Naive Bayes often works well in practice. It is particularly effective when:
+\begin{itemize}
+\item The dimensionality is high
+\item Training data is limited
+\item Features are indeed relatively independent
+\end{itemize}
+
+\subsubsection{Comparing Discriminative and Generative Models}
+\begin{itemize}
+\item Logistic Regression (discriminative): Models $p(y|x)$ directly
+\item Naive Bayes (generative): Models $p(x|y)$ and $p(y)$ to get $p(y|x)$
+\end{itemize}
+
+Generative models can:
+\begin{itemize}
+\item Generate new samples from the data distribution
+\item Incorporate prior knowledge about the data generation process
+\item Work well with missing data
+\item Often converge faster with less data
+\end{itemize}
+
+Discriminative models:
+\begin{itemize}
+\item Often achieve better accuracy when training data is plentiful
+\item Don't waste resources modeling aspects of the data irrelevant to the classification boundary
+\item Can be more robust to model misspecification
+\end{itemize}
+
+\section{Neural Networks \& Model Selection}
+
+\subsection{Neural Network Basics}
+\begin{definition}[Neural Network]
+A neural network is a computational model inspired by the human brain, consisting of interconnected nodes (neurons) organized in layers. Each neuron applies a non-linear transformation to a weighted sum of its inputs.
+\end{definition}
+
+\subsubsection{Activation Functions}
+\begin{definition}[Activation Function]
+An activation function introduces non-linearity into neural networks, allowing them to learn complex patterns.
+\end{definition}
+
+Activation functions are essential because:
+\begin{itemize}
+\item Without them, a multi-layer network would collapse to a single-layer linear model
+\item They allow the network to approximate arbitrary functions
+\item They determine the range of output values and affect gradient flow
+\end{itemize}
+
+Common activation functions include:
+\begin{itemize}
+\item Sigmoid: $\sigma(z) = \frac{1}{1+e^{-z}}$
+\item Hyperbolic Tangent (tanh): $\text{tanh}(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$
+\item Rectified Linear Unit (ReLU): $\text{ReLU}(z) = \max(0, z)$
+\end{itemize}
+
+\subsubsection{Forward Propagation}
+For a feed-forward neural network with $L$ layers:
+\begin{align}
+z^{(1)} &= W^{(1)}x + b^{(1)}\\
+a^{(1)} &= h(z^{(1)})\\
+&\vdots\\
+z^{(L)} &= W^{(L)}a^{(L-1)} + b^{(L)}\\
+\hat{y} &= \sigma(z^{(L)})
+\end{align}
+where $h$ is the activation function, $W^{(l)}$ is the weight matrix for layer $l$, and $b^{(l)}$ is the bias vector.
+
+\subsection{Backpropagation}
+\begin{definition}[Backpropagation]
+Backpropagation is an algorithm for efficiently computing gradients in neural networks by propagating the error backward through the network.
+\end{definition}
+
+Backpropagation is useful because:
+\begin{itemize}
+\item Computing gradients directly would be computationally inefficient
+\item It leverages the chain rule to reuse computed quantities
+\item It scales well to deep networks
+\end{itemize}
+
+The backpropagation algorithm works as follows:
+\begin{enumerate}
+\item Perform a forward pass to compute activations for all layers
+\item Compute the error at the output layer
+\item Propagate the error backward through the network, computing gradients for each parameter
+\item Update the parameters using the computed gradients
+\end{enumerate}
+
+For the output layer $L$, the error is:
+\begin{align}
+\delta^{(L)} = \frac{\partial E}{\partial z^{(L)}} = \hat{y} - y
+\end{align}
+
+For hidden layers $l$, the error is:
+\begin{align}
+\delta^{(l)} = \frac{\partial E}{\partial z^{(l)}} = ((W^{(l+1)})^T\delta^{(l+1)}) \odot h'(z^{(l)})
+\end{align}
+where $\odot$ is element-wise multiplication.
+
+The gradients for weights and biases are:
+\begin{align}
+\frac{\partial E}{\partial W^{(l)}} &= \delta^{(l)}(a^{(l-1)})^T\\
+\frac{\partial E}{\partial b^{(l)}} &= \delta^{(l)}
+\end{align}
+
+\subsection{Neural Networks for Regression and Classification}
+Neural networks can be used for both regression and classification tasks by choosing appropriate:
+\begin{itemize}
+\item Output layer architecture
+\item Activation functions
+\item Loss functions
+\end{itemize}
+
+\subsubsection{Regression with Neural Networks}
+For regression:
+\begin{itemize}
+\item Output layer: Linear activation (identity function)
+\item Loss function: Mean Squared Error (MSE)
+\begin{align}
+E = \frac{1}{N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
+\end{align}
+\end{itemize}
+
+\subsubsection{Classification with Neural Networks}
+For binary classification:
+\begin{itemize}
+\item Output layer: One neuron with sigmoid activation
+\item Loss function: Binary Cross-Entropy
+\begin{align}
+E = -\frac{1}{N}\sum_{i=1}^{N}[y_i\log\hat{y}_i + (1-y_i)\log(1-\hat{y}_i)]
+\end{align}
+\end{itemize}
+
+For multi-class classification:
+\begin{itemize}
+\item Output layer: K neurons with softmax activation
+\item Loss function: Categorical Cross-Entropy
+\begin{align}
+E = -\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K}y_{ik}\log\hat{y}_{ik}
+\end{align}
+\end{itemize}
+
+\subsection{Model Selection and Regularization}
+\begin{definition}[Model Selection]
+Model selection is the process of choosing the best model architecture and hyperparameters for a given task.
+\end{definition}
+
+\subsubsection{Cross-Validation}
+Cross-validation helps prevent overfitting by:
+\begin{itemize}
+\item Dividing the data into training and validation sets
+\item Training the model on the training set
+\item Evaluating it on the validation set
+\item Selecting the model with the best validation performance
+\end{itemize}
+
+K-fold cross-validation divides the data into K subsets (folds), training on K-1 folds and validating on the remaining fold, repeating K times.
+
+\subsubsection{Regularization in Neural Networks}
+Regularization techniques for neural networks include:
+\begin{itemize}
+\item L1/L2 regularization: Adding penalty terms to the loss function based on the norm of the weights
+\begin{align}
+E_{reg} = E + \lambda\sum_{l=1}^{L}\sum_{i,j}(W_{ij}^{(l)})^2
+\end{align}
+\item Dropout: Randomly setting a fraction of neurons to zero during training
+\item Early stopping: Stopping training when validation error starts to increase
+\item Data augmentation: Creating additional training data through transformations
+\end{itemize}
+
+\section{Support Vector Machines (SVMs)}
+
+\subsection{Maximum Margin Classification}
+\begin{definition}[Maximum Margin Classifier]
+A maximum margin classifier finds the decision boundary that maximizes the distance between the boundary and the closest data points from each class.
+\end{definition}
+
+Support Vector Machines (SVMs) are maximum margin classifiers that aim to find the hyperplane that maximizes this margin.
+
+\subsection{Hard-Margin SVM}
+For linearly separable data, the hard-margin SVM optimization problem is:
+\begin{align}
+\min_{w, w_0} &\frac{1}{2}||w||^2\\
+\text{s.t. } &y_i(w^Tx_i + w_0) \geq 1, \text{ for all } i
+\end{align}
+
+The margin is given by $\frac{1}{||w||}$, so minimizing $||w||$ maximizes the margin.
+
+\subsection{Soft-Margin SVM}
+For non-linearly separable data, the soft-margin SVM introduces slack variables $\xi_i \geq 0$:
+\begin{align}
+\min_{w, w_0, \xi} &\frac{1}{2}||w||^2 + C\sum_{i=1}^{N}\xi_i\\
+\text{s.t. } &y_i(w^Tx_i + w_0) \geq 1 - \xi_i, \text{ for all } i\\
+&\xi_i \geq 0, \text{ for all } i
+\end{align}
+
+The regularization parameter $C$ controls the trade-off between maximizing the margin and minimizing the classification error:
+\begin{itemize}
+\item Large $C$: Focus on minimizing violations (low bias, high variance)
+\item Small $C$: Focus on maximizing margin (high bias, low variance)
+\end{itemize}
+
+\subsection{Hinge Loss in SVMs}
+The soft-margin SVM optimization is equivalent to minimizing:
+\begin{align}
+\frac{1}{2}||w||^2 + C\sum_{i=1}^{N}\max(0, 1 - y_i(w^Tx_i + w_0))
+\end{align}
+
+The second term is the hinge loss, which penalizes:
+\begin{itemize}
+\item Misclassified points ($y_i(w^Tx_i + w_0) < 0$)
+\item Correctly classified points that are too close to the boundary ($0 < y_i(w^Tx_i + w_0) < 1$)
+\end{itemize}
+
+\subsection{Kernel Trick}
+\begin{definition}[Kernel Trick]
+The kernel trick allows SVMs to operate in a high-dimensional feature space without explicitly computing the transformation of the input data.
+\end{definition}
+
+Instead of computing $\phi(x_i)^T\phi(x_j)$ directly, we use a kernel function $K(x_i, x_j) = \phi(x_i)^T\phi(x_j)$.
+
+Common kernel functions include:
+\begin{itemize}
+\item Linear: $K(x_i, x_j) = x_i^Tx_j$
+\item Polynomial: $K(x_i, x_j) = (x_i^Tx_j + 1)^d$
+\item Radial Basis Function (RBF): $K(x_i, x_j) = \exp(-\gamma||x_i - x_j||^2)$
+\end{itemize}
+
+The kernel trick is useful because:
+\begin{itemize}
+\item It enables efficient computation in potentially infinite-dimensional spaces
+\item It allows non-linear decision boundaries in the original feature space
+\item It can be applied to various algorithms beyond SVMs
+\end{itemize}
+
+\subsection{Support Vectors}
+\begin{definition}[Support Vectors]
+Support vectors are the data points that lie on the margin boundaries or violate the margin. They are the only points that influence the position of the decision boundary.
+\end{definition}
+
+Support vectors are important because:
+\begin{itemize}
+\item They determine the decision boundary (removing other points doesn't change it)
+\item They are typically a small subset of the training data
+\item They allow for efficient prediction on new data
+\end{itemize}
+
+\subsection{SVM vs Logistic Regression}
+Both SVM and logistic regression produce linear decision boundaries but differ in how they:
+\begin{itemize}
+\item Measure error: SVMs use hinge loss, logistic regression uses logistic loss
+\item Handle outliers: SVMs can be more robust due to the maximum margin
+\item Provide probabilities: Logistic regression naturally gives probabilities, SVMs don't
+\item Scale with dataset size: SVMs can be more efficient for medium-sized datasets
+\end{itemize}
+
+\section{Clustering}
+
+\subsection{K-means Clustering}
+\begin{definition}[K-means Clustering]
+K-means clustering aims to partition N observations into K clusters, where each observation belongs to the cluster with the nearest mean.
+\end{definition}
+
+\subsubsection{K-means Objective}
+The K-means objective is to minimize the within-cluster sum of squares:
+\begin{align}
+J = \sum_{k=1}^{K}\sum_{i \in C_k}||x_i - \mu_k||^2
+\end{align}
+where $C_k$ is the set of points in cluster $k$ and $\mu_k$ is the mean of cluster $k$.
+
+\subsubsection{Lloyd's Algorithm}
+Lloyd's algorithm is the standard approach for K-means clustering:
+\begin{algorithm}
+\caption{Lloyd's Algorithm for K-means}
+\begin{algorithmic}[1]
+\State Initialize cluster centers $\mu_1, \mu_2, \ldots, \mu_K$
+\Repeat
+\State Assign each point to the nearest cluster center:
+      $r_{nk} = \begin{cases} 
+      1 & \text{if } k = \arg\min_{k'} ||x_n - \mu_{k'}||^2 \\
+      0 & \text{otherwise}
+      \end{cases}$
+\State Update cluster centers:
+      $\mu_k = \frac{\sum_{n=1}^{N}r_{nk}x_n}{\sum_{n=1}^{N}r_{nk}}$
+\Until convergence
+\end{algorithmic}
+\end{algorithm}
+
+Lloyd's algorithm is guaranteed to converge to a local minimum of the objective function.
+
+\subsubsection{K-means Extensions}
+Extensions to K-means include:
+\begin{itemize}
+\item K-means++: A smarter initialization that improves convergence and final clustering quality
+\item K-medoids: Uses actual data points as cluster centers, more robust to outliers
+\end{itemize}
+
+\subsection{Hierarchical Agglomerative Clustering (HAC)}
+\begin{definition}[Hierarchical Agglomerative Clustering]
+HAC builds a hierarchy of clusters by starting with each data point as its own cluster and successively merging the closest pairs of clusters.
+\end{definition}
+
+\subsubsection{HAC Algorithm}
+\begin{algorithm}
+\caption{Hierarchical Agglomerative Clustering}
+\begin{algorithmic}[1]
+\State Start with N clusters, one for each data point
+\Repeat
+\State Find the two closest clusters using the chosen linkage criterion
+\State Merge these two clusters
+\State Update distances between the new cluster and all other clusters
+\Until only one cluster remains
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Linkage Criteria}
+Different linkage criteria define how the distance between clusters is measured:
+\begin{itemize}
+\item Single linkage (min-linkage): Minimum distance between any two points in different clusters
+\begin{align}
+d(C_i, C_j) = \min_{x \in C_i, y \in C_j}||x - y||
+\end{align}
+\item Complete linkage (max-linkage): Maximum distance between any two points in different clusters
+\begin{align}
+d(C_i, C_j) = \max_{x \in C_i, y \in C_j}||x - y||
+\end{align}
+\item Average linkage: Average distance between all pairs of points in different clusters
+\begin{align}
+d(C_i, C_j) = \frac{1}{|C_i||C_j|}\sum_{x \in C_i}\sum_{y \in C_j}||x - y||
+\end{align}
+\item Centroid linkage: Distance between cluster centroids
+\begin{align}
+d(C_i, C_j) = ||\mu_i - \mu_j||
+\end{align}
+\end{itemize}
+
+The choice of linkage criterion affects the shape of the resulting clusters:
+\begin{itemize}
+\item Single linkage: Tends to produce elongated, "stringy" clusters
+\item Complete linkage: Tends to produce compact, equal-diameter clusters
+\item Average linkage: Strikes a balance between the two extremes
+\end{itemize}
+
+\subsubsection{Dendrogram}
+A dendrogram is a tree diagram that visualizes the hierarchy of clusters in HAC. The height at which two clusters merge represents the distance between them.
+
+\subsection{Comparing K-means and HAC}
+\begin{itemize}
+\item K-means:
+  \begin{itemize}
+  \item Requires specifying the number of clusters K in advance
+  \item Produces flat partitioning (no hierarchy)
+  \item Generally faster than HAC ($O(NKD)$ per iteration)
+  \item Result depends on initialization
+  \item Tends to find spherical clusters
+  \end{itemize}
+\item HAC:
+  \begin{itemize}
+  \item Does not require specifying the number of clusters in advance
+  \item Produces a hierarchy of clusterings
+  \item Slower than K-means ($O(N^2\log N)$)
+  \item Deterministic (no initialization needed)
+  \item Can find clusters of various shapes depending on linkage
+  \end{itemize}
+\end{itemize}
+
+\section{Mixture Models and Topic Models}
+
+\subsection{Expectation-Maximization (EM) Algorithm}
+\begin{definition}[Expectation-Maximization]
+The Expectation-Maximization (EM) algorithm is an iterative method for finding maximum likelihood estimates of parameters in statistical models with latent variables.
+\end{definition}
+
+The EM algorithm alternates between:
+\begin{itemize}
+\item E-step: Compute the expected value of the latent variables given the current parameters
+\item M-step: Update the parameters to maximize the expected complete-data log-likelihood
+\end{itemize}
+
+The Evidence Lower Bound (ELBO) is a lower bound on the log-likelihood:
+\begin{align}
+\log p(X|\theta) \geq \mathcal{L}(q, \theta) = \mathbb{E}_{q(Z)}[\log p(X, Z|\theta)] - \mathbb{E}_{q(Z)}[\log q(Z)]
+\end{align}
+where $q(Z)$ is a distribution over the latent variables.
+
+The EM algorithm:
+\begin{itemize}
+\item E-step: Find $q^{(t+1)} = \arg\max_q \mathcal{L}(q, \theta^{(t)})$, which gives $q^{(t+1)}(Z) = p(Z|X, \theta^{(t)})$
+\item M-step: Find $\theta^{(t+1)} = \arg\max_\theta \mathcal{L}(q^{(t+1)}, \theta)$
+\end{itemize}
+
+\subsection{Mixture Models}
+\begin{definition}[Mixture Model]
+A mixture model is a probabilistic model that assumes the data is generated from a mixture of several probability distributions.
+\end{definition}
+
+The general mixture model assumes each data point $x_i$ is generated as follows:
+\begin{itemize}
+\item Sample a component $z_i \sim \text{Categorical}(\pi)$
+\item Sample a data point $x_i \sim p(x|z_i, \theta)$
+\end{itemize}
+
+The marginal distribution is:
+\begin{align}
+p(x|\pi, \theta) = \sum_{k=1}^{K}\pi_k p(x|z=k, \theta_k)
+\end{align}
+
+\subsubsection{Gaussian Mixture Model (GMM)}
+In a Gaussian Mixture Model, each component distribution is a Gaussian:
+\begin{align}
+p(x|\pi, \mu, \Sigma) = \sum_{k=1}^{K}\pi_k \mathcal{N}(x|\mu_k, \Sigma_k)
+\end{align}
+
+EM for GMM:
+\begin{itemize}
+\item E-step: Compute responsibilities
+\begin{align}
+\gamma_{ik} = \frac{\pi_k \mathcal{N}(x_i|\mu_k, \Sigma_k)}{\sum_{j=1}^{K}\pi_j \mathcal{N}(x_i|\mu_j, \Sigma_j)}
+\end{align}
+\item M-step: Update parameters
+\begin{align}
+\pi_k^{new} &= \frac{1}{N}\sum_{i=1}^{N}\gamma_{ik}\\
+\mu_k^{new} &= \frac{\sum_{i=1}^{N}\gamma_{ik}x_i}{\sum_{i=1}^{N}\gamma_{ik}}\\
+\Sigma_k^{new} &= \frac{\sum_{i=1}^{N}\gamma_{ik}(x_i - \mu_k^{new})(x_i - \mu_k^{new})^T}{\sum_{i=1}^{N}\gamma_{ik}}
+\end{align}
+\end{itemize}
+
+\subsection{Directed Graphical Models (DGMs)}
+\begin{definition}[Directed Graphical Model]
+A directed graphical model (DGM) is a way to represent the conditional independence structure in a probability distribution using a directed graph.
+\end{definition}
+
+In a DGM:
+\begin{itemize}
+\item Nodes represent random variables or parameters
+\item Directed edges represent conditional dependencies
+\item Shaded nodes represent observed variables
+\item Unshaded nodes represent latent variables or parameters
+\item Plates represent repeated structures
+\end{itemize}
+
+\subsubsection{Expressing Models as DGMs}
+For example, a Gaussian Mixture Model can be represented as:
+\begin{itemize}
+\item A node for the mixture weights $\pi$
+\item A plate containing $N$ data points, each with:
+  \begin{itemize}
+  \item A latent variable $z_i$ (unshaded)
+  \item An observed variable $x_i$ (shaded)
+  \end{itemize}
+\item Arrows from $\pi$ to $z_i$ and from $z_i$ to $x_i$
+\end{itemize}
+
+\section{Dimensionality Reduction}
+
+\subsection{Principal Component Analysis (PCA)}
+\begin{definition}[Principal Component Analysis]
+PCA is a dimensionality reduction technique that finds a low-dimensional representation of the data that captures as much of the variance as possible.
+\end{definition}
+
+\subsubsection{Variance Preservation View}
+PCA finds the directions (principal components) along which the data varies the most. Mathematically, the first principal component $w_1$ maximizes:
+\begin{align}
+w_1 = \arg\max_{||w||=1} \frac{1}{N}\sum_{i=1}^{N}(w^Tx_i)^2 = \arg\max_{||w||=1} w^TSw
+\end{align}
+where $S = \frac{1}{N}X^TX$ is the empirical covariance matrix.
+
+The solution is the eigenvector of $S$ with the largest eigenvalue. Subsequent principal components are the eigenvectors with decreasingly smaller eigenvalues, subject to being orthogonal to all previous principal components.
+
+\subsubsection{Reconstruction Loss View}
+PCA can also be viewed as finding a low-dimensional representation that minimizes the reconstruction error when projecting back to the original space:
+\begin{align}
+\min_W \sum_{i=1}^{N}||x_i - WW^Tx_i||^2
+\end{align}
+where $W$ is a matrix with orthonormal columns.
+
+Both views lead to the same solution: the columns of $W$ are the principal components (eigenvectors of $S$).
+
+\subsubsection{SVD and PCA}
+PCA is closely related to the Singular Value Decomposition (SVD) of the data matrix $X$:
+\begin{align}
+X = U\Sigma V^T
+\end{align}
+
+The principal components are the columns of $V$, and the singular values in $\Sigma$ are related to the eigenvalues of the covariance matrix by a factor of $\sqrt{N}$.
+
+\subsection{Applications of PCA}
+PCA is used for:
+\begin{itemize}
+\item Visualization: Reducing data to 2 or 3 dimensions for plotting
+\item Noise reduction: Discarding dimensions with low variance
+\item Feature extraction: Using the principal components as new features
+\item Data compression: Storing a low-dimensional representation
+\end{itemize}
+
+\section{Graphical Models and Bayes Nets}
+
+\subsection{Bayesian Networks}
+\begin{definition}[Bayesian Network]
+A Bayesian Network (BN) is a directed acyclic graph (DAG) where nodes represent random variables and edges represent direct dependencies.
+\end{definition}
+
+In a Bayesian Network:
+\begin{itemize}
+\item Each node $X_i$ is conditionally independent of its non-descendants given its parents
+\item The joint probability factorizes as:
+\begin{align}
+p(X_1, X_2, \ldots, X_n) = \prod_{i=1}^{n}p(X_i|pa(X_i))
+\end{align}
+where $pa(X_i)$ are the parents of $X_i$
+\end{itemize}
+
+\subsubsection{Conditional Probability Tables (CPTs)}
+For discrete variables, the conditional distributions $p(X_i|pa(X_i))$ are represented using Conditional Probability Tables (CPTs).
+
+\subsubsection{Plate Notation}
+Plate notation is used to represent repeated structures in graphical models. A plate (rectangle) around nodes indicates that those nodes are replicated, with the number of replications shown in the corner.
+
+\subsection{D-Separation and Independence}
+\begin{definition}[D-Separation]
+D-separation is a criterion for determining whether sets of variables are conditionally independent given a Bayesian network structure.
+\end{definition}
+
+Two variables $X$ and $Y$ are d-separated by a set of variables $Z$ if and only if all paths between $X$ and $Y$ are blocked by $Z$.
+
+A path is blocked if it contains:
+\begin{itemize}
+\item A chain $A \rightarrow B \rightarrow C$ where $B$ is in $Z$
+\item A fork $A \leftarrow B \rightarrow C$ where $B$ is in $Z$
+\item A collider $A \rightarrow B \leftarrow C$ where $B$ and all its descendants are not in $Z$
+\end{itemize}
+
+If $X$ and $Y$ are d-separated by $Z$, then $X$ and $Y$ are conditionally independent given $Z$.
+
+\subsection{Variable Elimination}
+\begin{definition}[Variable Elimination]
+Variable elimination is an algorithm for exact inference in Bayesian networks by eliminating variables one by one from the joint distribution.
+\end{definition}
+
+For example, to compute $p(X_1|X_2=x_2)$:
+\begin{align}
+p(X_1|X_2=x_2) &= \frac{p(X_1, X_2=x_2)}{p(X_2=x_2)}\\
+&= \frac{\sum_{X_3, \ldots, X_n}p(X_1, X_2=x_2, X_3, \ldots, X_n)}{p(X_2=x_2)}
+\end{align}
+
+The efficiency of variable elimination depends on the elimination order. A good heuristic is to eliminate leaf nodes first, as this typically results in smaller intermediate factors.
+
+\section{Hidden Markov Models}
+
+\subsection{HMM Structure}
+\begin{definition}[Hidden Markov Model]
+A Hidden Markov Model (HMM) is a statistical model where the system is assumed to be a Markov process with unobservable (hidden) states and observable emissions.
+\end{definition}
+
+An HMM is characterized by:
+\begin{itemize}
+\item A set of hidden states $S = \{s_1, s_2, \ldots, s_K\}$
+\item A set of possible emissions $E = \{e_1, e_2, \ldots, e_M\}$
+\item Initial state distribution $\pi$ where $\pi_i = p(s_1 = i)$
+\item Transition probabilities $A$ where $A_{ij} = p(s_{t+1} = j|s_t = i)$
+\item Emission probabilities $B$ where $B_{ik} = p(x_t = k|s_t = i)$
+\end{itemize}
+
+The joint probability of a sequence of states and emissions is:
+\begin{align}
+p(s_1, \ldots, s_n, x_1, \ldots, x_n) = p(s_1)\prod_{t=1}^{n-1}p(s_{t+1}|s_t)\prod_{t=1}^{n}p(x_t|s_t)
+\end{align}
+
+\subsection{Inference in HMMs}
+Common inference questions in HMMs include:
+\begin{itemize}
+\item Filtering: $p(s_t|x_1, \ldots, x_t)$ - What is the current state given all observations up to now?
+\item Prediction: $p(s_{t+k}|x_1, \ldots, x_t)$ - What will be the state in the future?
+\item Smoothing: $p(s_t|x_1, \ldots, x_n)$ - What was the state at time $t$ given all observations?
+\item Most likely path: $\arg\max_{s_1, \ldots, s_n} p(s_1, \ldots, s_n|x_1, \ldots, x_n)$ - What is the most likely sequence of states?
+\end{itemize}
+
+\subsection{Forward-Backward Algorithm}
+The Forward-Backward algorithm computes:
+\begin{itemize}
+\item Forward probabilities $\alpha_t(i) = p(x_1, \ldots, x_t, s_t = i)$
+\item Backward probabilities $\beta_t(i) = p(x_{t+1}, \ldots, x_n|s_t = i)$
+\end{itemize}
+
+Forward recursion:
+\begin{align}
+\alpha_1(i) &= \pi_i B_{i,x_1}\\
+\alpha_{t+1}(j) &= B_{j,x_{t+1}}\sum_{i=1}^{K}\alpha_t(i)A_{ij}
+\end{align}
+
+Backward recursion:
+\begin{align}
+\beta_n(i) &= 1\\
+\beta_t(i) &= \sum_{j=1}^{K}A_{ij}B_{j,x_{t+1}}\beta_{t+1}(j)
+\end{align}
+
+These can be used to compute:
+\begin{align}
+p(s_t = i|x_1, \ldots, x_n) &= \frac{\alpha_t(i)\beta_t(i)}{p(x_1, \ldots, x_n)}\\
+p(s_t = i, s_{t+1} = j|x_1, \ldots, x_n) &= \frac{\alpha_t(i)A_{ij}B_{j,x_{t+1}}\beta_{t+1}(j)}{p(x_1, \ldots, x_n)}
+\end{align}
+
+\subsection{Viterbi Algorithm}
+The Viterbi algorithm finds the most likely sequence of hidden states:
+\begin{align}
+\arg\max_{s_1, \ldots, s_n} p(s_1, \ldots, s_n|x_1, \ldots, x_n)
+\end{align}
+
+It uses dynamic programming to compute:
+\begin{align}
+\delta_1(i) &= \pi_i B_{i,x_1}\\
+\delta_t(j) &= \max_{i}[\delta_{t-1}(i)A_{ij}]B_{j,x_t}
+\end{align}
+and keeps track of the argmax at each step to reconstruct the optimal path.
+
+\subsection{Learning in HMMs}
+The parameters of an HMM can be learned using the EM algorithm (Baum-Welch algorithm):
+\begin{itemize}
+\item E-step: Compute expected counts of transitions and emissions using the Forward-Backward algorithm
+\item M-step: Update parameters to maximize the expected complete-data log-likelihood
+\end{itemize}
+
+\section{Markov Decision Processes}
+
+\subsection{MDP Framework}
+\begin{definition}[Markov Decision Process]
+A Markov Decision Process (MDP) is a mathematical framework for modeling decision-making in situations where outcomes are partly random and partly under the control of a decision-maker.
+\end{definition}
+
+An MDP is defined by:
+\begin{itemize}
+\item A set of states $S$
+\item A set of actions $A$
+\item Transition probabilities $P(s'|s, a)$ - the probability of transitioning to state $s'$ when taking action $a$ in state $s$
+\item Reward function $R(s, a)$ - the immediate reward received after taking action $a$ in state $s$
+\item Discount factor $\gamma \in [0, 1]$ - how much future rewards are valued compared to immediate rewards
+\end{itemize}
+
+\subsection{Value Functions}
+\begin{definition}[Value Function]
+The value function $V^\pi(s)$ is the expected return starting from state $s$ and following policy $\pi$.
+\end{definition}
+
+For a policy $\pi$, the value function is:
+\begin{align}
+V^\pi(s) = \mathbb{E}_\pi\left[\sum_{t=0}^{\infty}\gamma^t R(s_t, a_t) \mid s_0 = s\right]
+\end{align}
+
+\begin{definition}[Q-Function]
+The Q-function $Q^\pi(s, a)$ is the expected return starting from state $s$, taking action $a$, and then following policy $\pi$.
+\end{definition}
+
+The Q-function is:
+\begin{align}
+Q^\pi(s, a) = R(s, a) + \gamma\sum_{s'}P(s'|s, a)V^\pi(s')
+\end{align}
+
+The optimal value function $V^*(s)$ is the maximum value achievable from state $s$:
+\begin{align}
+V^*(s) = \max_\pi V^\pi(s)
+\end{align}
+
+The optimal Q-function $Q^*(s, a)$ is:
+\begin{align}
+Q^*(s, a) = R(s, a) + \gamma\sum_{s'}P(s'|s, a)V^*(s')
+\end{align}
+
+\subsection{Bellman Equations}
+The Bellman equations are recursive relationships for value functions:
+
+\begin{definition}[Bellman Consistency Equation]
+For a given policy $\pi$:
+\begin{align}
+V^\pi(s) = \sum_a \pi(a|s)\left[R(s, a) + \gamma\sum_{s'}P(s'|s, a)V^\pi(s')\right]
+\end{align}
+\end{definition}
+
+\begin{definition}[Bellman Optimality Equation]
+For the optimal policy:
+\begin{align}
+V^*(s) = \max_a\left[R(s, a) + \gamma\sum_{s'}P(s'|s, a)V^*(s')\right]
+\end{align}
+\end{definition}
+
+These equations form the basis for planning and learning algorithms in MDPs.
+
+\subsection{Planning in MDPs}
+\subsubsection{Finite Horizon Planning}
+For a finite time horizon $T$, we compute:
+\begin{align}
+V_t(s) = \max_a\left[R(s, a) + \sum_{s'}P(s'|s, a)V_{t+1}(s')\right]
+\end{align}
+starting from $V_T(s) = \max_a R(s, a)$ and working backwards.
+
+\subsubsection{Value Iteration}
+Value iteration is an algorithm for infinite horizon planning:
+\begin{algorithm}
+\caption{Value Iteration}
+\begin{algorithmic}[1]
+\State Initialize $V(s) = 0$ for all $s \in S$
+\Repeat
+\State $\Delta \leftarrow 0$
+\For{each $s \in S$}
+\State $v \leftarrow V(s)$
+\State $V(s) \leftarrow \max_a\left[R(s, a) + \gamma\sum_{s'}P(s'|s, a)V(s')\right]$
+\State $\Delta \leftarrow \max(\Delta, |v - V(s)|)$
+\EndFor
+\Until{$\Delta < \theta$ (a small threshold)}
+\end{algorithmic}
+\end{algorithm}
+
+Value iteration converges to the optimal value function $V^*$.
+
+\subsubsection{Policy Iteration}
+Policy iteration alternates between policy evaluation and policy improvement:
+\begin{algorithm}
+\caption{Policy Iteration}
+\begin{algorithmic}[1]
+\State Initialize $\pi$ arbitrarily
+\Repeat
+\State \textbf{Policy Evaluation:} Compute $V^\pi(s)$ for all $s \in S$
+\State \textbf{Policy Improvement:} Update $\pi(s) \leftarrow \arg\max_a\left[R(s, a) + \gamma\sum_{s'}P(s'|s, a)V^\pi(s')\right]$
+\Until{policy stable}
+\end{algorithmic}
+\end{algorithm}
+
+Policy iteration converges in fewer iterations than value iteration but may require more computation per iteration.
+
+\section{Reinforcement Learning}
+
+\subsection{Reinforcement Learning vs. Planning}
+\begin{definition}[Reinforcement Learning]
+Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with an environment and receiving feedback in the form of rewards.
+\end{definition}
+
+The key difference between RL and planning is that in RL, the agent:
+\begin{itemize}
+\item Does not know the transition probabilities $P(s'|s, a)$
+\item Does not know the reward function $R(s, a)$
+\item Must learn from experience through trial and error
+\end{itemize}
+
+\subsection{Exploration vs. Exploitation}
+A fundamental challenge in RL is the exploration-exploitation tradeoff:
+\begin{itemize}
+\item Exploration: Trying new actions to discover their effects
+\item Exploitation: Using known information to maximize rewards
+\end{itemize}
+
+Strategies for balancing exploration and exploitation include:
+\begin{itemize}
+\item $\epsilon$-greedy: Take the best known action with probability $1-\epsilon$, and a random action with probability $\epsilon$
+\item Softmax: Choose actions with probability proportional to their estimated values
+\item Upper Confidence Bound (UCB): Choose actions based on both their estimated value and the uncertainty in that estimate
+\end{itemize}
+
+\subsection{Model-Free vs. Model-Based RL}
+\subsubsection{Model-Based RL}
+In model-based RL, the agent:
+\begin{itemize}
+\item Learns a model of the environment (transition probabilities and rewards)
+\item Uses the model for planning (e.g., with value iteration or policy iteration)
+\end{itemize}
+
+\subsubsection{Model-Free RL}
+In model-free RL, the agent:
+\begin{itemize}
+\item Learns value functions or policies directly from experience
+\item Does not explicitly model the environment
+\end{itemize}
+
+\subsection{Q-Learning}
+\begin{definition}[Q-Learning]
+Q-Learning is a model-free RL algorithm that learns the optimal Q-function directly from experience.
+\end{definition}
+
+The Q-learning update rule is:
+\begin{align}
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha\left[r_t + \gamma\max_{a'}Q(s_{t+1}, a') - Q(s_t, a_t)\right]
+\end{align}
+where $\alpha$ is the learning rate.
+
+Q-learning is an off-policy algorithm because it learns about the optimal policy regardless of the policy being followed.
+
+\subsection{SARSA}
+\begin{definition}[SARSA]
+SARSA (State-Action-Reward-State-Action) is a model-free RL algorithm that learns the Q-function for the policy being followed.
+\end{definition}
+
+The SARSA update rule is:
+\begin{align}
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha\left[r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t)\right]
+\end{align}
+
+SARSA is an on-policy algorithm because it learns about the policy being followed.
+
+\subsubsection{Differences Between Q-Learning and SARSA}
+The key differences between Q-learning and SARSA are:
+\begin{itemize}
+\item Q-learning uses the maximum Q-value for the next state ($\max_{a'}Q(s_{t+1}, a')$)
+\item SARSA uses the Q-value of the actual next action taken ($Q(s_{t+1}, a_{t+1})$)
+\item Q-learning converges to the optimal policy regardless of the exploration strategy
+\item SARSA converges to the optimal policy only if exploration is gradually reduced
+\item SARSA can be more conservative in risky environments
+\end{itemize}
+
+\section{Conclusion}
+This comprehensive study guide has covered the key concepts and techniques in machine learning, from basic regression and classification to advanced topics like reinforcement learning. Understanding these fundamentals provides a solid foundation for applying machine learning to real-world problems and exploring more advanced topics in the field.
+
+\end{document}

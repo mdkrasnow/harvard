@@ -1,0 +1,699 @@
+\documentclass[10pt,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.2in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+\usepackage{enumitem}
+% Reduce whitespace and tighten layout
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.1in}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlist[itemize]{noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt}
+\usepackage[breakable]{tcolorbox}
+\usepackage{xcolor}
+
+% Define custom colors for each topic
+\definecolor{regression}{RGB}{230,240,255}
+\definecolor{classification}{RGB}{255,240,230}
+\definecolor{neural}{RGB}{240,255,240}
+\definecolor{svm}{RGB}{255,240,255}
+\definecolor{hmm}{RGB}{230,240,255}
+\definecolor{em}{RGB}{255,240,230}
+\definecolor{pca}{RGB}{240,255,240}
+\definecolor{kmeans}{RGB}{255,240,255}
+\definecolor{mixture}{RGB}{245,245,220}
+\definecolor{rl}{RGB}{230,255,255}
+
+\pagestyle{empty}
+\setlength{\columnsep}{0.1in}
+\renewcommand{\arraystretch}{1.1}
+
+\begin{document}
+\scriptsize
+
+\begin{multicols}{3}
+
+\begin{tcolorbox}[breakable, title=Linear Regression, colback=regression, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $\mathbf{X} \in \mathbb{R}^{N \times D}$ -- Data matrix with $N$ examples, $D$ features
+    \item $\mathbf{y} \in \mathbb{R}^N$ -- Target values
+    \item $\mathbf{w} \in \mathbb{R}^D$ -- Weight vector (parameters)
+    \item $\hat{y} = \mathbf{X}\mathbf{w}$ -- Predictions
+\end{itemize}
+
+\textbf{Ordinary Least Squares:}
+\begin{align}
+L(\mathbf{w}) &= \frac{1}{2}\sum_{n=1}^N(y_n - \mathbf{w}^T\mathbf{x}_n)^2\\
+\nabla L(\mathbf{w}) &= \sum_{n=1}^N(y_n - \mathbf{w}^T\mathbf{x}_n)(-\mathbf{x}_n) = -\mathbf{X}^T\mathbf{y} + \mathbf{X}^T\mathbf{X}\mathbf{w}
+\end{align}
+
+\textbf{Closed-form solution:} $\mathbf{w}^* = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$
+
+\textbf{Regularization:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Ridge (L2):} $L(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N(y_n - \mathbf{w}^T\mathbf{x}_n)^2 + \frac{\lambda}{2}\|\mathbf{w}\|_2^2$
+    \item Solution: $\mathbf{w}_{ridge} = (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}$
+    \item \textbf{Lasso (L1):} $L(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N(y_n - \mathbf{w}^T\mathbf{x}_n)^2 + \lambda\|\mathbf{w}\|_1$
+\end{itemize}
+
+\textbf{Bias-Variance Tradeoff:}
+\begin{align}
+\text{MSE} &= \mathbb{E}_{D,y|x}[(y - f_D(x))^2]\\
+&= \mathbb{E}_{y|x}[(y - \bar{y})^2] + (\bar{y} - \bar{f}(x))^2 + \mathbb{E}_D[(\bar{f}(x) - f_D(x))^2]\\
+&= \text{noise}(x) + \text{bias}(f(x))^2 + \text{var}(f(x))
+\end{align}
+\textbf{Regularization effect:} Increases bias, reduces variance
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Classification, colback=classification, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Loss Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{0/1 Loss:} $L(y, \hat{y}) = \mathbf{1}[y \neq \hat{y}]$ (non-differentiable)
+    \item \textbf{Hinge Loss:} $L(y, f(x)) = \max(0, 1 - yf(x))$
+    \item \textbf{Logistic Loss:} $L(y, f(x)) = \log(1 + e^{-yf(x)})$
+\end{itemize}
+
+\textbf{Perceptron:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Prediction: $\hat{y} = \text{sign}(\mathbf{w}^T\mathbf{x})$
+    \item Update: $\mathbf{w} \leftarrow \mathbf{w} + \alpha y \mathbf{x}$ if misclassified
+    \item Convergence guaranteed if data is linearly separable
+\end{itemize}
+
+\textbf{Logistic Regression:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Sigmoid function: $\sigma(z) = \frac{1}{1 + e^{-z}}$
+    \item Probability: $p(y=1|\mathbf{x},\mathbf{w}) = \sigma(\mathbf{w}^T\mathbf{x})$
+    \item Log-likelihood: $\ell(\mathbf{w}) = \sum_{n=1}^N [y_n\log\hat{y}_n + (1-y_n)\log(1-\hat{y}_n)]$
+    \item Gradient: $\nabla \ell(\mathbf{w}) = \sum_{n=1}^N (y_n - \hat{y}_n)\mathbf{x}_n$
+\end{itemize}
+
+\textbf{Multi-class Logistic Regression:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Softmax function: $\sigma_i(z) = \frac{e^{z_i}}{\sum_j e^{z_j}}$
+    \item Probability: $p(y=i|\mathbf{x},\mathbf{W}) = \frac{e^{\mathbf{w}_i^T\mathbf{x}}}{\sum_j e^{\mathbf{w}_j^T\mathbf{x}}}$
+\end{itemize}
+
+\textbf{Naïve Bayes (Generative):}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Bayes Rule: $p(y|\mathbf{x}) \propto p(\mathbf{x}|y)p(y)$
+    \item Naïve assumption: $p(\mathbf{x}|y) = \prod_j p(x_j|y)$
+    \item Class prior: $p(y=c_k) = \pi_k$ (MLE: proportion in training data)
+\end{itemize}
+
+\textbf{Gradient Descent:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Batch: $\mathbf{w}_{t+1} = \mathbf{w}_t - \alpha\nabla L(\mathbf{w}_t)$ 
+    \item Stochastic: $\mathbf{w}_{t+1} = \mathbf{w}_t - \alpha\nabla L_n(\mathbf{w}_t)$
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Neural Networks, colback=neural, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Network Structure:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Input layer: $\mathbf{x} \in \mathbb{R}^{d_0}$
+    \item Hidden layer $\ell$: $\mathbf{h}^{(\ell)} = g(\mathbf{W}^{(\ell)}\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)})$
+    \item Output layer: $\hat{\mathbf{y}} = g(\mathbf{W}^{(L)}\mathbf{h}^{(L-1)} + \mathbf{b}^{(L)})$
+\end{itemize}
+
+\textbf{Activation Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Sigmoid: $\sigma(z) = \frac{1}{1 + e^{-z}}$, range $(0,1)$
+    \item Tanh: $\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$, range $(-1,1)$
+    \item ReLU: $\text{ReLU}(z) = \max(0, z)$
+\end{itemize}
+
+\textbf{Backpropagation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Forward pass: Compute activations through the network
+    \item Backward pass: Compute gradients using the chain rule
+    \item For output layer: $\delta^{(L)} = \nabla_{\hat{\mathbf{y}}}L \odot g'(\mathbf{z}^{(L)})$
+    \item For hidden layers: $\delta^{(\ell)} = ((\mathbf{W}^{(\ell+1)})^T\delta^{(\ell+1)}) \odot g'(\mathbf{z}^{(\ell)})$
+    \item Weight gradients: $\nabla_{\mathbf{W}^{(\ell)}}L = \delta^{(\ell)}(\mathbf{h}^{(\ell-1)})^T$
+\end{itemize}
+
+\textbf{Loss Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Regression: MSE Loss $= \frac{1}{2}\sum_{n=1}^N(\mathbf{y}_n - \hat{\mathbf{y}}_n)^2$
+    \item Classification: Cross-Entropy $= -\sum_{n=1}^N\sum_{c=1}^C y_{nc}\log(\hat{y}_{nc})$
+\end{itemize}
+
+\textbf{Model Selection:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Cross-validation: Split data into K folds, train on K-1 and test on 1
+    \item Hyperparameter tuning: Architecture, learning rate, regularization
+    \item Regularization: Weight decay, dropout, early stopping
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Support Vector Machines, colback=svm, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Hard-Margin SVM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Decision boundary: $\mathbf{w}^T\mathbf{x} + w_0 = 0$
+    \item Functional margin: $y_n(\mathbf{w}^T\mathbf{x}_n + w_0) \geq 1$
+    \item Geometric margin: $\frac{\mathbf{w}^T\mathbf{x} + w_0}{\|\mathbf{w}\|_2}$
+    \item Optimization problem: $\min_{\mathbf{w},w_0} \frac{1}{2}\|\mathbf{w}\|_2^2$ s.t. $y_n(\mathbf{w}^T\mathbf{x}_n + w_0) \geq 1, \forall n$
+\end{itemize}
+
+\textbf{Soft-Margin SVM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Includes slack variables $\xi_n \geq 0$
+    \item Optimization problem: $\min_{\mathbf{w},w_0} \frac{1}{2}\|\mathbf{w}\|_2^2 + C\sum_{n=1}^N \xi_n$
+    \item Subject to: $y_n(\mathbf{w}^T\mathbf{x}_n + w_0) \geq 1 - \xi_n, \xi_n \geq 0, \forall n$
+    \item Parameter $C$ trades off margin size vs. training errors
+\end{itemize}
+
+\textbf{Kernel Trick:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Implicit feature mapping: $\phi: \mathcal{X} \rightarrow \mathcal{F}$
+    \item Kernel function: $K(\mathbf{x},\mathbf{z}) = \phi(\mathbf{x})^T\phi(\mathbf{z})$
+    \item Decision function: $f(\mathbf{x}) = \sum_{n=1}^N \alpha_n y_n K(\mathbf{x}_n, \mathbf{x}) + w_0$
+\end{itemize}
+
+\textbf{Common Kernels:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Linear: $K(\mathbf{x},\mathbf{z}) = \mathbf{x}^T\mathbf{z}$
+    \item Polynomial: $K(\mathbf{x},\mathbf{z}) = (\mathbf{x}^T\mathbf{z} + c)^d$
+    \item RBF/Gaussian: $K(\mathbf{x},\mathbf{z}) = \exp(-\gamma\|\mathbf{x}-\mathbf{z}\|_2^2)$
+\end{itemize}
+
+\textbf{Support Vectors:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Points with $\alpha_i > 0$ (on margin boundary or misclassified)
+    \item Only support vectors affect decision boundary
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Hidden Markov Models, colback=hmm, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $s_t \in \{0,1\}^K$ -- Hidden state at time $t$ (one-hot encoded)
+    \item $x_t$ -- Observation at time $t$
+    \item $\theta \in [0,1]^K$ -- Initial state distribution, $\sum_k \theta_k = 1$
+    \item $T \in [0,1]^{K \times K}$ -- Transition matrix, $T_{i,j} = P(s_{t+1} = j | s_t = i)$
+    \item $\pi \in [0,1]^{K \times M}$ -- Emission parameters, $\pi_{k,m} = P(x_t = m | s_t = k)$
+\end{itemize}
+
+\textbf{Forward-Backward Algorithm:}\\
+\textbf{Forward Values ($\alpha$):}
+$\alpha_t(s_t) = p(x_1,...,x_t,s_t)$
+
+\textbf{Backward Values ($\beta$):}
+$\beta_t(s_t) = p(x_{t+1},...,x_n|s_t)$
+
+\textbf{Forward Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize:} For $t=1$, all states $s_1 \in \{1,...,K\}$:
+    $\alpha_1(s_1) = p(x_1|s_1)p(s_1) = \pi_{s_1,x_1} \cdot \theta_{s_1}$
+    
+    \item \textbf{Recursion:} For $t = 2,...,n$, all states $s_t \in \{1,...,K\}$:
+    $\alpha_t(s_t) = p(x_t|s_t) \sum_{s_{t-1}} p(s_t|s_{t-1})\alpha_{t-1}(s_{t-1})$
+    
+    Meaning: Take emission probability $p(x_t|s_t)$ and multiply by sum over all possible previous states. For each previous state, multiply transition probability $p(s_t|s_{t-1}) = T_{s_{t-1},s_t}$ with previous forward value $\alpha_{t-1}(s_{t-1})$.
+\end{itemize}
+
+\textbf{Backward Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize:} For $t=n$ (final time step), all states $s_n \in \{1,...,K\}$:
+    $\beta_n(s_n) = 1$
+    
+    \item \textbf{Recursion:} For $t = n-1, n-2, ..., 1$, all states $s_t \in \{1,...,K\}$:
+    $\beta_t(s_t) = \sum_{s_{t+1}} p(s_{t+1}|s_t)p(x_{t+1}|s_{t+1})\beta_{t+1}(s_{t+1})$
+    
+    Meaning: Sum over all possible next states. For each next state, multiply transition probability $p(s_{t+1}|s_t) = T_{s_t,s_{t+1}}$, emission probability $p(x_{t+1}|s_{t+1}) = \pi_{s_{t+1},x_{t+1}}$, and next backward value $\beta_{t+1}(s_{t+1})$.
+\end{itemize}
+
+\textbf{Using $\alpha$ and $\beta$ for Inference:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Filtering:} $p(s_t|x_1,...,x_t) = \frac{\alpha_t(s_t)}{\sum_{s'_t} \alpha_t(s'_t)}$
+    
+    \item \textbf{Smoothing:} $p(s_t|x_1,...,x_n) = \frac{\alpha_t(s_t)\beta_t(s_t)}{\sum_{s'_t} \alpha_t(s'_t)\beta_t(s'_t)}$
+    
+    \item \textbf{Likelihood:} $p(x_1,...,x_n) = \sum_{s_t} \alpha_t(s_t)\beta_t(s_t)$ (any $t$)
+    
+    \item \textbf{Transition probabilities:} 
+    $p(s_t, s_{t+1}|x_1,...,x_n) = \frac{\alpha_t(s_t)p(s_{t+1}|s_t)p(x_{t+1}|s_{t+1})\beta_{t+1}(s_{t+1})}{p(x_1,...,x_n)}$
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Viterbi Algorithm, colback=hmm, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Finding the Most Likely State Sequence:}
+
+\textbf{Steps:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize:} For $t=1$, all states $s_1 \in \{1,...,K\}$:
+    \begin{align}
+    \gamma_1(s_1) &= p(x_1|s_1)p(s_1) = \pi_{s_1,x_1} \cdot \theta_{s_1}\\
+    \psi_1(s_1) &= 0 \text{ (no previous state)}
+    \end{align}
+    
+    \item \textbf{Recursion:} For $t = 2,...,n$, all states $s_t \in \{1,...,K\}$:
+    \begin{align}
+    \gamma_t(s_t) &= p(x_t|s_t) \max_{s_{t-1}} [p(s_t|s_{t-1})\gamma_{t-1}(s_{t-1})]\\
+    \psi_t(s_t) &= \arg\max_{s_{t-1}} [p(s_t|s_{t-1})\gamma_{t-1}(s_{t-1})]
+    \end{align}
+    
+    For each current state $s_t$, find previous state $s_{t-1}$ maximizing probability of reaching $s_t$. Store both max probability $\gamma_t(s_t)$ and previous state $\psi_t(s_t)$.
+    
+    \item \textbf{Termination:} Find most likely final state:
+    \begin{align}
+    s_n^* &= \arg\max_{s_n} \gamma_n(s_n)\\
+    P^* &= \max_{s_n} \gamma_n(s_n)
+    \end{align}
+    
+    \item \textbf{Backtracking:} Recover most likely state sequence:
+    $s_t^* = \psi_{t+1}(s_{t+1}^*)$ for $t = n-1, n-2, ..., 1$
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Expectation-Maximization (EM) Algorithm, colback=em, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $x_n$ -- Data point $n$
+    \item $z_n \in \{0,1\}^K$ -- Latent variable (one-hot) indicating component for $x_n$
+    \item $\theta \in [0,1]^K$ -- Mixture weights, $\sum_k \theta_k = 1$
+    \item $\pi_k$ -- Parameters of component $k$ in mixture
+    \item $q_n \in [0,1]^K$ -- "Soft" assignments of data point $n$ to components
+    \item $q_{n,k}$ -- Probability that data point $n$ belongs to component $k$
+\end{itemize}
+
+\textbf{Objective: Maximum Likelihood}
+$\log p(X|\theta, \pi) = \sum_{n=1}^N \log \sum_{k=1}^K \theta_k p(x_n|z_n = C_k, \pi_k)$
+
+\textbf{Complete-Data Log-Likelihood:}
+$\log p(X, Z|\theta, \pi) = \sum_{n=1}^N \sum_{k=1}^K z_{n,k}[\log \theta_k + \log p(x_n|z_n = C_k, \pi_k)]$
+
+\textbf{Evidence Lower Bound (ELBO):}
+$\text{ELBO}(\theta, \pi, q) = \sum_{n=1}^N \sum_{k=1}^K q_{n,k}[\log \theta_k + \log p(x_n|z_n = C_k, \pi_k) - \log q_{n,k}]$
+
+\textbf{EM Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize} parameters $\theta^{(0)}$ and $\pi^{(0)}$ (often randomly)
+    
+    \item \textbf{E-step:} Compute posterior probabilities:
+    \begin{equation}
+    q_{n,k}^{(i)} = \frac{\theta_k^{(i)} p(x_n|z_n = C_k; \pi_k^{(i)})}{\sum_{j=1}^K \theta_j^{(i)} p(x_n|z_n = C_j; \pi_j^{(i)})}
+    \end{equation}
+    
+    \item \textbf{M-step:} Update parameters:
+    \begin{align}
+    \theta^{(i+1)}, \pi^{(i+1)} &= \underset{\theta, \pi}{\arg\max} \sum_{n=1}^N \sum_{k=1}^K q_{n,k}^{(i)}[\log \theta_k + \log p(x_n|z_n = C_k, \pi_k)]
+    \end{align}
+    
+    For mixture weights:
+    \begin{equation}
+    \theta_k^{(i+1)} = \frac{\sum_{n=1}^N q_{n,k}^{(i)}}{N}
+    \end{equation}
+    
+    For component parameters:
+    \begin{equation}
+    \pi_k^{(i+1)} = \underset{\pi_k}{\arg\max} \sum_{n=1}^N q_{n,k}^{(i)} \log p(x_n|z_n = C_k, \pi_k)
+    \end{equation}
+    
+    \item \textbf{Repeat} until convergence
+\end{itemize}
+
+\textbf{Gaussian Mixture Model:}
+E-step:
+\begin{equation}
+q_{n,k}^{(i)} = \frac{\theta_k^{(i)} \mathcal{N}(x_n; \mu_k^{(i)}, \Sigma_k^{(i)})}{\sum_{j=1}^K \theta_j^{(i)} \mathcal{N}(x_n; \mu_j^{(i)}, \Sigma_j^{(i)})}
+\end{equation}
+
+M-step:
+\begin{align}
+\mu_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}x_n}{\sum_{n=1}^N q_{n,k}^{(i)}}\\
+\Sigma_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}(x_n - \mu_k^{(i+1)})(x_n - \mu_k^{(i+1)})^T}{\sum_{n=1}^N q_{n,k}^{(i)}}
+\end{align}
+
+\textbf{Binary Data EM Example:}
+E-step:
+\begin{equation}
+q_{n,k}^{(i)} = \frac{\theta_k^{(i)} \prod_{d=1}^D (\mu_{k,d}^{(i)})^{x_{n,d}} (1-\mu_{k,d}^{(i)})^{1-x_{n,d}}}{\sum_{j=1}^K \theta_j^{(i)} \prod_{d=1}^D (\mu_{j,d}^{(i)})^{x_{n,d}} (1-\mu_{j,d}^{(i)})^{1-x_{n,d}}}
+\end{equation}
+
+M-step:
+\begin{align}
+\theta_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}}{N}\\
+\mu_{k,d}^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}x_{n,d}}{\sum_{n=1}^N q_{n,k}^{(i)}}
+\end{align}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Principal Component Analysis (PCA), colback=pca, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $X \in \mathbb{R}^{N \times D}$ -- Data matrix with $N$ examples in $D$ dimensions
+    \item $\bar{X} \in \mathbb{R}^{1 \times D}$ -- Mean of each feature across all examples
+    \item $X' = X - \mathbf{1}\bar{X}$ -- Centered data matrix
+    \item $S = \frac{1}{N}X'^T X'$ -- Empirical covariance matrix
+    \item $v_1, v_2, ..., v_D \in \mathbb{R}^D$ -- Eigenvectors of $S$ (principal components)
+    \item $\lambda_1, \lambda_2, ..., \lambda_D$ -- Eigenvalues (variances along PCs)
+    \item $W = [v_1, v_2, ..., v_{D'}]$ -- Projection matrix for dimension reduction
+    \item $Z = X'W$ -- Projected data in lower dimension $D'$
+\end{itemize}
+
+\textbf{Understanding the Covariance Matrix:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $S = \frac{1}{N}\sum_{n=1}^N (x_n - \bar{x})(x_n - \bar{x})^T$
+    \item Diagonal elements $S_{ii}$ = variance of feature $i$
+    \item Off-diagonal elements $S_{ij}$ = covariance between features $i$ and $j$
+    \item Symmetric: $S_{ij} = S_{ji}$
+    \item Positive semi-definite: $v^T S v \geq 0$ for any vector $v$
+    \item Each element: $S_{ij} = \frac{1}{N} \sum_{n=1}^N (x_{ni} - \bar{x}_i)(x_{nj} - \bar{x}_j)$
+\end{itemize}
+
+\textbf{Finding Eigenvectors and Eigenvalues:}
+An eigenvector $v$ of matrix $S$ satisfies: $Sv = \lambda v$
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Find characteristic equation: $\det(S - \lambda I) = 0$
+    \item Solve for roots to find eigenvalues $\lambda_1, \lambda_2, ..., \lambda_D$
+    \item For each $\lambda_i$, find eigenvector $v_i$ by solving: $(S - \lambda_i I)v_i = 0$
+    \item Normalize: $v_i := \frac{v_i}{\|v_i\|}$
+    \item Sort eigenvectors by descending eigenvalues
+\end{itemize}
+
+\textbf{PCA Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Center the Data:}
+    $\bar{x}_d = \frac{1}{N}\sum_{n=1}^N x_{nd}$, 
+    $x'_{nd} = x_{nd} - \bar{x}_d$, 
+    $X' = X - \mathbf{1}\bar{X}$
+    
+    \item \textbf{Compute Covariance Matrix:}
+    $S = \frac{1}{N}X'^T X' = \frac{1}{N}\sum_{n=1}^N (x_n - \bar{x})(x_n - \bar{x})^T$
+    
+    \item \textbf{Find Eigenvectors and Eigenvalues:}
+    Decompose $S = V\Lambda V^T$ where $V$ has eigenvectors as columns
+    
+    \item \textbf{Sort and Select:}
+    Reorder so $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_D$
+    Select first $D'$ eigenvectors: $W = [v_1, v_2, ..., v_{D'}]$
+    
+    Variance explained: $\frac{\sum_{i=1}^{D'} \lambda_i}{\sum_{i=1}^D \lambda_i}$
+    
+    \item \textbf{Project the Data:}
+    $Z = X'W$
+\end{itemize}
+
+\textbf{Two Views of PCA:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Variance Maximization:} PCA finds directions of maximum variance
+    $v_1 = \underset{\|v\|=1}{\arg\max} \; v^T S v$
+    
+    \item \textbf{Reconstruction Error Minimization:} PCA minimizes squared reconstruction error
+    $\min_{W: W^T W = I} \; \|X' - X'WW^T\|_F^2$
+\end{itemize}
+
+\textbf{PCA with SVD:}
+$X' = USV^T$ where:
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $U$ is $N \times N$ orthogonal
+    \item $S$ is $N \times D$ diagonal with singular values
+    \item $V$ is $D \times D$ orthogonal
+    
+    \item Columns of $V$ are eigenvectors of $X'^T X'$
+    \item Singular values relate to eigenvalues: $\lambda_i = \frac{s_i^2}{N}$
+    \item Projected data: $Z = X'V_{:,:D'}$ or $Z = US_{:,:D'}$
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=K-Means Clustering, colback=kmeans, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $\{x_n\}_{n=1}^N$ -- Data points to be clustered
+    \item $\{\mu_c\}_{c=1}^C$ -- Cluster centers (centroids)
+    \item $r_{nc} \in \{0,1\}$ -- Binary indicator: 1 if point $n$ is assigned to cluster $c$, 0 otherwise
+\end{itemize}
+
+\textbf{Objective Function:}
+$L(X, \{\mu_c\}_{c=1}^C, \{r_{nc}\}) = \sum_{n=1}^N \sum_{c=1}^C r_{nc}\|x_n - \mu_c\|^2_2$
+
+\textbf{Lloyd's Algorithm (K-Means):}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize} cluster centers $\mu_1, \mu_2, ..., \mu_K$:
+    \begin{itemize}[noitemsep]
+        \item Random initialization: Select $K$ random data points
+        \item K-means++ initialization: Select centers far apart
+        \begin{itemize}[noitemsep]
+            \item Choose first center randomly from data
+            \item For remaining centers, choose data points with probability proportional to squared distance from nearest existing center
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{Assignment step (E-step):} Assign each data point to closest center:
+    $r_{nc} = 
+    \begin{cases} 
+    1 & \text{if } c = \arg\min_{c'} \|x_n - \mu_{c'}\|^2 \\
+    0 & \text{otherwise}
+    \end{cases}$
+    
+    \item \textbf{Update step (M-step):} Update centers to be mean of assigned points:
+    $\mu_c = \frac{\sum_{n=1}^N r_{nc}x_n}{\sum_{n=1}^N r_{nc}}$
+    
+    \item \textbf{Repeat} until convergence (assignments stop changing or centers move less than threshold)
+\end{itemize}
+
+\textbf{Practical Considerations:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Choosing $K$:} "Elbow method" plots objective function vs. different $K$ values and looks for "elbow" where improvement slows
+    
+    \item \textbf{Multiple restarts:} Run K-Means multiple times with different initializations and select best result
+    
+    \item \textbf{Standardization:} Standardize features to zero mean and unit variance
+    
+    \item \textbf{Handling categorical data:} Use K-Medoids instead, which uses actual data points as centers and allows arbitrary distance metrics
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Mixture Models, colback=mixture, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $\theta_k$ -- Mixture weight for component $k$, $\sum_{k=1}^K \theta_k = 1$
+    \item $\pi_k$ -- Parameters of component $k$
+    \item $z_n$ -- Latent variable indicating which component generated data point $x_n$
+\end{itemize}
+
+\textbf{Mixture Model Formulation:}
+$p(x; \{\pi_k\}_{k=1}^K, \theta) = \sum_{k=1}^K \theta_k p_{\text{class}}(x|z = C_k; \pi_k)$
+
+\textbf{Gaussian Mixture Model (GMM):}
+\begin{equation}
+p(x|z = C_k; \mu_k, \Sigma_k) = \mathcal{N}(x; \mu_k, \Sigma_k) = \frac{1}{(2\pi)^{D/2}|\Sigma_k|^{1/2}}e^{-\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)}
+\end{equation}
+
+Full model: $p(x; \{\mu_k, \Sigma_k\}_{k=1}^K, \theta) = \sum_{k=1}^K \theta_k \mathcal{N}(x; \mu_k, \Sigma_k)$
+
+\textbf{EM Algorithm for GMM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize} $\theta^{(0)}, \{\mu_k^{(0)}, \Sigma_k^{(0)}\}_{k=1}^K$:
+    \begin{itemize}[noitemsep]
+        \item Often use K-Means for initial centers $\mu_k^{(0)}$
+        \item Set $\Sigma_k^{(0)}$ to sample covariance or identity
+        \item Set $\theta_k^{(0)} = 1/K$ (uniform)
+    \end{itemize}
+    
+    \item \textbf{E-step:} Compute posterior probabilities:
+    $q_{n,k}^{(i)} = \frac{\theta_k^{(i)} \mathcal{N}(x_n; \mu_k^{(i)}, \Sigma_k^{(i)})}{\sum_{j=1}^K \theta_j^{(i)} \mathcal{N}(x_n; \mu_j^{(i)}, \Sigma_j^{(i)})}$
+    
+    \item \textbf{M-step:} Update parameters:
+    \begin{align}
+    \theta_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}}{N}\\
+    \mu_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}x_n}{\sum_{n=1}^N q_{n,k}^{(i)}}\\
+    \Sigma_k^{(i+1)} &= \frac{\sum_{n=1}^N q_{n,k}^{(i)}(x_n - \mu_k^{(i+1)})(x_n - \mu_k^{(i+1)})^T}{\sum_{n=1}^N q_{n,k}^{(i)}}
+    \end{align}
+    
+    \item \textbf{Repeat} until convergence (log-likelihood stops increasing significantly)
+\end{itemize}
+
+\textbf{Connection between K-Means and GMM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item K-Means is a special case of GMM with constraints:
+    \item All covariance matrices are $\epsilon I$ (spherical with same tiny variance)
+    \item Hard assignments instead of soft probabilities
+    \item As $\epsilon \to 0$, GMM with EM approaches K-Means
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Reinforcement Learning, colback=rl, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Key Notation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $S$ -- Set of states
+    \item $A$ -- Set of actions
+    \item $p(s'|s,a)$ -- Transition function
+    \item $r(s,a)$ -- Reward function
+    \item $\gamma \in [0,1)$ -- Discount factor
+    \item $\pi: S \to A$ -- Policy
+    \item $V^\pi(s)$ -- Value function under policy $\pi$
+    \item $Q^\pi(s,a)$ -- Action-value function under policy $\pi$
+\end{itemize}
+
+\textbf{Q-Learning Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize} $Q(s,a)$ arbitrarily for all state-action pairs:
+    \begin{itemize}[noitemsep]
+        \item Often zeros or small random values
+        \item Optimistic initialization (high values) encourages exploration
+    \end{itemize}
+    
+    \item \textbf{For each episode:}
+    \begin{itemize}[noitemsep]
+        \item \textbf{Initialize} starting state $s$
+        
+        \item \textbf{For each step:}
+        \begin{itemize}[noitemsep]
+            \item \textbf{Choose action} $a$ from state $s$ using policy from $Q$:
+            \begin{itemize}[noitemsep]
+                \item $\epsilon$-greedy: With probability $\epsilon$, choose random action; otherwise, $a = \arg\max_{a'} Q(s,a')$
+                \item Reduce $\epsilon$ over time
+            \end{itemize}
+            
+            \item \textbf{Take action} $a$, observe reward $r$ and next state $s'$
+            
+            \item \textbf{Update} $Q(s,a)$:
+            $Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma \max_{a'} Q(s',a') - Q(s,a)]$
+            
+            where:
+            \begin{itemize}[noitemsep]
+                \item $\alpha \in (0,1]$ is the learning rate
+                \item $r + \gamma \max_{a'} Q(s',a')$ is the TD target
+                \item $r + \gamma \max_{a'} Q(s',a') - Q(s,a)$ is the TD error
+            \end{itemize}
+            
+            \item \textbf{Update state}: $s \leftarrow s'$
+        \end{itemize}
+        
+        \item \textbf{Continue} until $s$ is terminal or maximum steps reached
+    \end{itemize}
+\end{itemize}
+
+\textbf{SARSA Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Initialize} $Q(s,a)$ arbitrarily for all state-action pairs
+    
+    \item \textbf{For each episode:}
+    \begin{itemize}[noitemsep]
+        \item \textbf{Initialize} starting state $s$
+        
+        \item \textbf{Choose action} $a$ from state $s$ using policy from $Q$
+        
+        \item \textbf{For each step:}
+        \begin{itemize}[noitemsep]
+            \item \textbf{Take action} $a$, observe reward $r$ and next state $s'$
+            
+            \item \textbf{Choose action} $a'$ from state $s'$ using policy from $Q$
+            
+            \item \textbf{Update} $Q(s,a)$:
+            $Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma Q(s',a') - Q(s,a)]$
+            
+            \item \textbf{Update} state and action: $s \leftarrow s'$, $a \leftarrow a'$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Key Differences between Q-Learning and SARSA:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Target Policy:}
+    \begin{itemize}[noitemsep]
+        \item Q-Learning: Uses $\max_{a'} Q(s',a')$ (optimal action)
+        \item SARSA: Uses $Q(s',a')$ (next action according to current policy)
+    \end{itemize}
+    
+    \item \textbf{Policy Type:}
+    \begin{itemize}[noitemsep]
+        \item Q-Learning: Off-policy (learns optimal policy while following exploration policy)
+        \item SARSA: On-policy (learns about the policy it's following)
+    \end{itemize}
+    
+    \item \textbf{Exploration-Exploitation:}
+    \begin{itemize}[noitemsep]
+        \item Q-Learning: More aggressive (can learn optimal policy with random exploration)
+        \item SARSA: More conservative (considers exploration in updates)
+    \end{itemize}
+\end{itemize}
+
+\textbf{Exploration vs. Exploitation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Exploration:} Trying new actions to discover better strategies
+    \item \textbf{Exploitation:} Selecting actions known to yield good rewards
+    
+    Common exploration strategies:
+    \begin{itemize}[noitemsep]
+        \item \textbf{$\epsilon$-greedy:} Random action with probability $\epsilon$, best action with $1-\epsilon$
+        \item \textbf{Softmax:} Choose actions with probability proportional to estimated values
+        \item \textbf{Optimistic initialization:} Initialize Q-values high to encourage exploration
+        \item \textbf{UCB:} Select actions maximizing $Q(s,a) + c\sqrt{\frac{\ln(t)}{N(s,a)}}$
+    \end{itemize}
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, title=Time Complexity Analysis, colback=white, boxsep=1pt, left=1pt, right=1pt, top=1pt, bottom=1pt]
+\textbf{Common Algorithm Complexities:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item \textbf{Linear Regression:} $O(Nd^2 + d^3)$ for optimal solution
+    \item \textbf{Gradient Descent:} $O(Ndt)$ for $t$ iterations
+    \item \textbf{Forward-Backward (HMM):} $O(TK^2)$ for sequence length $T$, $K$ states
+    \item \textbf{Viterbi Algorithm:} $O(TK^2)$ for sequence length $T$, $K$ states
+    \item \textbf{EM Algorithm (GMM):} $O(NKDT)$ for $N$ data points, $K$ components, $D$ dimensions, $T$ iterations
+    \item \textbf{PCA:} $O(ND^2 + D^3)$ for computation, dominated by covariance matrix and eigendecomposition
+    \item \textbf{K-means:} $O(NKDT)$ for $N$ data points, $K$ clusters, $D$ dimensions, $T$ iterations
+    \item \textbf{Q-Learning/SARSA:} $O(|S||A|T)$ for $|S|$ states, $|A|$ actions, $T$ time steps
+    \item \textbf{SVMs:} $O(N^2$ to $N^3)$ depending on implementation
+    \item \textbf{Neural Networks:} $O(N_t \cdot \sum_{\ell} n_{\ell} n_{\ell-1})$ for training
+\end{itemize}
+
+\textbf{Detailed Breakdown:}
+
+\textbf{HMM Forward Algorithm:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialization: $O(K)$ operations
+    \item For each time step $t$ ($T$ steps):
+        \begin{itemize}[noitemsep]
+            \item For each state $s_t$ ($K$ states):
+                \begin{itemize}[noitemsep]
+                    \item Sum over all previous states $s_{t-1}$ ($K$ states): $O(K)$
+                \end{itemize}
+        \end{itemize}
+    \item Total: $O(TK^2)$
+\end{itemize}
+
+\textbf{K-means:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item For each iteration ($T$ iterations):
+        \begin{itemize}[noitemsep]
+            \item For each point ($N$ points):
+                \begin{itemize}[noitemsep]
+                    \item Calculate distance to each centroid ($K$ centroids):
+                        \begin{itemize}[noitemsep]
+                            \item Each distance calculation: $O(D)$ operations
+                        \end{itemize}
+                \end{itemize}
+            \item Update $K$ centroids: $O(ND)$ operations
+        \end{itemize}
+    \item Total: $O(TNKD)$
+\end{itemize}
+
+\textbf{PCA:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Computing covariance matrix: $O(ND^2)$
+    \item Eigendecomposition of $D \times D$ matrix: $O(D^3)$
+    \item Projection: $O(ND')$ where $D'$ is reduced dimension
+    \item Total: $O(ND^2 + D^3)$
+\end{itemize}
+
+\textbf{EM for GMM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item For each iteration ($T$ iterations):
+        \begin{itemize}[noitemsep]
+            \item E-step: For each data point ($N$ points) and component ($K$ components):
+                \begin{itemize}[noitemsep]
+                    \item Computing Gaussian density: $O(D^2)$ for each
+                \end{itemize}
+            \item M-step: Update parameters: $O(NKD^2)$
+        \end{itemize}
+    \item Total: $O(TNKD^2)$
+\end{itemize}
+\end{tcolorbox}
+
+\end{multicols}
+\end{document}

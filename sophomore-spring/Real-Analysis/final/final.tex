@@ -1,0 +1,197 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+
+% Header and footer settings
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{Math 112: Introductory Real Analysis \quad Harvard University, Spring 2025}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% Title
+\begin{center}
+  {\Large \textbf{Math 112: Introductory Real Analysis}}\\[0.5\baselineskip]
+  {\large Harvard University, Spring 2025}\\[1\baselineskip]
+  {\LARGE \textbf{Final Exam}}\\[0.5\baselineskip]
+  \textbf{Due Thursday, May 8, 2025}
+\end{center}
+
+% Instructions
+\noindent\textbf{Instructions:}
+\begin{itemize}[leftmargin=*]
+  \item This is a timed take-home, open-book exam.
+  \item The exam covers everything thats been covered in the second half of the course (like upper and lower limits onward).
+  \item You may take the exam anywhere you want. I suggest you find a quiet spot without distractions.
+  \item You have three hours to finish once you start. They must be consecutive: when you look at the questions, the clock starts and you must stop after 3 hours.
+  \item Exceptions might be granted for emergencies (e.g., a fire alarm), but it is expected that you turn off your cell phone and tell others you don’t want to be disturbed.
+  \item You may consult the textbook (Rudin’s Principles of Mathematical Analysis) and your lecture notes (or the ones I posted), but you must work without any other assistence. No other books, notes, calculators, Internet, or talking to others. If you use your phone as a clock, put it in airplane mode (no communications) for the duration.
+  \item Bring enough blank paper and write your answers on that. Write neatly! The more neat and complete work you show, the more partial credit you’ll earn. If you want, you can type your solution in \LaTeX, but it has to be done within the 3 hours.
+  \item Except where noted, you can freely appeal to facts proved in class. You’re encourged to state explicitly what you appeal to—especially if you’re not entirely sure you remember it correctly. Incorrect solutions based on wrong assumptions get more partial credit if you state your assumptions clearly.
+  \item If any question seems ambiguous, or if you’re not sure your answer is valid, describe your interpretation or concerns as part of your solution.
+  \item Please don’t discuss the exam with anyone until all exams are turned in.
+  \item Write out the following and sign on the first page: “On my honor, I declare that I have followed the rules of this examination.”
+  \item Good luck!
+\end{itemize}
+
+\vspace{1em}
+
+% Problem 1
+\noindent\textbf{Problem 1 (30 points total).} Answer the following true/false questions. Each is worth 2 points. 
+
+\vspace{1em}
+“On my honor, I declare that I have followed the rules of this examination.
+\begin{verbatim}
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+\end{verbatim}
+and write T for true and F for false. No justification needed.
+
+\medskip
+\begin{enumerate}[label=\textbf{(T / F) \arabic*.}, leftmargin=*]
+  \item $\displaystyle\limsup_{n\to\infty}\frac{(-1)^n n^2 + n + 2}{n^2 + 1}=1$.
+  \item Let $\{a_n\}_{n=1}^\infty$ be real. Then $\limsup_{n\to\infty}(-a_n) = -\liminf_{n\to\infty}a_n$.
+  \item The power series $\displaystyle\sum_{n=1}^\infty \frac{x^n}{n^n}$ converges for all $x\in\mathbb{R}$.
+  \item Let $s_{m,n}=\frac{m}{m+n}$ for $m,n=1,2,3,\dots$. Then
+    \[ \lim_{n\to\infty}\lim_{m\to\infty}s_{m,n} = \lim_{m\to\infty}\lim_{n\to\infty}s_{m,n}. \]
+  \item Let $X,Y$ be metric spaces and $f:X\to Y$ continuous. If $X$ is compact and $C\subset X$ is closed, then $f(C)\subset Y$ is also closed.
+  \item Let $f:(0,3)\to\mathbb{R}$ be differentiable with $f'(1)=-2$ and $f'(2)=3$. Then $f$ has a local minimum in its domain.
+  \item The function $f:[1,\infty)\to\mathbb{R}$ defined by $f(x)=1/x$ is uniformly continuous.
+  \item If $f_n:(0,1)\to\mathbb{R}$ is a sequence of differentiable functions, and for each $x\in(0,1)$ we have $\lim_{n\to\infty}f_n(x)=f(x)$, then $f$ is differentiable.
+  \item If $f:X\to Y$ is continuous and $Y$ is connected, then $f^{-1}(Y)$ is connected.
+  \item The function $f:[0,1]\to\mathbb{R}$ given by
+    \[ f(x)=\begin{cases}1/q &\text{if }x=p/q,\ p,q\ge0\text{ relatively prime},\\0 &\text{if }x \text{ irrational},\end{cases} \]
+    is Riemann integrable and $\displaystyle\int_0^1 f(x)\,dx=0$.
+  \item There exists an unbounded continuous function $f:[0,1]\to\mathbb{R}$.
+  \item The function $f:[0,1]\to\mathbb{R}$ defined by
+    \[ f(x)=\int_0^x \sqrt{t}\,dt \]
+    is differentiable at $x=1/2$ and $f'(1/2)=1/\sqrt{2}$.
+  \item If $f:(a,b)\to\mathbb{R}$ is differentiable on $(a,b)$ and $f'(x)>0$, then there is an inverse $g$ and
+    \[ g'(f(x))=1/f'(x). \]
+  \item $\displaystyle\sum_{n=1}^\infty\frac{1}{1+n^2x}$ converges uniformly for $x\in(-1,1)$.
+  \item $\displaystyle\sum_{n=0}^\infty\frac{x^n}{n!}$ converges uniformly for $x\in(-1,1)$.
+\end{enumerate}
+
+\noindent\textbf{Solution:}
+\begin{verbatim}
+1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+T  T  T  F  T  T  T  F  F  T  F  T  T  F  T
+\end{verbatim}
+
+\newpage
+
+% Problem 2
+\noindent\textbf{Problem 2 (20 points).} Let $X$ be a metric space, and let $A,B$ be disjoint nonempty closed subsets. For each $p\in X$, define
+\[
+  \rho_A(p):=\inf_{a\in A} d(p,a),\quad
+  \rho_B(p):=\inf_{b\in B} d(p,b),
+\]
+and put
+\[ f(p):=\frac{\rho_A(p)}{\rho_A(p)+\rho_B(p)}. \]
+Show $f$ is continuous on $X$ with range in $[0,1]$, that $f(p)=0$ exactly on $A$ and $f(p)=1$ exactly on $B$.
+
+\medskip
+
+\noindent\textbf{Solution:} First, since $A$ and $B$ are disjoint closed, for any $p$ at least one of $\rho_A(p),\rho_B(p)$ is positive, so the denominator never zero.
+
+\medskip
+
+\noindent Range in $[0,1]$: Obviously $\rho_A(p)\ge0$ and $\rho_B(p)\ge0$, so
+\[
+0 \le \frac{\rho_A(p)}{\rho_A(p)+\rho_B(p)} \le1.
+\]
+
+\medskip
+
+\noindent $f(p)=0$ on $A$: If $p\in A$, then $\rho_A(p)=0$, hence $f(p)=0$. Converse, if $f(p)=0$, then $\rho_A(p)=0$, so $p\in\overline A=A$.
+
+\medskip
+
+\noindent $f(p)=1$ on $B$: Similar argument with $\rho_B$ instead.
+
+\medskip
+
+\noindent Continuity: For any $p,q\in X$ and any $a\in A$,
+\[
+d(p,a)\le d(p,q)+d(q,a),
+\]
+taking inf over $a$ gives $\rho_A(p)\le d(p,q)+\rho_A(q)$, and likewise
+$\rho_A(q)\le d(p,q)+\rho_A(p)$. Thus $|\rho_A(p)-\rho_A(q)|\le d(p,q)$.
+Same for $\rho_B$. Since denominator stays positive, $f$ is quotient of continuous functions, so continuous.
+
+\medskip
+
+% Problem 3
+\noindent\textbf{Problem 3 (30 points).} Suppose $f$ differentiable on $[a,b]$, $f(a)=0$, and $|f'(x)|\le A|f(x)|$ on $[a,b]$. Prove $f(x)=0$ for all $x\in[a,b]$.
+
+\medskip
+
+\noindent\textbf{Solution:} Define $g(x)=f(x)^2e^{-2Ax}$. Then compute
+\[
+g'(x)=2f(x)f'(x)e^{-2Ax}+f(x)^2(-2A)e^{-2Ax}
+=2f(x)e^{-2Ax}[f'(x)-Af(x)].
+\]
+If $f(x)>0$, then $f'(x)\le Af(x)$ so $f'(x)-Af(x)\le0$, hence $g'(x)\le0$.
+If $f(x)<0$, similar gives $g'(x)\le0$. And if $f(x)=0$ then $g'(x)=0$. So $g$ nonincreasing. But $g(a)=0$, so $g(x)\le0$ and also $g(x)\ge0$ by def, thus $g(x)=0$. Since $e^{-2Ax}>0$, $f(x)^2=0$, so $f(x)=0$.
+
+\medskip
+
+% Problem 4
+\noindent\textbf{Problem 4 (20 points).} Let $X$ be a metric space with metric $d$. Show $X$ is isometric to a dense subset of a complete metric space $Y$ by embedding into $C(X)$, the bounded continuous functions on $X$ with norm $\|f-g\|=\sup_{x}|f(x)-g(x)|$.
+
+Fix $a\in X$. For each $p\in X$, let
+\[
+f_p(x)=d(x,p)-d(x,a),\quad x\in X.
+\]
+\begin{enumerate}[label=\textbf{(\alph*)}, leftmargin=*]
+  \item Show $f_p\in C(X)$.
+  \item Show $\|f_p-f_q\|=d(p,q)$.
+  \item Conclude $\Phi:X\to C(X)$, $\Phi(p)=f_p$, is an isometry onto $\Phi(X)$. Let $Y=\overline{\Phi(X)}$ in $C(X)$ and show $Y$ is complete.
+\end{enumerate}
+
+\medskip
+
+\noindent\textbf{Solution:}
+
+\noindent\textbf{(a)} For any $x,y\in X$,
+\[
+|f_p(x)-f_p(y)|=|(d(x,p)-d(x,a))-(d(y,p)-d(y,a))|
+\le|d(x,p)-d(y,p)|+|d(x,a)-d(y,a)|
+\le2d(x,y),
+\]
+so $f_p$ is Lipschitz, hence continuous.
+
+\medskip
+
+\noindent\textbf{(b)} 
+\[
+\|f_p-f_q\|=\sup_x|d(x,p)-d(x,q)|\le d(p,q).
+\]
+At $x=p$, $|d(p,p)-d(p,q)|=d(p,q)$, so equality holds.
+
+\medskip
+
+\noindent\textbf{(c)} $\Phi$ is injective because if $\Phi(p)=\Phi(q)$, then $d(p,q)=\|f_p-f_q\|=0$, so $p=q$. Distance preserving by (b). Thus isometry onto $\Phi(X)$. Since $C(X)$ is complete and $Y=\overline{\Phi(X)}$ is closed, $Y$ is complete.
+
+\medskip
+
+% Problem 5 Extra Credit
+\noindent\textbf{Problem 5 (Extra Credit; 30 points).} If $f$ continuous on $[0,1]$ and
+\[
+\int_0^1 f(x)x^n\,dx=0\quad(n=0,1,2,\dots),
+\]
+show $f(x)=0$ on $[0,1]$. (Hint: Weierstrass theorem.)
+
+\medskip
+
+\noindent\textbf{Solution:} By Weierstrass Approximation, for any $\varepsilon>0$ there is a polynomial $P$ with $|f(x)-P(x)|<\varepsilon$ on $[0,1]$. Then
+\[
+\int_0^1 f(x)P(x)\,dx
+=\sum_{k=0}^m a_k\int_0^1 f(x)x^k\,dx =0.
+\]
+If $f$ not identically zero, pick $c$ with $f(c)\ne0$, say $f(c)>0$. For small neighborhood around $c$, $f,P>0$ so $\int fP>0$, contradiction. Hence $f\equiv0$.
+
+\end{document}

@@ -1,0 +1,875 @@
+\documentclass[10pt,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.2in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+\usepackage{enumitem}
+% Reduce whitespace and tighten layout
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.1in}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlist[itemize]{noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt}
+\usepackage[breakable]{tcolorbox}
+\usepackage{xcolor}
+
+% Define custom colors for each topic
+\definecolor{regression}{RGB}{230,240,255}
+\definecolor{classification}{RGB}{255,240,230}
+\definecolor{neural}{RGB}{240,255,240}
+\definecolor{svm}{RGB}{255,240,255}
+\definecolor{clustering}{RGB}{245,245,220}
+\definecolor{mixture}{RGB}{230,255,255}
+\definecolor{dimension}{RGB}{255,230,230}
+\definecolor{graphical}{RGB}{240,240,255}
+\definecolor{hmm}{RGB}{255,255,230}
+\definecolor{mdp}{RGB}{255,235,245}
+\definecolor{rl}{RGB}{235,255,235}
+
+\pagestyle{empty}
+\setlength{\columnsep}{0.1in}
+\renewcommand{\arraystretch}{1.1}
+
+\begin{document}
+\scriptsize
+
+\begin{multicols}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=1. Regression Concepts, colback=regression,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{Linear Regression Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Maps input $x \in \mathbb{R}^D$ to target $y \in \mathbb{R}$ using weights $w$
+    \item Basic form: $y = w_0 + w_1x_1 + ... + w_Dx_D$
+    \item Uses least squares loss to find optimal weights
+    \item "Bias trick": Add $x_0=1$ to make notation cleaner: $y = w^T x$
+\end{itemize}
+
+\textbf{Key Considerations:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Basis functions ($\phi(x)$): Transform inputs to capture non-linear relationships
+    \item Regularization: Prevent overfitting by penalizing large weights
+    \item Bias-variance tradeoff: Balance between underfitting and overfitting
+\end{itemize}
+
+\textbf{Regularization Types:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Ridge (L2): $\frac{\lambda}{2}w^Tw$ - Shrinks all weights toward zero
+    \item Lasso (L1): $\lambda\|w\|_1$ - Creates sparse solutions (some weights = 0)
+    \item Elastic Net: Combination of L1 and L2
+\end{itemize}
+
+\textbf{Bayesian View:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Model noise: $y_n \sim \mathcal{N}(w^Tx_n, \beta^{-1})$
+    \item Prior on weights: $w \sim \mathcal{N}(0, S_0^{-1})$
+    \item MAP estimation equivalent to ridge regression with $\lambda = \frac{s}{\beta}$
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=1.1 Ridge Regression Derivation, colback=regression,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use ridge regression when you suspect multicollinearity in your features or need to prevent overfitting in high-dimensional data.
+
+\textbf{Objective:} Find $w_{ridge}$ that minimizes OLS with L2 regularization.
+
+1. Start with ridge loss function:
+\begin{align}
+L(w) = \frac{1}{2}\sum_{n=1}^{N}(y_n - w^T\phi_n)^2 + \frac{\lambda}{2}w^Tw
+\end{align}
+
+2. In matrix form with design matrix $\Phi$ and target $y$:
+\begin{align}
+L(w) = \frac{1}{2}(y - \Phi w)^T(y - \Phi w) + \frac{\lambda}{2}w^Tw
+\end{align}
+
+3. Take gradient, set to zero:
+\begin{align}
+\nabla L(w) &= -\Phi^Ty + \Phi^T\Phi w + \lambda w = 0\\
+\Rightarrow (\Phi^T\Phi + \lambda I)w &= \Phi^Ty
+\end{align}
+
+4. Optimal weights: $w_{ridge} = (\Phi^T\Phi + \lambda I)^{-1}\Phi^Ty$
+
+\textbf{Comparison with OLS:} 
+OLS solution is $w^* = (\Phi^T\Phi)^{-1}\Phi^Ty$. 
+Ridge adds $\lambda I$ to $\Phi^T\Phi$, which:
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Makes matrix inversion more stable
+    \item Shrinks weights toward zero
+    \item Reduces overfitting by introducing bias
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=1.2 Maximum Likelihood Estimation, colback=regression,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use MLE when you want to find parameters that make your observed data most probable under your chosen model.
+
+\textbf{General MLE Procedure:}
+
+1. Write likelihood function (probability of data given parameters):
+$p(D|\theta) = \prod_{n=1}^{N} p(x_n|\theta)$
+
+2. Take logarithm for easier optimization:
+$\log p(D|\theta) = \sum_{n=1}^{N} \log p(x_n|\theta)$
+
+3. Find parameters maximizing log-likelihood:
+$\frac{\partial}{\partial \theta}\log p(D|\theta) = 0$
+
+\textbf{Example: Linear Regression MLE}
+
+1. Assume $y_n \sim \mathcal{N}(w^T x_n, \beta^{-1})$
+
+2. Log-likelihood:
+$\log p(y|X, w, \beta) = \frac{N}{2}\log\beta - \frac{N}{2}\log(2\pi) - \frac{\beta}{2}\sum_{n}(y_n - w^Tx_n)^2$
+
+3. Take derivative, set to zero:
+$\frac{\partial \log p}{\partial w} = \beta \sum_{n}(y_n - w^Tx_n)x_n = 0$
+
+4. Solve with matrix notation:
+$X^Ty = X^TXw \Rightarrow w^* = (X^TX)^{-1}X^Ty$
+
+\textbf{Key insight:} MLE for linear regression with Gaussian noise is equivalent to minimizing the least squares loss!
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=1.3 Maximum A Posteriori Estimation, colback=regression,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use MAP when you have prior knowledge about parameters and want to incorporate this information into your estimation.
+
+\textbf{MAP General Procedure:}
+
+1. Write posterior using Bayes' rule:
+$p(\theta|D) \propto p(D|\theta)p(\theta)$
+
+2. Take logarithm:
+$\log p(\theta|D) = \log p(D|\theta) + \log p(\theta) + const.$
+
+3. Maximize log posterior:
+$\frac{\partial}{\partial \theta}[\log p(D|\theta) + \log p(\theta)] = 0$
+
+\textbf{Example: Bayesian Linear Regression}
+
+1. Gaussian prior: $w \sim \mathcal{N}(0, S_0^{-1})$
+
+2. Log posterior:
+$\log p(w|X,y,\beta) \propto -\frac{\beta}{2}\sum_n(y_n - w^Tx_n)^2 - \frac{1}{2}w^TS_0w$
+
+3. Take derivative, set to zero:
+$\beta\sum_n(y_n - w^Tx_n)x_n - S_0w = 0$
+
+4. Matrix form solution:
+$w_{MAP} = (\beta X^TX + S_0)^{-1}\beta X^Ty$
+
+\textbf{Note:} With $S_0 = \lambda I$, we get ridge regression: 
+$w_{MAP} = (X^TX + \frac{\lambda}{\beta}I)^{-1}X^Ty$
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=1.4 Posterior Parameters \& Predictive Distribution, colback=regression,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use posterior predictive distribution when you want to make predictions that account for uncertainty in your parameters.
+
+\textbf{Finding Posterior Parameters (Conjugate Distributions):}
+
+1. Identify prior distribution and parameters
+2. Identify likelihood function
+3. Use conjugacy to determine posterior form
+4. Derive posterior parameters by comparing coefficients
+
+\textbf{Example: Gaussian-Gaussian conjugacy}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Prior: $w \sim \mathcal{N}(\mu_0, \Sigma_0)$
+    \item Likelihood: $y|x, w \sim \mathcal{N}(w^Tx, \sigma^2)$
+    \item Posterior: $w|D \sim \mathcal{N}(\mu_N, \Sigma_N)$ where:
+    \begin{align}
+    \Sigma_N^{-1} &= \Sigma_0^{-1} + \frac{1}{\sigma^2}\sum_{n}x_nx_n^T\\
+    \mu_N &= \Sigma_N(\Sigma_0^{-1}\mu_0 + \frac{1}{\sigma^2}\sum_{n}y_nx_n)
+    \end{align}
+\end{itemize}
+
+\textbf{Posterior Predictive Distribution:}
+\begin{align}
+p(y^*|x^*, D) = \int p(y^*|x^*, \theta)p(\theta|D)d\theta
+\end{align}
+
+\textbf{For Gaussian posterior:}
+$y^*|x^*, D \sim \mathcal{N}(\mu_N^Tx^*, \sigma^2 + x^{*T}\Sigma_Nx^*)$
+
+\textbf{Key insight:} The posterior predictive variance includes both noise variance $\sigma^2$ and parameter uncertainty $x^{*T}\Sigma_Nx^*$.
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=2. Classification Concepts, colback=classification,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{Classification Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Maps input $x$ to discrete class labels $y$
+    \item Can be binary (two classes) or multi-class
+    \item Decision boundaries separate different classes
+\end{itemize}
+
+\textbf{Common Classification Methods:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Discriminant functions: Direct mapping from inputs to class decisions
+    \item Probabilistic discriminative models: Model $p(y|x)$ directly (logistic regression)
+    \item Probabilistic generative models: Model $p(x,y)$ together (Naive Bayes)
+\end{itemize}
+
+\textbf{Loss Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item 0/1 Loss: Simple but non-differentiable, counts misclassifications
+    \item Logistic Loss: Smooth approximation of 0/1 loss, used in logistic regression
+    \item Hinge Loss: Used in SVMs, penalizes points close to or on wrong side of margin
+\end{itemize}
+
+\textbf{Training Techniques:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Gradient Descent: Iterative optimization to minimize loss
+    \item Batch GD: Updates using all training examples
+    \item SGD: Updates using one example at a time, faster but noisier
+\end{itemize}
+
+\textbf{Generative vs. Discriminative:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Discriminative: Models decision boundary directly
+    \item Generative: Models how data is generated, can generate new samples
+    \item Naive Bayes: Assumes feature independence given class
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=2.1 Logistic Regression Gradients, colback=classification,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use logistic regression when you need probabilistic class membership for binary or multi-class classification with a linear decision boundary.
+
+\textbf{Binary Logistic Regression:}
+
+1. Model: $p(y=1|x) = \sigma(w^Tx) = \frac{1}{1+e^{-w^Tx}}$
+
+2. Likelihood: $p(\{y_i\}_{i=1}^{N}|w) = \prod_{i=1}^{N}\hat{y}_i^{y_i}(1-\hat{y}_i)^{1-y_i}$
+where $\hat{y}_i = \sigma(w^Tx_i)$
+
+3. Negative log-likelihood (cross-entropy):
+$E(w) = -\sum_{i=1}^{N}\{y_i\log\hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\}$
+
+4. Gradient: $\nabla E(w) = \sum_{i=1}^{N}(\hat{y}_i - y_i)x_i$
+
+\textbf{Multi-class with Softmax:}
+$\nabla_{w_j}E(W) = \sum_{i=1}^{N}(\hat{y}_{ij} - y_{ij})x_i$
+where $\hat{y}_{ij} = \text{softmax}_j(Wx_i)$
+
+\textbf{Softmax function:} $\text{softmax}_k(z) = \frac{\exp(z_k)}{\sum_{j=1}^K\exp(z_j)}$
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=2.2 Generative Models for Classification, colback=classification,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use generative models when you want to model the data distribution, generate new samples, or when you have prior knowledge about how the data is generated.
+
+\textbf{Framework:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Define class prior $p(C_k)$ and class-conditional $p(x|C_k)$
+    \item Joint distribution: $p(x, C_k) = p(C_k)p(x|C_k)$
+    \item Full log-likelihood for binary classification:
+    $\log p(\pi, \mu_1, \mu_2, \Sigma) = \sum_{i=1}^{N}y_i\log[\pi\mathcal{N}(x_i|\mu_1, \Sigma)] + (1-y_i)\log[(1-\pi)\mathcal{N}(x_i|\mu_2, \Sigma)]$
+    \item Maximize to find optimal parameters
+\end{enumerate}
+
+\textbf{MLE Solutions (Gaussian with shared covariance):}
+\begin{align}
+\pi &= \frac{N_1}{N}\\
+\mu_k &= \frac{1}{N_k}\sum_{i:y_i=k}x_i\\
+\Sigma &= \frac{1}{N}\sum_{i=1}^{N}[y_i(x_i - \mu_1)(x_i - \mu_1)^T \\
+&\quad + (1-y_i)(x_i - \mu_2)(x_i - \mu_2)^T]
+\end{align}
+
+\textbf{Using Lagrangian Method:}
+1. Identify constraints (e.g., $\sum_{k}\pi_k = 1$)
+2. Form Lagrangian: 
+   $\mathcal{L}(\theta, \lambda) = \log p(D|\theta) + \lambda(c - \sum_{k}\pi_k)$
+3. Take derivatives w.r.t. parameters and Lagrange multipliers
+4. Solve the resulting system
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=2.3 Naive Bayes, colback=classification,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use Naive Bayes when features can reasonably be assumed to be conditionally independent given the class, or when you have limited training data.
+
+\textbf{Key Idea:} Assume features are conditionally independent given the class:
+\begin{align}
+p(x|y=C_k) = \prod_{d=1}^D p(x_d|y=C_k)
+\end{align}
+
+\textbf{Classification Rule:}
+\begin{align}
+\hat{y} = \arg\max_k p(y=C_k|x) = \arg\max_k p(y=C_k)\prod_{d=1}^D p(x_d|y=C_k)
+\end{align}
+
+\textbf{Parameter Estimation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Class priors: $p(y=C_k) = \frac{N_k}{N}$
+    \item For discrete features: $p(x_d=v|y=C_k) = \frac{\text{count}(x_d=v, y=C_k)}{\text{count}(y=C_k)}$
+    \item For continuous features: Often assume Gaussian $p(x_d|y=C_k) = \mathcal{N}(\mu_{dk}, \sigma_{dk}^2)$
+\end{itemize}
+
+\textbf{Advantages:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Fast training and prediction
+    \item Works well with small datasets
+    \item Handles missing values naturally
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Independence assumption often violated
+    \item Cannot learn feature interactions
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=2.4 Gradient Descent Implementation, colback=classification,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use gradient descent when direct analytical solutions aren't possible or practical, especially with non-convex or high-dimensional loss functions.
+
+\textbf{Basic Gradient Descent:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialize parameters $\theta^{(0)}$
+    \item Choose learning rate $\eta$
+    \item For iterations $t=0,1,2...$:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Compute gradient: $\nabla L(\theta^{(t)})$
+        \item Update: $\theta^{(t+1)} = \theta^{(t)} - \eta \nabla L(\theta^{(t)})$
+        \item Check convergence
+    \end{itemize}
+\end{enumerate}
+
+\textbf{For Logistic Regression:}
+$w^{(t+1)} = w^{(t)} - \eta \sum_{i=1}^{N}(\sigma(w^{(t)T}x_i) - y_i)x_i$
+
+\textbf{Stochastic Gradient Descent (SGD):}
+Update using one or a batch of samples:
+$w^{(t+1)} = w^{(t)} - \eta \sum_{i \in \text{batch}}(\sigma(w^{(t)T}x_i) - y_i)x_i$
+
+\textbf{Learning Rate Selection:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Too large: May diverge or oscillate
+    \item Too small: Slow convergence
+    \item Adaptive rates: Decrease over time or use algorithms like Adam, RMSprop
+\end{itemize}
+
+\textbf{Convergence Criteria:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Small parameter change: $\|\theta^{(t+1)} - \theta^{(t)}\| < \epsilon$
+    \item Small gradient: $\|\nabla L(\theta^{(t)})\| < \epsilon$
+    \item Maximum iterations reached
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=4. Support Vector Machines Concepts, colback=svm,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{SVM Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Maximum margin classifier
+    \item Finds hyperplane that maximally separates classes
+    \item Uses support vectors (points closest to decision boundary)
+    \item Can handle linearly and non-linearly separable data
+\end{itemize}
+
+\textbf{Key Components:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Decision function: $f(x) = w^Tx + w_0$
+    \item Margin: Distance from decision boundary to nearest data points
+    \item Support vectors: Data points on margin boundaries
+    \item Regularization parameter C: Controls trade-off between margin size and misclassification
+\end{itemize}
+
+\textbf{Types of SVMs:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Hard-margin: No misclassifications allowed, requires linearly separable data
+    \item Soft-margin: Allows some misclassifications, more robust to outliers
+    \item Kernel SVMs: Transform data to higher dimensions for non-linear boundaries
+\end{itemize}
+
+\textbf{Common Kernels:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Linear: $K(x,z) = x^Tz$
+    \item Polynomial: $K(x,z) = (1 + x^Tz)^q$
+    \item RBF (Gaussian): $K(x,z) = \exp(-\gamma\|x-z\|^2)$
+\end{itemize}
+
+\textbf{Comparison to Logistic Regression:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item SVM: Maximizes margin, focuses on boundary points
+    \item Logistic regression: Probabilistic outputs, influenced by all points
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=4.1 Maximum Margin Classification, colback=svm,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use hard-margin SVM when your data is linearly separable and you want a decision boundary with maximum distance to all classes.
+
+\textbf{Hard Margin Formulation:}
+\begin{align}
+\min_{w,w_0} \frac{1}{2}\|w\|^2 \\
+\text{subject to}~y_i(w^Tx_i + w_0) \geq 1,~\forall i
+\end{align}
+
+\textbf{Interpretation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Decision boundary: $w^Tx + w_0 = 0$
+    \item Margin width = $\frac{2}{\|w\|}$
+    \item Support vectors exactly satisfy $y_i(w^Tx_i + w_0) = 1$
+\end{itemize}
+
+\textbf{Soft Margin Formulation:}
+\begin{align}
+\min_{w,w_0,\xi} \frac{1}{2}\|w\|^2 + C\sum_{i=1}^N \xi_i \\
+\text{subject to}~y_i(w^Tx_i + w_0) \geq 1 - \xi_i,~\xi_i \geq 0,~\forall i
+\end{align}
+
+\textbf{Slack Variables $\xi_i$:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item $\xi_i = 0$: Point correctly classified beyond margin
+    \item $0 < \xi_i \leq 1$: Point correctly classified but inside margin
+    \item $\xi_i > 1$: Point misclassified
+\end{itemize}
+
+\textbf{Parameter C:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Large C: Less regularization, small margin, fewer misclassifications
+    \item Small C: More regularization, large margin, more misclassifications
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=4.2 The Kernel Trick, colback=svm,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use kernel SVMs when your data is not linearly separable in the original feature space but may be separable in a higher-dimensional space.
+
+\textbf{Key Insight:} The SVM dual formulation only requires inner products between data points, which can be replaced with kernel functions.
+
+\textbf{Dual Formulation:}
+\begin{align}
+\max_{\alpha} \sum_{i=1}^N \alpha_i - \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j x_i^T x_j \\
+\text{subject to}~\sum_{i=1}^N \alpha_i y_i = 0,~\alpha_i \geq 0,~\forall i
+\end{align}
+
+\textbf{Decision Function:}
+\begin{align}
+f(x) = \sum_{i=1}^N \alpha_i y_i K(x_i, x) + w_0
+\end{align}
+
+\textbf{Common Kernels:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Linear: $K(x,z) = x^Tz$
+    \item Polynomial: $K(x,z) = (1 + x^Tz)^q$
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item For $q=2$, includes all constant, linear, and quadratic terms
+    \end{itemize}
+    \item RBF: $K(x,z) = \exp(-\gamma\|x-z\|^2)$
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Corresponds to infinite-dimensional feature space
+        \item Parameter $\gamma$ controls width of Gaussian
+    \end{itemize}
+\end{itemize}
+
+\textbf{Mercer's Condition:} A valid kernel function must produce a positive semi-definite Gram matrix.
+
+\textbf{Kernel Construction Rules:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Sum: $K_1 + K_2$
+    \item Product: $K_1 \cdot K_2$
+    \item Scalar: $c \cdot K$
+    \item Exponentiation: $\exp(K)$
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=6. Mixture Models Concepts, colback=mixture,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{Mixture Models Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Probabilistic models for data from multiple sources/distributions
+    \item Each data point belongs to a latent (unobserved) class
+    \item Models joint distribution p(x,z) of data x and latent class z
+    \item Can be used for clustering, density estimation, and generative modeling
+\end{itemize}
+
+\textbf{General Form:}
+\begin{align}
+p(x) = \sum_{k=1}^K \pi_k p(x|z=k)
+\end{align}
+where $\pi_k$ are mixing coefficients ($\sum_k \pi_k = 1$) and $p(x|z=k)$ are component distributions.
+
+\textbf{Estimation Challenge:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Maximum likelihood: $\log p(X) = \sum_{i=1}^N \log \sum_{k=1}^K \pi_k p(x_i|z=k)$
+    \item Sum inside logarithm prevents direct optimization
+    \item Solution: Use Expectation-Maximization (EM) algorithm
+\end{itemize}
+
+\textbf{Types of Mixture Models:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Gaussian Mixture Models (GMMs): Component distributions are Gaussian
+    \item Mixture of Multinomials: For discrete data (text, genomics)
+    \item Mixture of Experts: Different predictive models for different regions
+    \item Latent Dirichlet Allocation: Documents as mixtures of topics
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=6.1 Expectation-Maximization (EM) Algorithm, colback=mixture,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use EM when you have latent variable models where direct maximum likelihood is intractable, especially for mixture models.
+
+\textbf{General Procedure:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialize parameters $\theta^{(0)}$
+    \item Repeat until convergence:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item E-step: Compute 
+        $Q(\theta|\theta^{(t)}) = \mathbb{E}_{Z|X,\theta^{(t)}}[\log p(X, Z|\theta)]$
+        \item M-step: $\theta^{(t+1)} = \arg\max_\theta Q(\theta|\theta^{(t)})$
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Theoretical Foundation:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item EM maximizes a lower bound (ELBO) on the log likelihood:
+    \begin{align}
+    \log p(X|\theta) \geq \mathbb{E}_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)] - \mathbb{E}_{Z|X,\theta^{(t)}}[\log p(Z|X,\theta^{(t)})]
+    \end{align}
+    \item E-step: Compute posterior distribution of latent variables
+    \item M-step: Maximize expected complete-data log likelihood
+    \item Guaranteed to increase log likelihood at each iteration
+\end{itemize}
+
+\textbf{Mathematical Properties:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Converges to local maximum of likelihood
+    \item ELBO becomes tight when using true posterior
+    \item Different initializations may lead to different local maxima
+\end{itemize}
+
+\textbf{Applications Beyond Mixture Models:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Hidden Markov Models
+    \item Latent factor models (PCA, factor analysis)
+    \item Missing data imputation
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=6.2 Gaussian Mixture Models (GMM), colback=mixture,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use GMMs when your data appears to come from multiple Gaussian distributions or when you need soft clustering with uncertainty estimates.
+
+\textbf{Model:} $p(x) = \sum_{k=1}^K \pi_k \mathcal{N}(x|\mu_k, \Sigma_k)$
+
+\textbf{EM Algorithm for GMM:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item E-step: Calculate responsibilities (posterior probabilities)
+    \begin{align}
+    \gamma_{ik} = \frac{\pi_k \mathcal{N}(x_i|\mu_k, \Sigma_k)}{\sum_{j=1}^K \pi_j \mathcal{N}(x_i|\mu_j, \Sigma_j)}
+    \end{align}
+    
+    \item M-step: Update parameters
+    \begin{align}
+    N_k &= \sum_{i=1}^N \gamma_{ik}\\
+    \pi_k &= \frac{N_k}{N}\\
+    \mu_k &= \frac{1}{N_k}\sum_{i=1}^N \gamma_{ik}x_i\\
+    \Sigma_k &= \frac{1}{N_k}\sum_{i=1}^N \gamma_{ik}(x_i - \mu_k)(x_i - \mu_k)^T
+    \end{align}
+\end{enumerate}
+
+\textbf{GMM vs. K-means:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item GMM provides soft assignments (probabilities)
+    \item GMM models covariance structure
+    \item GMM is more flexible but requires more parameters
+    \item K-means is a special case of GMM with:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Equal mixing coefficients $\pi_k = 1/K$
+        \item Spherical covariances $\Sigma_k = \epsilon I$
+        \item $\epsilon \to 0$ (hard assignments)
+    \end{itemize}
+\end{itemize}
+
+\textbf{Choosing K:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item BIC: $\text{BIC} = -2\log p(X|\hat{\theta}) + p\log N$
+    \item AIC: $\text{AIC} = -2\log p(X|\hat{\theta}) + 2p$
+    \item Cross-validation
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=6.3 Latent Dirichlet Allocation (LDA), colback=mixture,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use LDA for topic modeling in text data when you want to discover latent topics and their distributions across documents.
+
+\textbf{Key Idea:} Documents are mixtures of topics, and topics are distributions over words.
+
+\textbf{Generative Process:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item For each document:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Draw topic mixture $\theta_d \sim \text{Dir}(\alpha)$
+    \end{itemize}
+    \item For each topic:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Draw word distribution $\phi_k \sim \text{Dir}(\beta)$
+    \end{itemize}
+    \item For each word position in each document:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Draw topic $z_{d,n} \sim \text{Cat}(\theta_d)$
+        \item Draw word $w_{d,n} \sim \text{Cat}(\phi_{z_{d,n}})$
+    \end{itemize}
+\end{enumerate}
+
+\textbf{LDA as an Admixture Model:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Documents can belong to multiple topics
+    \item Words within a document can come from different topics
+    \item Extends mixture models with hierarchical structure
+\end{itemize}
+
+\textbf{Inference Methods:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Variational inference
+    \item Gibbs sampling
+    \item Both approximate posterior distributions for latent variables
+\end{itemize}
+
+\textbf{LDA Applications:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Document clustering
+    \item Information retrieval
+    \item Recommendation systems
+    \item Feature extraction for text classification
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=9. Hidden Markov Models Concepts, colback=hmm,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{HMM Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Models sequential data with hidden states
+    \item States follow Markov property (depends only on previous state)
+    \item Each state generates an observation (emission)
+    \item Useful for temporal or sequential data
+\end{itemize}
+
+\textbf{Key Components:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Hidden states $s_t$: Unobserved state at time $t$
+    \item Emissions $x_t$: Observed values at time $t$
+    \item Initial state distribution: $p(s_1)$
+    \item Transition probabilities: $p(s_t|s_{t-1})$
+    \item Emission probabilities: $p(x_t|s_t)$
+\end{itemize}
+
+\textbf{Common Problems:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Inference: Determine p(states|observations)
+    \item Learning: Estimate parameters from observations
+    \item Decoding: Find most likely state sequence
+\end{itemize}
+
+\textbf{Common Applications:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Speech recognition
+    \item Natural language processing
+    \item Biological sequence analysis
+    \item Financial time series
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=9.1 Forward-Backward Algorithm for HMMs, colback=hmm,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use the Forward-Backward algorithm for efficient inference in HMMs, particularly for computing marginal probabilities of hidden states.
+
+\textbf{Forward Pass ($\alpha$ values):}
+\begin{align}
+\alpha_t(s_t) &= p(x_1, ..., x_t, s_t)\\
+\alpha_1(s_1) &= p(x_1|s_1)p(s_1)\\
+\alpha_t(s_t) &= p(x_t|s_t) \sum_{s_{t-1}} p(s_t|s_{t-1})\alpha_{t-1}(s_{t-1})
+\end{align}
+
+\textbf{Backward Pass ($\beta$ values):}
+\begin{align}
+\beta_t(s_t) &= p(x_{t+1}, ..., x_n|s_t)\\
+\beta_n(s_n) &= 1\\
+\beta_t(s_t) &= \sum_{s_{t+1}} p(s_{t+1}|s_t)p(x_{t+1}|s_{t+1})\beta_{t+1}(s_{t+1})
+\end{align}
+
+\textbf{Inference with $\alpha$ and $\beta$:}
+\begin{align}
+p(x_1, ..., x_n) &= \sum_{s_t} \alpha_t(s_t)\beta_t(s_t)\\
+p(s_t|x_1, ..., x_n) &\propto \alpha_t(s_t)\beta_t(s_t)\\
+p(s_t, s_{t+1}|x_1, ..., x_n) &\propto \alpha_t(s_t)p(s_{t+1}|s_t)\\
+&\quad\cdot p(x_{t+1}|s_{t+1})\beta_{t+1}(s_{t+1})
+\end{align}
+
+\textbf{Viterbi Algorithm (Best Path):}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialize:
+    \begin{align}
+    \delta_1(i) &= p(s_1 = i)p(x_1|s_1 = i)\\
+    \psi_1(i) &= 0
+    \end{align}
+    
+    \item Recursion:
+    \begin{align}
+    \delta_t(j) &= \max_i [\delta_{t-1}(i)p(s_t = j|s_{t-1} = i)]\\
+    &\quad\cdot p(x_t|s_t = j)\\
+    \psi_t(j) &= \arg\max_i [\delta_{t-1}(i)p(s_t = j|s_{t-1} = i)]
+    \end{align}
+    
+    \item Termination:
+    \begin{align}
+    p^* &= \max_i [\delta_T(i)]\\
+    s^*_T &= \arg\max_i [\delta_T(i)]
+    \end{align}
+    
+    \item Backtracking:
+    $s^*_t = \psi_{t+1}(s^*_{t+1})$ for $t = T-1,...,1$
+\end{enumerate}
+
+\textbf{HMM Training with EM:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item E-step: Compute expected state occupancy and transitions using forward-backward
+    \item M-step: Update parameters using these expectations
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=10. Markov Decision Processes Concepts, colback=mdp,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{MDP Overview:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Framework for decision-making under uncertainty
+    \item Agent takes actions in states to maximize rewards
+    \item Environment transitions between states based on actions
+    \item Goal: Find optimal policy (mapping from states to actions)
+\end{itemize}
+
+\textbf{Key Components:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item States $S$: Possible situations for the agent
+    \item Actions $A$: Possible choices in each state
+    \item Transition function $p(s'|s,a)$: Probability of next state
+    \item Reward function $r(s,a)$: Immediate reward for action
+    \item Discount factor $\gamma$: Value of future rewards
+    \item Policy $\pi(a|s)$: Strategy for choosing actions
+\end{itemize}
+
+\textbf{Value Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item State value $V^\pi(s)$: Expected return starting from state $s$, following policy $\pi$
+    \item Action value $Q^\pi(s,a)$: Expected return starting from state $s$, taking action $a$, then following policy $\pi$
+\end{itemize}
+
+\textbf{Planning Horizons:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Finite horizon: Fixed number of time steps
+    \item Infinite horizon: Unbounded time with discounting
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=10.1 MDP Planning Algorithms, colback=mdp,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{When to use:} Use these planning algorithms when you have a fully defined MDP (states, actions, transitions, rewards) and need to find the optimal policy.
+
+\textbf{Value Iteration:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialize $V(s) = 0$ for all states
+    \item Repeat until convergence:
+    \begin{align}
+    V'(s) &\leftarrow \max_a \left[r(s, a) + \gamma \sum_{s'} p(s'|s, a)V(s')\right]\\
+    V(s) &\leftarrow V'(s)
+    \end{align}
+    \item Extract policy: 
+    $\pi^*(s) = \arg\max_a \left[r(s, a) + \gamma \sum_{s'} p(s'|s, a)V^*(s')\right]$
+\end{enumerate}
+
+\textbf{Policy Iteration:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Initialize policy $\pi$
+    \item Repeat until convergence:
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item Policy Evaluation: Calculate $V^\pi(s)$
+        \begin{align}
+        V^\pi(s) = r(s, \pi(s)) + \gamma \sum_{s'} p(s'|s, \pi(s))V^\pi(s')
+        \end{align}
+        \item Policy Improvement:
+        \begin{align}
+        \pi'(s) &\leftarrow \arg\max_a \left[r(s, a) + \gamma \sum_{s'} p(s'|s, a)V^\pi(s')\right]\\
+        \pi(s) &\leftarrow \pi'(s)
+        \end{align}
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Value Iteration vs. Policy Iteration:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Value Iteration: More iterations, less computation per iteration
+    \item Policy Iteration: Fewer iterations, more computation per iteration
+    \item Value Iteration: O($|S|^2|A|$) per iteration
+    \item Policy Evaluation: O($|S|^3$) for exact solution
+\end{itemize}
+
+\textbf{Bellman Equations:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Bellman Expectation Equation:
+    $V^\pi(s) = \sum_a \pi(a|s)[r(s,a) + \gamma\sum_{s'} p(s'|s,a)V^\pi(s')]$
+    \item Bellman Optimality Equation:
+    $V^*(s) = \max_a [r(s,a) + \gamma\sum_{s'} p(s'|s,a)V^*(s')]$
+\end{itemize}
+\end{tcolorbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcolorbox}[breakable, title=Time Complexity Analysis, colback=white,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+\textbf{How to Calculate Time Complexity:}
+
+\textbf{1. Identify basic operations}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Arithmetic operations: O(1)
+    \item Array/list access: O(1)
+    \item Loop iterations: O(n) for n iterations
+    \item Nested loops: O(n·m) for outer loop n times, inner loop m times
+\end{itemize}
+
+\textbf{2. Count operations in terms of input size}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item N = number of data points
+    \item D = dimensionality of data
+    \item K = number of clusters/classes
+    \item T = number of iterations
+\end{itemize}
+
+\textbf{3. Focus on dominant terms}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Ignore constants and lower-order terms
+    \item Consider worst-case scenario
+\end{itemize}
+
+\textbf{Example Analysis: K-means}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+    \item For each iteration (T iterations):
+    \begin{itemize}[leftmargin=*,noitemsep]
+        \item For each data point (N points):
+            \begin{itemize}[leftmargin=*,noitemsep]
+                \item Calculate distance to each centroid (K centroids):
+                    \begin{itemize}[leftmargin=*,noitemsep]
+                        \item Each distance calculation: O(D) operations
+                    \end{itemize}
+            \end{itemize}
+        \item Update K centroids: O(N·D) operations
+    \end{itemize}
+    \item Total complexity: O(T·N·K·D)
+\end{enumerate}
+
+\textbf{Common Algorithm Complexities:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Linear Regression: O(Nd² + d³) for optimal solution
+    \item Gradient Descent: O(Ndt) for t iterations
+    \item K-means: O(NKdt) for t iterations
+    \item Decision Trees: O(dN log N) for training
+    \item SVMs: O(N² to N³) depending on implementation
+    \item Neural Networks: $O(N_t \cdot \sum_{\ell} n_{\ell} n_{\ell-1})$ for training
+    \item PCA: $O(Nd^2 + d^3)$ for computation
+    \item HMM Forward-Backward: $O(TK^2)$ for sequence length $T$, $K$ states
+\end{itemize}
+\end{tcolorbox}
+
+\end{multicols}
+\end{document}

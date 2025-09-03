@@ -1,0 +1,813 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Machine Learning Models: From Clustering to Reinforcement Learning}
+\author{CS181 Study Guide}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Clustering}
+
+\subsection{K-Means Clustering}
+
+\subsubsection{Purpose}
+K-Means clustering is an unsupervised learning technique that identifies $K$ groups (clusters) in data based on similarity. It minimizes the within-cluster variance, grouping data points that are close to each other.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item $K$: The number of clusters
+    \item $\{\mu_c\}_{c=1}^K$: The $K$ cluster centers in $D$-dimensional space
+    \item $\{r_n\}_{n=1}^N$: Responsibility vectors (one-hot encoded) assigning each data point to a cluster
+\end{itemize}
+
+\subsubsection{Training Method: Lloyd's Algorithm}
+K-Means uses coordinate descent through Lloyd's algorithm:
+
+\begin{enumerate}
+    \item \textbf{Initialize} $K$ cluster centers randomly from data points
+    \item \textbf{Repeat until convergence:}
+    \begin{enumerate}
+        \item \textbf{Assignment step:} Assign each data point to the closest cluster center
+        \begin{equation}
+            r_{nc} = 
+            \begin{cases} 
+                1 & \text{if } c = \arg\min_{c'} ||x_n - \mu_{c'}||^2 \\
+                0 & \text{otherwise}
+            \end{cases}
+        \end{equation}
+        
+        \item \textbf{Update step:} Recalculate cluster centers as the mean of assigned points
+        \begin{equation}
+            \mu_c = \frac{\sum_{n=1}^N r_{nc}x_n}{\sum_{n=1}^N r_{nc}}
+        \end{equation}
+    \end{enumerate}
+\end{enumerate}
+
+The objective function being minimized is:
+\begin{equation}
+    L(X, \{\mu_c\}_{c=1}^C, \{r_n\}_{n=1}^N) = \sum_{n=1}^N \sum_{c=1}^C r_{nc}||x_n - \mu_c||^2_2
+\end{equation}
+
+\subsubsection{Inference}
+For a new data point $x_*$, we compute the closest cluster center:
+\begin{equation}
+    c_* = \arg\min_c ||x_* - \mu_c||^2
+\end{equation}
+
+Questions answerable through K-means:
+\begin{itemize}
+    \item Which group does a new data point belong to?
+    \item What is the structure/grouping of my data?
+    \item What are the representative centers of each group?
+\end{itemize}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item Converges to a local optimum, so multiple random initializations are recommended
+    \item Sensitive to initial cluster center placement (K-means++ can improve this)
+    \item Assumes spherical clusters of similar size
+    \item The number of clusters $K$ must be specified in advance (the "elbow method" can help determine this)
+    \item Data should be standardized to prevent features with larger scales from dominating
+\end{itemize}
+
+\subsubsection{The Story of K-Means}
+Imagine you have a field full of colored balls scattered randomly. You want to organize them into $K$ piles based on their location. You start by picking $K$ random positions as initial pile locations. Then you follow two simple steps repeatedly: (1) Assign each ball to its closest pile, and (2) Move each pile to the average position of all balls assigned to it. You continue this process until the piles stop moving significantly. This is exactly how K-means works.
+
+\subsection{Hierarchical Agglomerative Clustering (HAC)}
+
+\subsubsection{Purpose}
+HAC builds a hierarchy of clusters by progressively merging the closest clusters, allowing for a multi-level understanding of data structure without requiring a pre-specified number of clusters.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item Linkage criterion: Function that determines the distance between clusters
+    \item Dendrogram: Tree structure showing the hierarchical relationship between clusters
+\end{itemize}
+
+\subsubsection{Training Method}
+\begin{enumerate}
+    \item Start with each data point as its own cluster
+    \item Repeat until only one cluster remains:
+    \begin{enumerate}
+        \item Compute distances between all pairs of clusters
+        \item Merge the two closest clusters
+        \item Record the distance at which clusters were merged
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Linkage Criteria}
+\begin{itemize}
+    \item \textbf{Min-linkage:} 
+    \begin{equation}
+        d_{C,C'} = \min_{k,k'} ||x_k - x_{k'}||
+    \end{equation}
+    where $x_k$ are data points in cluster $C$ and $x_{k'}$ are data points in cluster $C'$
+    
+    \item \textbf{Max-linkage:} 
+    \begin{equation}
+        d_{C,C'} = \max_{k,k'} ||x_k - x_{k'}||
+    \end{equation}
+    
+    \item \textbf{Average-linkage:} 
+    \begin{equation}
+        d_{C,C'} = \frac{1}{KK'}\sum_{k=1}^K\sum_{k'=1}^{K'} ||x_k - x_{k'}||
+    \end{equation}
+    
+    \item \textbf{Centroid-linkage:} 
+    \begin{equation}
+        d_{C,C'} = ||\frac{1}{K}\sum_{k=1}^K x_k - \frac{1}{K'}\sum_{k'=1}^{K'} x_{k'}||
+    \end{equation}
+\end{itemize}
+
+\subsubsection{Inference}
+After building the dendrogram, we can:
+\begin{itemize}
+    \item Cut the dendrogram at a specific height to get a certain number of clusters
+    \item For a new data point, find the closest cluster based on the chosen linkage criterion
+\end{itemize}
+
+Questions answerable:
+\begin{itemize}
+    \item What is the hierarchical structure of my data?
+    \item How many natural clusters exist in my data?
+    \item What is the proximity relationship between different clusters?
+\end{itemize}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item Different linkage criteria produce different clustering results
+    \item Min-linkage tends to create "stringy" clusters
+    \item Max-linkage tends to create more compact, balanced clusters
+    \item HAC is deterministic (unlike K-means) but computationally intensive ($O(N^2)$ space and $O(N^3)$ time)
+\end{itemize}
+
+\subsubsection{The Story of HAC}
+Imagine you're organizing a social network. Initially, everyone is a separate individual (their own cluster). You start connecting people who are closest to each other, gradually forming larger social groups. Eventually, everyone becomes connected in a single network. The sequence and distances at which these connections form tell a story about the community structure. By cutting the tree at different levels, you can see different grouping granularities - from tight-knit friend circles to broader communities.
+
+\section{Dimensionality Reduction}
+
+\subsection{Principal Component Analysis (PCA)}
+
+\subsubsection{Purpose}
+PCA reduces the dimensionality of data while preserving as much variance as possible, enabling visualization, noise reduction, and computational efficiency for high-dimensional data.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item Principal components (eigenvectors of the covariance matrix)
+    \item Explained variance per component
+    \item Number of components to retain $D'$ (where $D' < D$)
+\end{itemize}
+
+\subsubsection{Training Method}
+\begin{enumerate}
+    \item Center the data by subtracting the mean of each feature
+    \item Compute the covariance matrix $S = \frac{X^TX}{N}$
+    \item Find the eigenvectors and eigenvalues of $S$
+    \item Sort eigenvectors by decreasing eigenvalues
+    \item Select top $D'$ eigenvectors to form the projection matrix
+\end{enumerate}
+
+The optimization objective for PCA can be expressed in two equivalent ways:
+\begin{enumerate}
+    \item \textbf{Variance maximization:} Find directions of maximum variance
+    \begin{equation}
+        \max_{\mathbf{w}: \|\mathbf{w}\|=1} \frac{1}{N}\sum_{n=1}^N (\mathbf{x}_n \cdot \mathbf{w})^2 = \max_{\mathbf{w}: \|\mathbf{w}\|=1} \mathbf{w}^T S \mathbf{w}
+    \end{equation}
+    
+    \item \textbf{Reconstruction loss minimization:} Minimize the error from projecting onto a subspace
+    \begin{equation}
+        \min_{\mathbf{w}: \|\mathbf{w}\|=1} \frac{1}{N}\sum_{n=1}^N \|\mathbf{x}_n - (\mathbf{x}_n \cdot \mathbf{w})\mathbf{w}\|^2
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Inference}
+For a new data point $\mathbf{x}_*$:
+\begin{itemize}
+    \item Project onto reduced space: $\mathbf{z}_* = W^T(\mathbf{x}_* - \boldsymbol{\mu})$ where $W$ is the matrix of principal components
+    \item Reconstruct from reduced space: $\hat{\mathbf{x}}_* = W\mathbf{z}_* + \boldsymbol{\mu}$
+\end{itemize}
+
+Questions answerable:
+\begin{itemize}
+    \item What are the most important dimensions/directions in my data?
+    \item How can I visualize high-dimensional data in 2D or 3D?
+    \item How much information is retained when reducing to $D'$ dimensions?
+    \item What is a compact representation of my data?
+\end{itemize}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item PCA assumes linear relationships between variables
+    \item It works best when the principal components are orthogonal to each other
+    \item The choice of $D'$ can be based on:
+    \begin{itemize}
+        \item Cumulative explained variance (e.g., retain components that explain 95\% of variance)
+        \item Scree plot ("elbow method")
+        \item Specific needs (e.g., visualization in 2D or 3D)
+    \end{itemize}
+    \item Data should be standardized if features have different scales
+\end{itemize}
+
+\subsubsection{The Story of PCA}
+Imagine you're studying a cloud of data points floating in a high-dimensional space. Looking carefully, you notice that although the cloud exists in many dimensions, it's actually quite flat - like a pancake. PCA helps you find the directions along which the pancake extends the most. By focusing on these main directions and ignoring the others where little variation occurs, you can describe the pancake with fewer numbers while preserving its essential shape.
+
+\section{Graphical Models}
+
+\subsection{Directed Graphical Models (Bayesian Networks)}
+
+\subsubsection{Purpose}
+Directed graphical models (DGMs) or Bayesian Networks represent the conditional independence structure of a joint probability distribution, enabling efficient inference, knowledge representation, and reasoning under uncertainty.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item Graph structure (nodes and directed edges)
+    \item Conditional probability tables (CPTs) or distributions for each node given its parents
+\end{itemize}
+
+\subsubsection{Model Components}
+\begin{itemize}
+    \item \textbf{Nodes}: Random variables (drawn as circles; shaded if observed)
+    \item \textbf{Edges}: Direct dependencies between variables
+    \item \textbf{Parameters}: Deterministic values (drawn as small dots)
+    \item \textbf{Plates}: Repeated sets of variables (rectangles with a number in the corner)
+\end{itemize}
+
+\subsubsection{Model Creation}
+For a set of variables, a Bayesian network can be constructed by:
+\begin{enumerate}
+    \item Choosing a variable ordering
+    \item For each variable, drawing edges from previously added variables that directly influence it
+    \item Defining the conditional probability distribution for each node given its parents
+\end{enumerate}
+
+The joint distribution factorizes according to the graph structure:
+\begin{equation}
+    p(X_1, X_2, ..., X_n) = \prod_{i=1}^{n} p(X_i | \text{Parents}(X_i))
+\end{equation}
+
+\subsubsection{Inference}
+Inference involves calculating:
+\begin{itemize}
+    \item Marginal probabilities: $p(X_i)$
+    \item Conditional probabilities: $p(X_i | X_j = x_j)$
+    \item Most probable explanation (MPE): $\arg\max_{x_1,...,x_n} p(X_1=x_1,...,X_n=x_n | E=e)$ where $E$ is evidence
+\end{itemize}
+
+Inference methods include:
+\begin{itemize}
+    \item Variable elimination
+    \item Message passing algorithms
+    \item Sampling methods
+\end{itemize}
+
+\subsubsection{D-Separation and Independence}
+D-separation rules determine conditional independence in a graph:
+\begin{enumerate}
+    \item \textbf{Chain}: $A \rightarrow B \rightarrow C$
+    \begin{itemize}
+        \item $A$ and $C$ are dependent
+        \item $A$ and $C$ are conditionally independent given $B$
+    \end{itemize}
+    
+    \item \textbf{Fork}: $A \leftarrow B \rightarrow C$
+    \begin{itemize}
+        \item $A$ and $C$ are dependent
+        \item $A$ and $C$ are conditionally independent given $B$
+    \end{itemize}
+    
+    \item \textbf{Collider}: $A \rightarrow B \leftarrow C$
+    \begin{itemize}
+        \item $A$ and $C$ are independent
+        \item $A$ and $C$ are conditionally dependent given $B$ (or any descendant of $B$)
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item Different variable orderings can lead to different network structures
+    \item Choosing a good elimination order is crucial for efficient inference
+    \item The complexity of representing a distribution grows with the number of parents per node
+    \item Bayesian networks can represent both causal and non-causal relationships
+\end{itemize}
+
+\subsubsection{The Story of Bayesian Networks}
+Imagine a detective trying to solve a crime. There are multiple clues, suspects, and evidence pieces, all connected in a complex web of relationships. Some evidence directly affects the likelihood of certain scenarios, while other connections are indirect. A Bayesian network is like the detective's case board with pins (variables) and strings (dependencies) showing how everything relates. By understanding these relationships, the detective can make deductions about unobserved events based on the evidence at hand.
+
+\section{Mixture Models}
+
+\subsection{Expectation-Maximization (EM) Algorithm}
+
+\subsubsection{Purpose}
+The EM algorithm finds maximum likelihood parameters in models with latent variables, where direct optimization would be intractable. It's the primary method for training mixture models.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item Model parameters $\theta$ (specific to the mixture model being used)
+    \item Latent variables $Z$ (typically cluster assignments)
+    \item Responsibilities $q_n$ (soft assignments of data points to clusters)
+\end{itemize}
+
+\subsubsection{Training Method}
+\begin{enumerate}
+    \item \textbf{Initialize} parameters $\theta$ randomly
+    \item \textbf{Repeat until convergence:}
+    \begin{enumerate}
+        \item \textbf{E-step:} Compute the expected values of latent variables $Z$ (responsibilities)
+        \begin{equation}
+            q_n = E[z_n|x_n] = p(z_n|x_n; \theta)
+        \end{equation}
+        
+        \item \textbf{M-step:} Update parameters $\theta$ to maximize the expected complete-data log likelihood
+        \begin{equation}
+            \theta \in \arg\max_{\theta} E_{Z|X}[\log p(X, Z; \theta)]
+        \end{equation}
+    \end{enumerate}
+\end{enumerate}
+
+The EM algorithm effectively maximizes the Evidence Lower Bound (ELBO):
+\begin{equation}
+    \text{ELBO}(\theta, q) = \sum_{n=1}^N E_{z_n\sim q(z_n)}[\log p(x_n, z_n|\theta)] - \sum_{n=1}^N E_{z_n\sim q(z_n)}[\log q(z_n)]
+\end{equation}
+
+\subsubsection{Inference}
+For a new data point $x_*$, we can compute:
+\begin{itemize}
+    \item Probability of being in each cluster: $p(z_*|x_*)$
+    \item Most likely cluster: $\arg\max_k p(z_*=k|x_*)$
+    \item Predictive likelihood: $p(x_*)$
+\end{itemize}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item EM guarantees increasing the likelihood at each iteration but may converge to a local optimum
+    \item Multiple random initializations are recommended
+    \item The number of components/clusters must typically be specified in advance
+    \item EM is a coordinate ascent algorithm: it alternates between optimizing $q$ and $\theta$
+\end{itemize}
+
+\subsubsection{The Story of EM}
+Imagine trying to decipher a document written in an unknown language where each word could come from one of several possible languages. Initially, you make random guesses about which language each word comes from. Then you alternate between two steps: (1) for each word, compute the probability it comes from each language based on your current language models; (2) update your model of each language based on these probabilistic assignments. By repeating this process, you gradually improve both your language models and your word classifications.
+
+\subsection{Gaussian Mixture Models (GMMs)}
+
+\subsubsection{Purpose}
+GMMs model data as being generated from a mixture of several Gaussian distributions, providing a flexible way to model complex, multimodal distributions.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item $K$: Number of Gaussian components
+    \item $\theta = \{\theta_k\}_{k=1}^K$: Mixture weights (prior probabilities of each component)
+    \item $\{\mu_k, \Sigma_k\}_{k=1}^K$: Means and covariance matrices of each Gaussian component
+\end{itemize}
+
+\subsubsection{Training Method}
+GMMs are trained using the EM algorithm:
+
+\textbf{E-step:} Compute responsibilities
+\begin{equation}
+    q_{nk} = p(z_n = k|x_n) = \frac{\theta_k \mathcal{N}(x_n; \mu_k, \Sigma_k)}{\sum_{j=1}^K \theta_j \mathcal{N}(x_n; \mu_j, \Sigma_j)}
+\end{equation}
+
+\textbf{M-step:} Update parameters
+\begin{align}
+    \theta_k &= \frac{\sum_{n=1}^N q_{nk}}{N} \\
+    \mu_k &= \frac{\sum_{n=1}^N q_{nk}x_n}{\sum_{n=1}^N q_{nk}} \\
+    \Sigma_k &= \frac{\sum_{n=1}^N q_{nk}(x_n - \mu_k)(x_n - \mu_k)^T}{\sum_{n=1}^N q_{nk}}
+\end{align}
+
+\subsubsection{Inference}
+For a new data point $x_*$:
+\begin{itemize}
+    \item Cluster membership probabilities: $p(z_*=k|x_*) \propto \theta_k \mathcal{N}(x_*; \mu_k, \Sigma_k)$
+    \item Density estimation: $p(x_*) = \sum_{k=1}^K \theta_k \mathcal{N}(x_*; \mu_k, \Sigma_k)$
+    \item Anomaly detection: Points with low $p(x_*)$ can be considered anomalies
+\end{itemize}
+
+\subsubsection{Connection to K-means}
+GMMs generalize K-means clustering:
+\begin{itemize}
+    \item K-means assumes spherical clusters of equal size
+    \item GMMs allow elliptical clusters of varying sizes and orientations
+    \item K-means makes hard assignments; GMMs make soft probabilistic assignments
+    \item As covariances approach zero, GMM approaches K-means
+\end{itemize}
+
+\subsubsection{The Story of GMMs}
+Imagine studying the heights of a mixed population of adults and children. The distribution might have two "bumps" - one centered around child heights and another around adult heights. A GMM would model this as a mixture of two Gaussian distributions, each with its own mean and variance. For a new person, the model could tell you the probability they belong to either the child or adult group, based on their height.
+
+\subsection{Latent Dirichlet Allocation (LDA)}
+
+\subsubsection{Purpose}
+LDA is a generative probabilistic model for collections of discrete data such as text corpora. It represents documents as mixtures of topics and each topic as a distribution over words.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item $\alpha$: Dirichlet prior on document-topic distributions
+    \item $\beta$: Dirichlet prior on topic-word distributions
+    \item $\theta_n$: Topic mixture for document $n$
+    \item $\phi_k$: Word distribution for topic $k$
+\end{itemize}
+
+\subsubsection{Generative Process}
+\begin{enumerate}
+    \item For each document $n$:
+    \begin{enumerate}
+        \item Draw topic proportions $\theta_n \sim \text{Dir}(\alpha)$
+        \item For each word position $j$ in document $n$:
+        \begin{enumerate}
+            \item Draw topic assignment $z_{n,j} \sim \text{Cat}(\theta_n)$
+            \item Draw word $w_{n,j} \sim \text{Cat}(\phi_{z_{n,j}})$
+        \end{enumerate}
+    \end{enumerate}
+    \item For each topic $k$:
+    \begin{enumerate}
+        \item Draw word distribution $\phi_k \sim \text{Dir}(\beta)$
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Training with EM}
+\textbf{E-step:} Compute the posterior distribution over topic assignments
+\begin{equation}
+    q_{n,j} = p(z_{n,j}|w_{n,j}) \propto \phi_{z_{n,j},w_{n,j}} \cdot \theta_{n,z_{n,j}}
+\end{equation}
+
+\textbf{M-step:} Update parameters
+\begin{align}
+    \theta_{n,k} &\propto \alpha_k + \sum_{j=1}^J q_{n,j,k} \\
+    \phi_{k,w} &\propto \beta_w + \sum_{n=1}^N\sum_{j=1}^{J_n} q_{n,j,k} \cdot \mathbf{1}[w_{n,j}=w]
+\end{align}
+
+\subsubsection{Inference}
+LDA can answer questions like:
+\begin{itemize}
+    \item What are the main topics in a document collection?
+    \item What is the topic distribution of a specific document?
+    \item Which documents are most similar based on topic distribution?
+    \item What words are most characteristic of each topic?
+\end{itemize}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item The number of topics must be specified in advance
+    \item The choice of hyperparameters $\alpha$ and $\beta$ affects the sparsity of topic and word distributions
+    \item LDA assumes bag-of-words representation (word order doesn't matter)
+    \item LDA is a true "admixture" model, meaning each document can belong to multiple topics
+\end{itemize}
+
+\subsubsection{The Story of LDA}
+Imagine a library with books from different subjects. Each book contains a mixture of topics - a cookbook might be 70% recipes, 20% nutrition, and 10% cultural history. Each topic uses a specific vocabulary - the recipe topic frequently uses words like "bake," "stir," and "heat." LDA discovers these hidden topics and their vocabularies by analyzing which words tend to appear together across documents. By understanding the topics, we can then describe each document as a unique blend of these topics.
+
+\section{Hidden Markov Models}
+
+\subsection{Hidden Markov Models (HMMs)}
+
+\subsubsection{Purpose}
+HMMs model sequential data with hidden states, where observations depend on the current hidden state, and state transitions follow the Markov property. They're useful for speech recognition, natural language processing, and bioinformatics.
+
+\subsubsection{Parameters}
+\begin{itemize}
+    \item $\theta \in [0,1]^K$: Initial state distribution, where $\sum_k \theta_k = 1$
+    \item $T \in [0,1]^{K \times K}$: Transition matrix, where $T_{i,j} = p(s_{t+1} = j | s_t = i)$
+    \item $\pi \in [0,1]^{K \times M}$: Emission matrix, where $\pi_{k,m} = p(x_t = m | s_t = k)$
+\end{itemize}
+
+\subsubsection{HMM Assumptions}
+\begin{enumerate}
+    \item \textbf{Markov property}: The current state depends only on the previous state
+    \begin{equation}
+        p(s_{t+1}|s_1,...,s_t, x_1,...,x_t) = p(s_{t+1}|s_t)
+    \end{equation}
+    
+    \item \textbf{Output independence}: The current observation depends only on the current state
+    \begin{equation}
+        p(x_t|s_1,...,s_t, x_1,...,x_{t-1}) = p(x_t|s_t)
+    \end{equation}
+\end{enumerate}
+
+These assumptions allow us to factorize the joint distribution:
+\begin{equation}
+    p(s_1,...,s_n,x_1,...,x_n) = p(s_1)\prod_{t=1}^{n-1}p(s_{t+1}|s_t)\prod_{t=1}^{n}p(x_t|s_t)
+\end{equation}
+
+\subsubsection{Forward-Backward Algorithm}
+The forward-backward algorithm efficiently computes probabilities for HMM inference. It defines:
+
+\textbf{Forward messages ($\alpha$):}
+\begin{equation}
+    \alpha_t(s_t) = p(x_1,...,x_t,s_t)
+\end{equation}
+
+Recursive computation:
+\begin{equation}
+    \alpha_t(s_t) = 
+    \begin{cases}
+        p(x_t|s_t) \sum_{s_{t-1}} p(s_t|s_{t-1})\alpha_{t-1}(s_{t-1}) & \text{if } 1 < t \leq n \\
+        p(x_1|s_1)p(s_1) & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+\textbf{Backward messages ($\beta$):}
+\begin{equation}
+    \beta_t(s_t) = p(x_{t+1},...,x_n|s_t)
+\end{equation}
+
+Recursive computation:
+\begin{equation}
+    \beta_t(s_t) = 
+    \begin{cases}
+        \sum_{s_{t+1}} p(s_{t+1}|s_t)p(x_{t+1}|s_{t+1})\beta_{t+1}(s_{t+1}) & \text{if } 1 \leq t < n \\
+        1 & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+\subsubsection{Inference Tasks}
+Using $\alpha$ and $\beta$ values, we can perform various inference tasks:
+
+\textbf{Sequence probability:}
+\begin{equation}
+    p(x_1,...,x_n) = \sum_{s_t} \alpha_t(s_t)\beta_t(s_t)
+\end{equation}
+
+\textbf{Filtering} (current state given observations up to now):
+\begin{equation}
+    p(s_t|x_1,...,x_t) \propto \alpha_t(s_t)
+\end{equation}
+
+\textbf{Smoothing} (state at time $t$ given all observations):
+\begin{equation}
+    p(s_t|x_1,...,x_n) \propto \alpha_t(s_t)\beta_t(s_t)
+\end{equation}
+
+\textbf{Prediction} (future observation given past observations):
+\begin{equation}
+    p(x_{t+1}|x_1,...,x_t) \propto \sum_{s_t}\sum_{s_{t+1}} \alpha_t(s_t)p(s_{t+1}|s_t)p(x_{t+1}|s_{t+1})
+\end{equation}
+
+\textbf{Viterbi algorithm} (most likely state sequence):
+Define $\gamma_t(s_t) = \max_{s_1,...,s_{t-1}} p(s_1,...,s_t,x_1,...,x_t)$
+
+\begin{equation}
+    \gamma_t(s_t) = 
+    \begin{cases}
+        p(x_t|s_t) \max_{s_{t-1}} p(s_t|s_{t-1})\gamma_{t-1}(s_{t-1}) & \text{if } 1 < t \leq n \\
+        p(x_1|s_1)p(s_1) & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+Also maintain backpointers:
+\begin{equation}
+    z^*_t(s_t) = \arg\max_{s_{t-1}}[p(s_t|s_{t-1})\gamma_{t-1}(s_{t-1})]
+\end{equation}
+
+\subsubsection{Training with EM}
+HMMs are trained using EM (also called the Baum-Welch algorithm in this context):
+
+\textbf{E-step:} Compute posterior probabilities of states and transitions using forward-backward
+\begin{align}
+    q_{t,k} &= p(s_t = k|x_1,...,x_n) = \frac{\alpha_t(s_t=k)\beta_t(s_t=k)}{\sum_j \alpha_t(s_t=j)\beta_t(s_t=j)} \\
+    Q_{t,t+1,k,l} &= p(s_t = k, s_{t+1} = l|x_1,...,x_n)
+\end{align}
+
+\textbf{M-step:} Update parameters
+\begin{align}
+    \theta_k &= \frac{\sum_{i=1}^N q^i_{1,k}}{N} \\
+    T_{k,l} &= \frac{\sum_{i=1}^N\sum_{t=1}^{n-1} Q^i_{t,t+1,k,l}}{\sum_{i=1}^N\sum_{t=1}^{n-1} q^i_{t,k}} \\
+    \pi_{k,m} &= \frac{\sum_{i=1}^N\sum_{t=1}^n q^i_{t,k}x^i_{t,m}}{\sum_{i=1}^N\sum_{t=1}^n q^i_{t,k}}
+\end{align}
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item HMMs are generative models for sequential data
+    \item They assume the Markov property (limited memory)
+    \item Forward-backward algorithm complexity is $O(K^2n)$ where $K$ is the number of states and $n$ is sequence length
+    \item HMMs can only model discrete state spaces effectively (for continuous states, see Kalman filters)
+\end{itemize}
+
+\subsubsection{The Story of HMMs}
+Imagine a weather forecaster who can't see outside but receives daily reports about whether people carried umbrellas. From these observations, the forecaster tries to deduce whether it was sunny, cloudy, or rainy each day. The actual weather states are hidden, while umbrella usage is observed. The forecaster knows that weather tends to be similar on consecutive days (the Markov property) and that people are more likely to carry umbrellas when it rains. Using these patterns, the forecaster can reconstruct the most likely weather sequence and predict future weather - exactly what an HMM does.
+
+\section{Markov Decision Processes}
+
+\subsection{Markov Decision Processes (MDPs)}
+
+\subsubsection{Purpose}
+MDPs provide a mathematical framework for modeling decision-making in situations where outcomes are partly random and partly under the control of a decision-maker (agent). They're fundamental to reinforcement learning and planning under uncertainty.
+
+\subsubsection{Components}
+\begin{itemize}
+    \item $S$: Set of states
+    \item $A$: Set of actions
+    \item $p(s'|s,a)$: Transition function defining the probability of reaching state $s'$ from state $s$ by taking action $a$
+    \item $r(s,a)$: Reward function defining the immediate reward for taking action $a$ in state $s$
+    \item $\gamma \in [0,1]$: Discount factor for future rewards
+    \item $\pi(a|s)$: Policy mapping states to actions
+\end{itemize}
+
+\subsubsection{Objective}
+The goal is to find an optimal policy $\pi^*$ that maximizes the expected discounted total reward:
+\begin{equation}
+    \max_\pi E\left[\sum_{t=0}^{\infty} \gamma^t r(s_t, a_t)\right]
+\end{equation}
+
+\subsubsection{Value Functions}
+\textbf{State-value function} (value of being in state $s$ following policy $\pi$):
+\begin{equation}
+    V^\pi(s) = E_\pi\left[\sum_{t=0}^{\infty} \gamma^t r(s_t, \pi(s_t)) | s_0 = s\right]
+\end{equation}
+
+\textbf{Action-value function} (value of taking action $a$ in state $s$ following policy $\pi$):
+\begin{equation}
+    Q^\pi(s,a) = E_\pi\left[\sum_{t=0}^{\infty} \gamma^t r(s_t, a_t) | s_0 = s, a_0 = a\right]
+\end{equation}
+
+\textbf{Optimal value functions}:
+\begin{align}
+    V^*(s) &= \max_\pi V^\pi(s) \\
+    Q^*(s,a) &= \max_\pi Q^\pi(s,a)
+\end{align}
+
+\subsubsection{Bellman Equations}
+\textbf{Bellman Consistency Equation} (for a policy $\pi$):
+\begin{equation}
+    V^\pi(s) = r(s, \pi(s)) + \gamma \sum_{s'} p(s'|s,\pi(s)) V^\pi(s')
+\end{equation}
+
+\textbf{Bellman Optimality Equation}:
+\begin{equation}
+    V^*(s) = \max_a \left[r(s,a) + \gamma \sum_{s'} p(s'|s,a) V^*(s')\right]
+\end{equation}
+
+\textbf{Bellman Operator} $B: \mathbb{R}^{|S|} \rightarrow \mathbb{R}^{|S|}$:
+\begin{equation}
+    B(V)(s) = \max_a \left[r(s,a) + \gamma \sum_{s'} p(s'|s,a) V(s')\right]
+\end{equation}
+
+\subsubsection{Planning Algorithms}
+
+\textbf{Value Iteration}:
+\begin{enumerate}
+    \item Initialize $V(s) = 0$ for all $s \in S$
+    \item Repeat until convergence:
+    \begin{align}
+        V'(s) &\leftarrow \max_a \left[r(s,a) + \gamma \sum_{s'} p(s'|s,a) V(s')\right] \quad \forall s \\
+        V(s) &\leftarrow V'(s) \quad \forall s
+    \end{align}
+\end{enumerate}
+
+\textbf{Policy Iteration}:
+\begin{enumerate}
+    \item Initialize policy $\pi$ arbitrarily
+    \item Repeat until convergence:
+    \begin{enumerate}
+        \item \textbf{Policy evaluation}: Calculate $V^\pi(s)$ for all $s$
+        \item \textbf{Policy improvement}:
+        \begin{align}
+            \pi'(s) &\leftarrow \arg\max_a \left[r(s,a) + \gamma \sum_{s'} p(s'|s,a) V^\pi(s')\right] \quad \forall s \\
+            \pi(s) &\leftarrow \pi'(s) \quad \forall s
+        \end{align}
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Policy Evaluation} (exact):
+\begin{equation}
+    V^\pi = (I - \gamma P^\pi)^{-1} R^\pi
+\end{equation}
+where $P^\pi$ is the transition matrix induced by policy $\pi$ and $R^\pi$ is the reward vector.
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item Value iteration has time complexity $O(|S|^2|A|)$ per iteration
+    \item Policy iteration often converges in fewer iterations but each iteration costs $O(|S|^2|A| + |S|^3)$
+    \item The discount factor $\gamma$ balances immediate vs. future rewards:
+    \begin{itemize}
+        \item $\gamma \to 0$: Myopic, only immediate rewards matter
+        \item $\gamma \to 1$: Far-sighted, future rewards valued nearly as much as immediate ones
+    \end{itemize}
+    \item The effective time horizon is approximately $\frac{1}{1-\gamma}$
+\end{itemize}
+
+\subsubsection{The Story of MDPs}
+Imagine a treasure hunter in a maze. At each intersection (state), they can choose which path to take (action). Some paths lead to small treasures, others to traps, and eventually, they hope to find the big treasure. The maze is foggy, so when they choose a path, they don't always end up where they intended (stochastic transitions). The hunter wants to find a strategy (policy) for navigating the maze that will maximize their total treasure. MDPs provide the mathematical framework to determine this optimal strategy, balancing immediate rewards against long-term goals.
+
+\section{Reinforcement Learning}
+
+\subsection{Reinforcement Learning (RL)}
+
+\subsubsection{Purpose}
+Reinforcement learning is about learning how an agent should take actions in an environment to maximize cumulative reward when the environment's dynamics (transition probabilities and rewards) are unknown.
+
+\subsubsection{Key Components}
+\begin{itemize}
+    \item Agent: The learner making decisions
+    \item Environment: The world the agent interacts with
+    \item State $s_t$: The current situation the agent is in
+    \item Action $a_t$: The decision the agent makes
+    \item Reward $r_t$: Feedback from the environment after taking an action
+    \item Policy $\pi(a|s)$: Strategy for selecting actions
+\end{itemize}
+
+\subsubsection{The Exploration-Exploitation Tradeoff}
+A central challenge in RL is balancing:
+\begin{itemize}
+    \item \textbf{Exploration}: Trying new actions to discover their outcomes
+    \item \textbf{Exploitation}: Using known good actions to maximize reward
+\end{itemize}
+
+One common approach is the $\epsilon$-greedy strategy:
+\begin{equation}
+    \pi(s) = 
+    \begin{cases}
+        \arg\max_a Q(s,a) & \text{with probability } 1-\epsilon \\
+        \text{random action} & \text{with probability } \epsilon
+    \end{cases}
+\end{equation}
+
+\subsubsection{Model-Free vs. Model-Based RL}
+
+\textbf{Model-Free RL}:
+\begin{itemize}
+    \item Learns value functions or policies directly from experience
+    \item Doesn't explicitly model the environment's dynamics
+    \item Examples: Q-learning, SARSA, Policy Gradient
+\end{itemize}
+
+\textbf{Model-Based RL}:
+\begin{itemize}
+    \item Learns a model of the environment (transition and reward functions)
+    \item Uses this model for planning (e.g., using value iteration)
+    \item Can be more sample-efficient but potentially less accurate if the model is wrong
+\end{itemize}
+
+\subsubsection{Value-Based Methods}
+
+\textbf{Temporal Difference (TD) Learning}:
+Updates value estimates based on the difference between successive predictions:
+\begin{equation}
+    V(s) \leftarrow V(s) + \alpha [r + \gamma V(s') - V(s)]
+\end{equation}
+where $\alpha$ is the learning rate and the term in brackets is the TD error.
+
+\textbf{SARSA} (on-policy):
+\begin{equation}
+    Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma Q(s',a') - Q(s,a)]
+\end{equation}
+where $a'$ is the action taken in state $s'$ according to policy $\pi$.
+
+\textbf{Q-learning} (off-policy):
+\begin{equation}
+    Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma \max_{a'} Q(s',a') - Q(s,a)]
+\end{equation}
+
+\textbf{Deep Q-Networks (DQN)}:
+Uses neural networks to approximate Q-values:
+\begin{equation}
+    L(w_i) = E[(r + \gamma \max_{a'} Q(s',a'; w_{i-1}) - Q(s,a; w_i))^2]
+\end{equation}
+where $w_i$ are the neural network parameters at iteration $i$.
+
+\subsubsection{Policy-Based Methods}
+Directly optimize the policy $\pi_\theta(a|s)$ parameterized by $\theta$:
+\begin{equation}
+    \theta \leftarrow \theta + \alpha \nabla_\theta J(\theta)
+\end{equation}
+
+The gradient of the performance measure can be approximated as:
+\begin{equation}
+    \nabla_\theta J(\theta) \approx E\left[\sum_{t} \nabla_\theta \ln \pi_\theta(a_t|s_t) r_t\right]
+\end{equation}
+
+\subsubsection{Convergence Conditions}
+For Q-learning to converge to $Q^*$:
+\begin{itemize}
+    \item $\sum_t \alpha_t(s,a) = \infty$ for all $(s,a)$ pairs
+    \item $\sum_t \alpha_t(s,a)^2 < \infty$ for all $(s,a)$ pairs
+    \item All state-action pairs must be visited infinitely often
+\end{itemize}
+
+For SARSA, the policy must also become greedy in the limit ($\epsilon \to 0$ as $t \to \infty$).
+
+\subsubsection{Special Considerations}
+\begin{itemize}
+    \item RL algorithms can be unstable, especially when using function approximation
+    \item Experience replay can make learning more stable by breaking correlations in sequential data
+    \item Bootstrapping (using estimates to update estimates) can lead to instability
+    \item The choice between on-policy and off-policy methods depends on the specific problem
+\end{itemize}
+
+\subsubsection{The Story of Reinforcement Learning}
+Imagine a child learning to ride a bicycle. Initially, they have no idea how to balance or pedal effectively. Through trial and error, they learn which actions lead to successful riding and which result in falls. They first explore different techniques, gradually exploiting the ones that work best. The reward is staying upright, and the punishment is falling. Over time, they develop an intuitive policy for riding that maximizes their success. Reinforcement learning formalizes this natural learning process, enabling machines to learn optimal behaviors through their own experiences.
+
+\end{document}
