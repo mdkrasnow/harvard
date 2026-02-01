@@ -18,3 +18,7 @@ venv/
 
 
 .env
+*.rdb
+*.RData
+*.Rhistory
+*.rdx

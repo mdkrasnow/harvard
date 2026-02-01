@@ -1,0 +1,290 @@
+--- 
+title: 'STAT 185 - Homework #1'
+author: Matt Krasnow
+output: pdf_document
+---
+
+```{r, echo = FALSE, verbose = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, message = FALSE)
+require("tidyverse")
+require("data.table")
+```
+
+## Instructions
+This assignment is intended to review your comfort with important ideas linear algebra and multivariable calculus and to assess your comfort with R coding and RMarkdown.  Complete all problems below and compile your solutions into a single pdf document which must be submitted through Gradescope by Friday September 12th at 11:59 PM.
+
+## Notation
+
+Throughout this assignment, all matrices are indicated in bold (e.g. ${\bf A}, {\bf B}$). All vectors are indicated with an arrow (e.g. $\vec{x}$) and should be interpreted as column vectors.  Row vectors are viewed as transposed vectors (e.g. $\vec{x}^T$ is a row vector).
+
+
+## Linear Algebra and Calculus Review 
+
+### Problem 1
+
+Let $\vec{v}_1,\dots \vec{v}_k$ be vectors in $\mathbb{R}^d$.
+
+a) Define the *span* of $\vec{v}_1, \dots \vec{v}_k$.
+
+**Answer:**
+The span of the vectors $\vec{v}_1, \dots, \vec{v}_k$ is defined as the space of vectors that can be expressed as linear combinations of $\vec{v}_1, \dots, \vec{v}_k$.
+Mathematically,
+$$ \text{Span}(\vec{v}_1, \dots, \vec{v}_k) = \{c_1\vec{v}_1 + c_2\vec{v}_2 + \dots + c_k\vec{v}_k \mid c_1, \dots, c_k \in \mathbb{R}\} $$
+    
+b) What does it mean for the vectors $\vec{v}_1,\dots,\vec{v}_k$ to be linearly independent?
+
+**Answer:**
+Linear independence for the set of vectors $\vec{v}_1, \dots, \vec{v}_k$ means that each of the vectors cannot be expressed as a linear combination of the others.
+Mathematically, this means for any $\vec{v}_i$ in the set $\{\vec{v}_1, \dots, \vec{v}_k\}$,
+$$ \vec{v}_i \notin \text{Span}(\vec{v}_1, \dots, \vec{v}_{i-1}, \vec{v}_{i+1}, \dots, \vec{v}_k) $$
+
+c) Assume that $k < d$. Let ${\bf V}$ be the $d\times k$ matrix with columns $\vec{v}_1,\dots,\vec{v}_k$. If $\vec{v}_1,\dots,\vec{v}_k$ are linearly independent, what can you say about the rank of ${\bf V}$.
+
+**Answer:**
+The vectors of $\bf V$ span a $k$-dimensional vector space in $\mathbb{R}^d$. The rank of a matrix is the dimension of the column space. Since the $k$ columns are linearly independent, the dimension of the column space is $k$.
+$$ \text{Rank}({\bf V}) = k $$
+    
+### Problem 2
+
+Let $\vec{x} = (4,5,6)^T$ and the $\vec{w}_1=(1,1,0)^T,\,\vec{w}_2=(0,0,1)^T,\,\vec{w}_3=(1,0,1)^T$ be vectors in $\mathbb{R}^3.$
+
+a) Show that $\vec{w}_1,\,\vec{w}_2,\,\vec{w}_3$ are a basis for $\mathbb{R}^3.$
+
+**Answer:**
+To show the vectors form a basis for $\mathbb{R}^3$, we must show they are linearly independent and span $\mathbb{R}^3$. Since we have 3 vectors in $\mathbb{R}^3$, we only need to show linear independence. We can do this by forming a matrix ${\bf W}$ with these vectors as columns and showing it has full rank (i.e., it is invertible, and its reduced row echelon form is the identity matrix).
+$$ {\bf W} = \begin{bmatrix} 1 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 1 \end{bmatrix} $$
+Attempting to reduce to row echelon form:
+$$ \begin{bmatrix} 1 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 1 \end{bmatrix} \xrightarrow{R_1 \leftrightarrow R_2} \begin{bmatrix} 1 & 0 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 1 \end{bmatrix} \xrightarrow{R_2 \leftarrow R_2 - R_1} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 1 \end{bmatrix} \xrightarrow{R_2 \leftrightarrow R_3} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{bmatrix} \xrightarrow{R_2 \leftarrow R_2 - R_3} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} $$
+Since we are able to do Gaussian elimination upon $\bf W$ to get the identity matrix, the vectors of $\bf W$ are linearly independent and span a 3-dimensional space in $\mathbb{R}^3$. This is equivalent to saying the vectors are a basis for $\mathbb{R}^3$.
+
+b) Find the coordinates of $\vec{x}$ is the basis defined by $\vec{w}_1,\,\vec{w}_2,\,\vec{w}_3$.
+
+**Answer:**
+We want to find coefficients $c_1, c_2, c_3$ such that $c_1\vec{w}_1 + c_2\vec{w}_2 + c_3\vec{w}_3 = \vec{x}$. This can be solved by setting up an augmented matrix and finding the reduced row echelon form (RREF).
+$$ \begin{bmatrix} 1 & 0 & 1 & | & 4 \\ 1 & 0 & 0 & | & 5 \\ 0 & 1 & 1 & | & 6 \end{bmatrix} \xrightarrow{R_1 \leftrightarrow R_2} \begin{bmatrix} 1 & 0 & 0 & | & 5 \\ 1 & 0 & 1 & | & 4 \\ 0 & 1 & 1 & | & 6 \end{bmatrix} \xrightarrow{R_2 \leftarrow R_2 - R_1} \begin{bmatrix} 1 & 0 & 0 & | & 5 \\ 0 & 0 & 1 & | & -1 \\ 0 & 1 & 1 & | & 6 \end{bmatrix} $$
+$$ \xrightarrow{R_2 \leftrightarrow R_3} \begin{bmatrix} 1 & 0 & 0 & | & 5 \\ 0 & 1 & 1 & | & 6 \\ 0 & 0 & 1 & | & -1 \end{bmatrix} \xrightarrow{R_2 \leftarrow R_2 - R_3} \begin{bmatrix} 1 & 0 & 0 & | & 5 \\ 0 & 1 & 0 & | & 7 \\ 0 & 0 & 1 & | & -1 \end{bmatrix} $$
+Thus the coordinates of $\vec{x}$ in the basis defined by the vectors of W are $(5, 7, -1)^T$.
+   
+### Problem 3
+
+For the following subspace $W$ of $\mathbb{R}^3.$
+\[
+W=\{(z_1,z_2,z_3)^T\in\mathbb{R}^3 \mid z_1-z_2 + z_3=0\}.
+\]
+
+a) Find a matrix ${\bf P}$ such that ${\bf P}\vec{x}$ is the orthogonal projection of $\vec{x}$ onto the subspace $W$.
+
+**Answer:**
+For the plane $z_1 - z_2 + z_3 = 0$, the normal vector is $\vec{n} = (1, -1, 1)^T$.
+The orthogonal projection matrix onto the subspace $W$ (the plane) is given by the formula:
+$$ {\bf P} = {\bf I} - \frac{\vec{n}\vec{n}^T}{\vec{n}^T\vec{n}} $$
+First, calculate $\vec{n}\vec{n}^T$:
+$$ \vec{n}\vec{n}^T = \begin{bmatrix} 1 \\ -1 \\ 1 \end{bmatrix} \begin{bmatrix} 1 & -1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & -1 & 1 \\ -1 & 1 & -1 \\ 1 & -1 & 1 \end{bmatrix} $$
+Next, calculate $\vec{n}^T\vec{n}$:
+$$ \vec{n}^T\vec{n} = (1)^2 + (-1)^2 + (1)^2 = 3 $$
+Now, construct ${\bf P}$:
+$$ {\bf P} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} - \frac{1}{3} \begin{bmatrix} 1 & -1 & 1 \\ -1 & 1 & -1 \\ 1 & -1 & 1 \end{bmatrix} = \begin{bmatrix} 2/3 & 1/3 & -1/3 \\ 1/3 & 2/3 & 1/3 \\ -1/3 & 1/3 & 2/3 \end{bmatrix} $$
+
+b) Using the matrix from (a), find the projection of $(2,1,2)^T$ onto $W$.
+
+**Answer:**
+Let $\vec{x} = (2,1,2)^T$. We find the projection by calculating ${\bf P}\vec{x}$.
+$$ {\bf P}\vec{x} = \begin{bmatrix} 2/3 & 1/3 & -1/3 \\ 1/3 & 2/3 & 1/3 \\ -1/3 & 1/3 & 2/3 \end{bmatrix} \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix} = \begin{bmatrix} (4/3) + (1/3) - (2/3) \\ (2/3) + (2/3) + (2/3) \\ (-2/3) + (1/3) + (4/3) \end{bmatrix} = \begin{bmatrix} 3/3 \\ 6/3 \\ 3/3 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix} $$
+Thus $(1,2,1)^T$ is the projection onto the space $W$.
+
+### Problem 4 
+
+Consider the helix in $\mathbb{R}^3$ parameterized by the equation $$t\mapsto \vec{r}(t) = \begin{bmatrix} \cos t \\ \sin t \\ t\end{bmatrix} \qquad t\in(-\infty,\infty).$$ Find the unit tangent vector and the unit normal vector at the point corresponding to $t = \pi/2$.
+
+**Answer:**
+To find the unit tangent vector, we need to get the derivative of $\vec{r}(t)$ with respect to $t$.
+$$ \frac{d\vec{r}}{dt} = \begin{bmatrix} -\sin t \\ \cos t \\ 1 \end{bmatrix} $$
+Thus the slope (tangent vector) at $t=\pi/2$ is:
+$$ \vec{r}'(\pi/2) = \begin{bmatrix} -\sin(\pi/2) \\ \cos(\pi/2) \\ 1 \end{bmatrix} = \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} $$
+Normalizing this vector to find the unit tangent vector $\vec{T}$:
+$$ ||\vec{r}'(\pi/2)|| = \sqrt{(-1)^2 + 0^2 + 1^2} = \sqrt{2} $$
+$$ \vec{T}(\pi/2) = \frac{1}{\sqrt{2}}\begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix} -1/\sqrt{2} \\ 0 \\ 1/\sqrt{2} \end{bmatrix} = \begin{bmatrix} -\sqrt{2}/2 \\ 0 \\ \sqrt{2}/2 \end{bmatrix} $$
+The unit normal vector is orthogonal to the unit tangent vector. Thus their dot product is 0.
+$$ \begin{bmatrix} -\sqrt{2}/2 \\ 0 \\ \sqrt{2}/2 \end{bmatrix} \cdot \vec{x} = 0 $$
+One such vector is $\vec{x} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}$. Normalizing this vector gives a unit normal vector $\vec{N}$:
+$$ ||\vec{x}|| = \sqrt{1^2 + 0^2 + 1^2} = \sqrt{2} $$
+$$ \vec{N}(\pi/2) = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1/\sqrt{2} \\ 0 \\ 1/\sqrt{2} \end{bmatrix} = \begin{bmatrix} \sqrt{2}/2 \\ 0 \\ \sqrt{2}/2 \end{bmatrix} $$
+
+### Problem 5
+
+Consider the helix from problem 4.  Find the arclength of the path along the helix connecting points $(1,0,0)^T$ and $(1,0,2\pi)^T$.
+
+**Answer:**
+The arc length $L$ is given by the integral $L = \int_a^b ||\frac{d\vec{r}}{dt}|| dt$.
+The position on our curve is $\vec{r}(t) = (\cos t, \sin t, t)^T$.
+The positions $t$ of the endpoints are:
+For $(1,0,0)^T \implies t=0$.
+For $(1,0,2\pi)^T \implies t=2\pi$.
+As previously stated, the derivative of $\vec{r}(t)$ is $\frac{d\vec{r}}{dt} = \begin{bmatrix} -\sin t \\ \cos t \\ 1 \end{bmatrix}$.
+The magnitude of this is $||\frac{d\vec{r}}{dt}|| = \sqrt{(-\sin t)^2 + (\cos t)^2 + 1^2} = \sqrt{\sin^2 t + \cos^2 t + 1} = \sqrt{1+1} = \sqrt{2}$.
+$$ L = \int_0^{2\pi} \sqrt{2} dt = [\sqrt{2}t]_0^{2\pi} = \sqrt{2}(2\pi) - 0 = 2\pi\sqrt{2} $$
+The arc length is $2\pi\sqrt{2}$.
+
+### Problem 6
+
+Let ${\bf A}$ be a $m\times n$ real-valued matrix. Show that ${\bf A}{\bf A}^T$ is positive semi-definite (all its eigenvalues are real and nonnegative).
+
+**Answer:**
+A matrix ${\bf M}$ is positive semi-definite if $\vec{x}^T{\bf M}\vec{x} \ge 0$ for all non-zero vectors $\vec{x}$.
+We must show that $\vec{x}^T({\bf A}{\bf A}^T)\vec{x} \ge 0$ for all $\vec{x} \in \mathbb{R}^m$.
+Rewrite the expression:
+$$ \vec{x}^T{\bf A}{\bf A}^T\vec{x} = (\vec{x}^T{\bf A})({\bf A}^T\vec{x}) = ({\bf A}^T\vec{x})^T({\bf A}^T\vec{x}) $$
+Let $\vec{y} = {\bf A}^T\vec{x}$. The expression becomes $\vec{y}^T\vec{y}$.
+This is the dot product of a vector with itself, which is equivalent to the squared Euclidean norm of the vector, $||\vec{y}||^2$.
+$$ \vec{y}^T\vec{y} = \sum_{i=1}^n y_i^2 = ||\vec{y}||^2 $$
+The sum of squares is always greater than or equal to zero.
+Thus, $\vec{x}^T{\bf A}{\bf A}^T\vec{x} \ge 0$, so the expression holds and ${\bf A}{\bf A}^T$ is Positive Semi-Definite (PSD).
+
+### Problem 7
+
+Let $A$ be an $m\times m$ matrix with constant entries $A_{ij} = a_{ij}$ for $1\le i \le j \le m$  and $\vec{x}= (x_1, \dots, x_m)^T$ be a vector in $\mathbb{R}^m$.  
+
+a) Calculate $$\nabla\bigg(\vec{x}^T A \vec{x}\bigg)$$ where $\nabla = \bigg(\frac{\partial}{\partial x_1}, \dots, \frac{\partial}{\partial x_m}\bigg)^T.$ *For full credit, your final answer cannot contain any summation notation.*
+
+**Answer:**
+This is the quadratic form. It is known that the derivative of the quadratic form is $\nabla(\vec{x}^T{\bf A}\vec{x}) = ({\bf A} + {\bf A}^T)\vec{x}$.
+For completeness, I will show this is true. Let $f(\vec{x}) = \vec{x}^T{\bf A}\vec{x} = \sum_{i=1}^m \sum_{j=1}^m x_i A_{ij} x_j$.
+We need to find the partial derivative with respect to each $x_k$.
+$$ \frac{\partial f(\vec{x})}{\partial x_k} = \frac{\partial}{\partial x_k} \left( \sum_{i=1}^m \sum_{j=1}^m x_i A_{ij} x_j \right) $$
+Using the product rule, the derivative is non-zero only for terms where $i=k$ or $j=k$.
+$$ \frac{\partial f(\vec{x})}{\partial x_k} = \sum_{j=1}^m A_{kj}x_j + \sum_{i=1}^m x_i A_{ik} $$
+The first term, $\sum_{j=1}^m A_{kj}x_j$, is the $k$-th element of the vector ${\bf A}\vec{x}$.
+The second term, $\sum_{i=1}^m x_i A_{ik} = \sum_{i=1}^m A_{ik}^T x_i$, is the $k$-th element of the vector ${\bf A}^T\vec{x}$.
+So the $k$-th component of the gradient is $({\bf A}\vec{x})_k + ({\bf A}^T\vec{x})_k = (({\bf A} + {\bf A}^T)\vec{x})_k$.
+Thus, the gradient vector is:
+$$ \nabla(\vec{x}^T{\bf A}\vec{x}) = ({\bf A} + {\bf A}^T)\vec{x} $$
+
+b) Calculate the Hessian matrix $H$ where $$H_{ij} = \frac{\partial^2}{\partial x_i \partial x_j}\bigg(\vec{x}^T A \vec{x}\bigg).$$ *For full credit your answer cannot contain any summation notation.*
+
+**Answer:**
+We take the second derivative.
+$$ H_{ij} = \frac{\partial}{\partial x_i} \left( \frac{\partial}{\partial x_j}(\vec{x}^T{\bf A}\vec{x}) \right) = \frac{\partial}{\partial x_i} \left[ ({\bf A} + {\bf A}^T)\vec{x} \right]_j $$
+The $j$-th component of $({\bf A} + {\bf A}^T)\vec{x}$ is $\sum_{k=1}^m (A_{jk} + A_{kj})x_k$.
+$$ H_{ij} = \frac{\partial}{\partial x_i} \left( \sum_{k=1}^m (A_{jk} + A_{kj})x_k \right) $$
+The derivative with respect to $x_i$ is non-zero only when $k=i$.
+$$ H_{ij} = A_{ji} + A_{ij} $$
+This is the $(i,j)$-th entry of the matrix ${\bf A}^T + {\bf A}$.
+Thus,
+$$ {\bf H} = {\bf A} + {\bf A}^T $$
+
+c) Let ${\nabla}_A$ denote the matrix of partial derivatives with respect to the entries of ${\bf A}$, i.e. $({\nabla}_A)_{ij} = \partial/\partial{a_{ij}}$.  Find $\nabla_A(\vec{x}^T{\bf A}\vec{x})$ (this is the matrix where each entry corresponds to the partial derivative of $\vec{x}^T {\bf A}\vec{x}$ with respect to the corresponding entry of ${\bf A}$. *For full credit your answer cannot contain any summation notation.*
+
+**Answer:**
+We are finding $\nabla_A(\vec{x}^T{\bf A}\vec{x})$. First, write out the quadratic form in summation notation.
+$$ \vec{x}^T{\bf A}\vec{x} = \sum_{i=1}^m \sum_{j=1}^m x_i a_{ij} x_j $$
+Now we take the partial derivative with respect to an arbitrary entry $a_{kl}$ of the matrix ${\bf A}$.
+$$ \frac{\partial}{\partial a_{kl}}(\vec{x}^T{\bf A}\vec{x}) = \frac{\partial}{\partial a_{kl}} \left( \sum_{i=1}^m \sum_{j=1}^m x_i a_{ij} x_j \right) $$
+The derivative is zero for all terms in the summation except for the one where $i=k$ and $j=l$.
+$$ \frac{\partial}{\partial a_{kl}}(x_k a_{kl} x_l) = x_k x_l $$
+This is the entry in the $k$-th row and $l$-th column of the resulting matrix. The matrix whose $(k,l)$-th entry is $x_k x_l$ is the outer product of $\vec{x}$ with itself.
+$$ \nabla_A(\vec{x}^T{\bf A}\vec{x}) = \vec{x}\vec{x}^T $$
+# R Coding 
+
+These problems are intended to assess your comfort with R syntax, loading packages and using associated help files, interacting with data frames, and generating figures.  
+
+### Problem 1 
+
+Later in the class, we'll use the package *dimRed* to implement several manifold learning methods.  You will need to install *dimRed* from CRAN and load the package for this problem.  Use the documentation for *dimRed* to find commands to list i) all available dimension reduction methods and ii) all data sets which come with the package.
+
+```{r, message=FALSE, warning=FALSE}
+# Install and load the dimRed package if not already installed
+if (!require("dimRed")) {
+  install.packages("dimRed")
+}
+library(dimRed)
+
+# List all available dimensionality reduction methods
+print("Available dimension reduction methods:")
+print(dimRedMethodList())
+
+```
+    
+### Problem 2
+
+The following script will download the [MovieLens 10M](https://grouplens.org/datasets/movielens/) dataset containing 10 million ratings of 10 thousand movies from 70 thousand reviewers.  The data frame *movielens* contains all ratings in the dataset.
+
+```{r}
+dl <- tempfile()
+download.file("http://files.grouplens.org/datasets/movielens/ml-10m.zip", dl)
+ratings <- fread(text = gsub("::", "\t",
+                             readLines(unzip(dl, "ml-10M100K/ratings.dat"))),
+                 col.names = c("userId", "movieId", "rating", "timestamp"))
+movies <- str_split_fixed(readLines(unzip(dl, "ml-10M100K/movies.dat")), "\\::", 3)
+colnames(movies) <- c("movieId", "title", "genres")
+movies <- as.data.frame(movies) %>%
+  mutate(movieId = as.numeric(movieId),
+         title = as.character(title),
+         genres = as.character(genres))
+movielens <- left_join(ratings, movies, by = "movieId")
+rm(movies,ratings,dl)
+```
+
+a) The statements regarding the number of movies and reviewers are only approximate. What are the exact number of movies and reviewers in the dataset?
+
+```{r}
+num_reviewers <- n_distinct(movielens$userId)
+
+num_movies <- n_distinct(movielens$movieId)
+
+cat("Exact number of reviewers:", num_reviewers, "\n")
+cat("Exact number of movies:", num_movies, "\n")
+```
+
+b) Remove all movies which have received 100 or fewer reviews. How many movies are left in the dataset?
+
+```{r}
+movie_review_counts <- movielens %>%
+  group_by(movieId) %>%
+  summarise(num_reviews = n())
+
+movies_to_keep <- movie_review_counts %>%
+  filter(num_reviews > 100)
+
+movielens_filtered <- movielens %>%
+  semi_join(movies_to_keep, by = "movieId")
+
+num_movies_left <- n_distinct(movielens_filtered$movieId)
+
+cat("Number of movies left after", num_movies_left, "\n")
+```
+
+c) Using the filtered dataset from part (b), calculate the average rating of each movie.  Plot a histogram of the average ratings. 
+
+```{r}
+# claculate
+avg_movie_ratings <- movielens_filtered %>%
+  group_by(movieId, title) %>%
+  summarise(avg_rating = mean(rating, na.rm = TRUE), .groups = 'drop')
+
+# plot 
+ggplot(avg_movie_ratings, aes(x = avg_rating)) +
+  geom_histogram(binwidth = 0.1, color = "black", fill = "skyblue") +
+  labs(title = "Histogram of Average Movie Ratings",
+       x = "Average Rating",
+       y = "Number of Movies") +
+  theme_minimal()
+```
+
+d) Based on the results above, which movie(s) had the highest and lowest average rating and what were the ratings?
+
+```{r}
+highest_rating <- max(avg_movie_ratings$avg_rating, na.rm = TRUE)
+highest_rated_movies <- avg_movie_ratings %>%
+  filter(avg_rating == highest_rating)
+
+lowest_rating <- min(avg_movie_ratings$avg_rating, na.rm = TRUE)
+lowest_rated_movies <- avg_movie_ratings %>%
+  filter(avg_rating == lowest_rating)
+
+cat("Movie(s) with the highest average rating:\n")
+print(highest_rated_movies)
+
+cat("\nMovie(s) with the lowest average rating:\n")
+print(lowest_rated_movies)
+
+```

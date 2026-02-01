@@ -1,0 +1,157 @@
+--- 
+title: 'STAT 185 - Problem Set #4'
+author: NAME
+output: 
+  pdf_document:
+---
+```{r, echo = FALSE, verbose = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE, warning = FALSE, fig.align = 'center')
+set.seed(1) # for reproducibility of results
+require("MASS")
+require("scatterplot3d")
+require("kernlab")
+load("pset4.Rdata")
+
+### custom functions to implement kPCA reconstructions
+plot_digit <- function(pixels){
+  image(1:28, 1:28, t(matrix(pixels,nrow = 28,byrow = T))[,28:1], 
+        xaxt='n', yaxt='n', xaxs = 'i',yaxs = 'i',xlab = '', ylab = '')
+}
+
+K <- function(x,y,sigma){
+  m <- nrow(x)
+  n <- nrow(y)
+  if (is.null(m)){
+    m <- 1; 
+    sx2 <-sum(x^2)
+    x <- as.matrix(x,nrow = 1)
+    } else {
+    sx2 <- rowSums(x^2)
+  }
+  if (is.null(n)){
+    n <- 1; 
+    sy2 <- sum(y^2)
+    y <- as.matrix(y, ncol = 1)
+    } else {
+    sy2 <- rowSums(y^2)
+    y <- t(y)
+  }
+  A <- matrix(rep(sx2,n), nrow = m, ncol = n, byrow = F)
+  B <- matrix(rep(sy2,m), nrow = m, ncol = n, byrow = T)
+  return(exp(-sigma*(A+B-2* x %*% y)))
+}
+
+reconstruct <- function(samples, kpca_fit, n_comp, tol = 1e-4, max_iter = 1e3){
+  rec <- as.matrix(samples)
+  n <- nrow(kpca_fit@pcv)
+  K.data <- K(kpca_fit@xmatrix,kpca_fit@xmatrix,
+         sigma=kpca_fit@kernelf@kpar$sigma)
+  H <- diag(rep(1,n)) - matrix(1/n,n,n)
+  HKH.eig <- eigen(H %*% K.data %*% H)
+  USinv <- HKH.eig$vectors[,1:n_comp] %*% diag(HKH.eig$values[1:n_comp]^-0.5)
+  
+  for (j in 1:nrow(rec)){
+    kx <- K(kpca_fit@xmatrix, rec[j,], sigma=kpca_fit@kernelf@kpar$sigma)
+    # gam <- kpca_fit@pcv[,1:n_comp] %*% diag(kpca_fit@eig[1:n_comp]^-2) %*% t(kpca_fit@pcv[,1:n_comp]) %*% (kx-rowSums(HKH)/n)
+    # gam <- kpca_fit@pcv[,1:n_comp] %*% t(kpca_fit@pcv[,1:n_comp]) %*% kx
+    gam <- USinv %*% t(USinv) %*% H %*% (kx-rowSums(K.data)/n)
+    # gam <- USinv %*% t(USinv) %*% H %*% kx
+    weights <- 1/n + gam - sum(gam)
+    # weights <- gam
+    
+    out <- colMeans(kpca_fit@xmatrix)
+    iter <- 0
+    dif = Inf
+    while(iter < max_iter && dif > tol){
+      old <- out
+      new_weight <- weights*as.vector(K(kpca_fit@xmatrix,old,sigma=kpca_fit@kernelf@kpar$sigma))
+      out <- t(new_weight) %*% kpca_fit@xmatrix / sum(new_weight)
+      dif <- sum((old-out)^2)
+      # print(iter)
+      # print(dif)
+      iter <- iter+1
+    }
+    rec[j,] <- out
+  }
+  return(rec)
+}
+#### 
+```
+## Instructions {.tabset}
+This assignment covers Multidimensional Scaling, kernel PCA, and manifold theory through a mixture of theory and coding.  You will need the file *pset4.Rdata* available on Canvas.  The commands for loading the data assume this file, *pset4-2024.Rmd*, and the Rdata file are in the same folder.
+
+You can use the command *cmdscale(d, k , eig = FALSE)* to compute the solution to the classical scaling problem. Here $d$ is a matrix of distances, $k$ is the dimension of the desired configuration, and the option *eig=TRUE* may be added so that eigenvalues are also reported.
+
+For metric MDS, use the command *sammon(d, k, trace = FALSE)* for metric MDS using Sammon's Stress.  Here $d$ is a matrix of distances, $k$ is the dimension of the desired configuration, and the option *trace = FALSE* stops reporting of the stress over iterations of the algorithm.
+
+Given a data matrix, all pairwise distances can be calculated using the command *dist(x)* where $x$ is the data matrix. The default method is the Euclidean distance. All of the above MDS commands require a matrix of distances or variable of type *dist* given by the output of the *dist()* function.
+
+You can use the code *out <- kpca(data,kernel = "kernelname", kpar = list("param_name" = param_value))* to implement kernel PCA. The kernel PCA scores can be accessed via *out@rotated* and the variances via *out@eig*.
+
+Complete the following questions and submit your solutions as a *pdf* by 11:59 PM on October 31st.
+
+#### Problem 1
+
+Consider noisy data near three concentric rings shown below
+```{r}
+plot(problem1[,1],problem1[,2],
+     col =c("red","black","blue")[c(rep(1,1e2),rep(2,1e2),rep(3,1e2))],
+     xlab = "", ylab = "")
+```
+a) Using kernel PCA with the quadratic kernel.  Find a value for the offset (which may be negative) such that there are three large kPCA variances and the remainder are small/neglible/zero.  Provide the value of the offset, a plot of the principal component variances, and three dimensional scatterplot of the kPCA scores.
+
+
+b) Repeat (b) using the rbf kernel. Choose $\sigma$ such that there are three large kPCA eigenvalues. Again, provide $\sigma$, a plot of the kPCA variances, and a 3d scatterplot of the kPCA scores.
+
+
+### Problem 2
+
+a. Suppose we have $d$-dimensional data $\vec{x}_1,\dots,\vec{x}_N$ from which we compute, the sample mean $\bar{x}$, principal component loadings which are the columns of ${\bf W} \in \mathbb{R}^{d\times d}$, the principal component variances $\lambda_1 \ge \dots \ge \lambda_d$, and principal component scores $${\bf Y} = {\bf (H X) W} = \begin{bmatrix} \vec{x}_1^T - \bar{x}^T \\ \vdots \\ \vec{x}_N^T - \bar{x}^T \end{bmatrix} {\bf W}.$$  Give a formula for the principal component scores $\vec{z}_0$ of $\vec{x}_0$ based on the sample mean and loadings obtained from our original data.
+
+b. In class, we showed how to compute the kernel principal component scores from an uncentered kernel matrix ${\bf K}$. We compute the eigendecomposition of ${\bf HKH} = {\bf \hat{U} S^2 \hat{U}}^T$ from which we get kernel PC scores ${\bf \hat{U} S}$, Suppose we have the inner product vector $$\vec{k}_0 = \left[k(\vec{x}_1,\vec{x}_0), \dots, k(\vec{x}_N,\vec{x}_0)\right]^T,$$ containing the $N$ feature vector inner-products between a new point $\vec{x}_0$ and each of the $\vec{x}_i$ in our original dataset. Show that the (centered) projections of $\vec{x}_0$ onto the kernel principal component loadings are given by $$\vec{z}_0 = {\bf S}^{-1}{\bf U}^T{\bf H}\left[\vec{k}_0 - \frac{1}{N} {\bf K}\vec{1}_N\right].$$
+
+#### Problem 3
+
+Let $A = (0,2\pi)\times (0,2\pi)$ be a subset of $\mathbb{R}^2$. Consider the manifold map $\Psi:A\mapsto\mathcal{M} \subset \mathbb{R}^4$ given by the equation $$\Psi(x,y) = \begin{bmatrix} \cos(x)\sin(y)\\ \cos(x)\cos(y) \\ \sin(x)\sin(y) \\ \sin(x)\cos(y) \end{bmatrix}.$$
+
+a) Compute the Jacobian of $\Psi$.
+
+b) Give a basis $T_{\vec{p}}(\mathcal{M})$ at $\vec{p}=(0,1,0,0)^T$.
+
+c) Is $\Psi$ an isometry? If not, is it a local isometry?
+
+#### Problem 4
+
+The variable *problem2* contains $10^4$ samples from a manifold in $\mathbb{R}^4$.  Use the SVD to estimate the dimension of the tangent space at $(0,0,1,0)$.
+
+#### Problem 5
+
+Let's return to the movielens database from psets 1 and 3.  Recall, for the recommender system we sought a low rank matrix $\tilde{\bf X}=\hat{\bf U}\hat{\bf S}\hat{\bf V}^T$ that approximates to observed ratings well. Here ${\bf V}^T \in \mathbb{R}^{k\times d}$ has one column for each movie that users could rate. Consequently, we can view each $\hat{V}$ as a data matrix with one movie per row with columns corresponding to the intensity of whatever latent structure the SVD used to learn the movie ratings.  
+
+a) The variable *problem5* contains a data matrix built by the approach above using rank $k=10$ for the 42 most rated movies in the dataset -- the first few rows are shown below. 
+
+```{r}
+knitr::kable(head(round(problem5,2)))
+```
+
+Using pairwise distances, show a plot of the minimal Sammon stress in dimensions one through 8.  Based on these results, is there a dimension you would recommend for your configuration?
+
+b) Use the results from a two-dimensional configuration obtained by Sammong mapping to generate a two-dimensional visualization of the data. Add the movie title to each point.  
+
+c) Do different directions in the configuration you found in part (a) correspond to any discernible themes, genres, styles, etc?
+
+#### Problem 6 (UL in Action) 
+
+As discussed in class, one application of kernel PCA is for denoising data.  In this problem, we'll explore how kPCA reconstructions can be used to tune kernel PCA and denoise data.  The function **recons(sample, kpca_fit, n_comp)** finds the reconstruction for sample point(s), *samples*, given a kernel pca fit, *kpca\_fit* using a specific number of component, *n\_comp*.
+
+For this problem, we'll be working with noisy versions of the MNIST dataset. One example is shown below.
+
+```{r, fig.align='center',fig.cap="1st noisy image in the training set"}
+plot_digit(noisy_digits_train[1,])
+```
+
+a) *Tuning kPCA* We'll begin by using a simplified version of cross-validation to choose $\sigma$ from among the values $5\times10^{-10},10^{-9},5\times 10^{-9},10^{-8}, 5\times 10^{-8}, 10^{-7},5\times 10^{-7},$ and $10^{-6}.$  For each value of $sigma$, run kPCA using the rbf kernel on the training data, *noisy\_digits\_train*.  Then, use the results of the fitted kernel PCA to build reconstructions of the test data in *noisy\_digits\_test*.  For each reconstruction and value of $\sigma$, use 50 principal components. Compute the mean squared error of the reconstructions vs the original noisy data.  Plot the MSE as a function of $\sigma$.  Which value minimizes MSE?
+
+b) Using the value of $\sigma$ found in part (a), pool the train and test data into a larger data set and run kernel PCA on these data.  Then, build reconstructions of the first three samples in the full data set, *noisy\_digits\_all*. Plot the results below.
+
+c) Build approximations to the first two samples in *noisy\_digits\_all* using the first 50 loadings and mean vector computed from PCA applied to the pooled test and train data.  Some the approximate images of the noisy digits. How do these results compare to part (b)?

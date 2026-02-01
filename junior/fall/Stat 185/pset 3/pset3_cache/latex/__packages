@@ -1,0 +1,11 @@
+registry
+rngtools
+cluster
+BiocGenerics
+Biobase
+NMF
+Matrix
+irlba
+foreach
+iterators
+doParallel
