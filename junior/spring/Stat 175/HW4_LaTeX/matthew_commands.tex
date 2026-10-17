@@ -1,0 +1,165 @@
+\usepackage{mathtools}
+\usepackage[margin=0.95in]{geometry}
+%\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{pgfplots}
+\usepackage{pgf}
+\usepackage{centernot}
+\usetikzlibrary{arrows,automata}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{multirow}
+%\usepackage{bbold}
+\usepackage{changepage}
+\pgfplotsset{compat = newest}
+\usepackage{gensymb}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{stmaryrd}
+\usepackage[table]{xcolor}
+\usepackage{listings}
+\definecolor{background}{RGB}{255,248,197}
+\definecolor{gb}{RGB}{66, 133, 244}
+\definecolor{gr}{RGB}{234, 67, 53}
+\definecolor{gy}{RGB}{251, 188, 5}
+\definecolor{gg}{RGB}{52, 168, 83}
+\usepackage{color}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black,
+urlcolor=blue, linktoc=all}
+\setcounter{MaxMatrixCols}{20}
+\usepackage{witharrows}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{tabu}
+\usepackage[most]{tcolorbox} %[enhanced,boxrule=0pt, frame hidden, sharp corners, borderline west={3pt}{-1.5pt}{black},breakable]
+\usepackage{amsthm}
+\usepackage{xfrac}
+\usepackage{commath}
+\usepackage{dirtytalk}
+\usepackage{ytableau}
+\newcommand{\inv}{^{-1}}
+\newcommand{\qtq}[1]{\quad\text{#1}\quad}
+\newcommand{\txt}[1]{\ \text{#1}\ }
+\renewcommand{\ker}{\text{ker}}
+\newcommand{\coker}{\text{coker}}
+\newcommand{\Cor}{\text{Cor}_G(H)}
+\newcommand{\ind}{\xrightarrow{d}}
+\newcommand{\inp}{\xrightarrow{P}}
+\newcommand{\almo}{\xrightarrow{\text{a.s}}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\zmod}[1]{\Z/ #1 \Z}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\lip}{\langle}
+\newcommand{\rip}{\rangle}
+\DeclareSymbolFont{symbolsC}{U}{txsyc}{m}{n}
+\DeclareMathSymbol{\indep}{\mathrel}{symbolsC}{121}
+\newcommand{\newpar}{\vspace{8pt}}
+\renewcommand{\phi}{\varphi}
+\newcommand{\ptwo}{p_\Lambda^{(2)}}
+\newcommand{\pthree}{p_\Lambda^{(3)}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\theta}{\vartheta}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\deg}{deg}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\limeaunf}{limea\"unf}
+\newcommand{\Ree}{\text{Re}}
+\newcommand{\Imm}{\text{Im}}
+\newcommand{\iid}{\stackrel{\text{i.i.d}}{\sim}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\Span}{\text{span}}
+\newcommand{\Int}{\text{Int}}
+\newcommand{\Clos}{\text{Clos}}
+\newcommand{\ideal}{\mathfrak{A}}
+\newcommand{\idm}{\mathfrak{m}}
+\newcommand{\idn}{\mathfrak{n}}
+\newcommand{\idp}{\mathfrak{p}}
+\newcommand{\idq}{\mathfrak{q}}
+\newcommand{\limty}{\lim_{n\to\infty}}
+\newcommand{\seq}[1]{(#1_n)_{n\geq1}}
+\newcommand{\leteps}{\text{Let } \varepsilon > 0}
+\renewcommand{\char}{\text{char}}
+\newcommand{\mb}[1]{\bm{#1}}
+\newcommand{\nil}{\text{nil}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand\bigzero{\makebox(0,0){\text{\huge0}}}
+\renewcommand{\div}{\text{div}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\zd}{\text{zd}}
+\newcommand{\normal}{\vartriangleleft}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Inn}{\text{Inn}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\Vol}{\text{Vol}}
+\newcommand{\sip}{(\ \ \mid\ \ )}
+\newcommand{\intfin}{\int_{-\infty}^{\infty}}
+\newcommand{\sumi}[1]{\sum_{i=1}^{#1}}
+\newcommand{\ren}[1]{\mathbb{R}^{#1}}
+\newcommand{\con}[1]{\mathbb{C}^{#1}}
+\newcommand{\chisq}[1]{\chi^2_{#1}}
+\newcommand{\orthcomp}{^{\perp}}
+\newcommand{\im}{\text{im}}
+\newenvironment{graytext}{\color{gray}}{\ignorespacesafterend}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\var}{\text{var}}
+\renewcommand{\l}{\left}
+\renewcommand{\r}{\right}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\mathtoolsset{showonlyrefs} 
+\usepackage[utf8]{inputenc}
+\setlength\parindent{0pt}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstdefinestyle{python2}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red!60!black},
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    tabsize=4,
+    breaklines=true,
+}

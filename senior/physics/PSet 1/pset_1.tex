@@ -1,0 +1,2306 @@
+\documentclass[11pt]{article}
+
+% -------------------------------------------------
+% Packages
+% -------------------------------------------------
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% -------------------------------------------------
+% Formatting
+% -------------------------------------------------
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+\setlist[enumerate]{
+    label=\alph*),
+    leftmargin=2em,
+    itemsep=1.2em
+}
+
+\pagestyle{plain}
+
+\newcommand{\problem}[1]{%
+    \vspace{1em}
+    {\large\bfseries #1}
+    \par
+    \vspace{0.4em}
+}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+
+% -------------------------------------------------
+% Document
+% -------------------------------------------------
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Problem Set 1}}\\[0.4em]
+    {\large Physics 286/AP 286/MCB 198}\\[0.25em]
+    {\large Fall 2026}\\[0.4em]
+    {\large \textbf{Due September 23}}
+\end{center}
+
+\vspace{0.8em}
+
+Please do not use LLMs or other AI tools for problems requiring
+pencil-and-paper work. You are welcome to discuss the problems with your
+classmates, but write your solutions independently after your discussions.
+Please name the people with whom you discussed the problems in the solutions
+you submit.
+
+% =================================================
+% Problem I.1
+% =================================================
+
+\problem{OPTIONAL FOR EVERYBODY: Problem I.1 The Hat Game and the Cost of Coordination}
+
+Three players---Alice, Bob, and Charlie---are each randomly assigned either
+a red or a blue hat. Each player can see everyone else's hat but not their
+own. They are not allowed to communicate once the game begins, but they may
+agree on a strategy beforehand.
+
+After observing the other two hats, each player may either guess the color
+of their own hat or pass. The team wins if at least one player guesses
+correctly and no player guesses incorrectly.
+
+\begin{enumerate}
+
+\item Suppose each player guesses at random, independently, or suppose
+that all players always pass. What is the probability that the team wins?
+
+If all three guess randomly, each individual guess is correct with
+probability \(1/2\). Since a single wrong guess makes the team lose, all
+three have to be correct:
+
+\[
+P(\text{win})
+=
+\left(\frac12\right)^3
+=
+\frac18.
+\]
+
+If everyone passes, there is no correct guess, so
+
+\[
+P(\text{win})=0.
+\]
+
+\item Show that if the players coordinate in advance, they can use a
+strategy that increases their probability of winning above chance.
+What is the best strategy, and what is the resulting win probability?
+
+Use the following rule:
+
+\[
+\begin{cases}
+\text{if the other two hats match, guess the opposite color},\\
+\text{if the other two hats differ, pass}.
+\end{cases}
+\]
+
+For example, suppose the hats are \(RRB\). The player wearing blue sees
+\(RR\), so they guess blue. The other two players each see one red and one
+blue, so they pass. Thus the team wins.
+
+The same thing happens whenever exactly one hat differs from the other two.
+There are
+
+\[
+\binom31(2)=6
+\]
+
+such assignments. The only losing assignments are
+
+\[
+RRR,\qquad BBB.
+\]
+
+Therefore
+
+\[
+P(\text{win})=\frac68=\frac34.
+\]
+
+For optimality, think of the \(8\) hat assignments as the vertices of a cube.
+If an assignment is winning, flip the hat of a player who guessed correctly.
+The new assignment must be losing, since that player's observation does not
+change but their guess becomes wrong.
+
+Thus every winning vertex is adjacent to a losing vertex. Each losing vertex
+has only \(3\) neighbors, so if \(W\) is the number of winning states and
+\(L\) the number of losing states,
+
+\[
+W\leq 3L.
+\]
+
+Also
+
+\[
+W+L=8.
+\]
+
+Hence
+
+\[
+W\leq 3(8-W),
+\]
+
+so
+
+\[
+4W\leq 24
+\]
+
+and therefore
+
+\[
+W\leq 6.
+\]
+
+So the \(6/8=3/4\) strategy is optimal.
+
+\item Let us quantify the information available to each player. How
+many bits of uncertainty does each player have about their own hat?
+How much information is available from seeing the other players' hats?
+
+A player's own hat is a fair binary random variable, so
+
+\[
+H(\text{own})
+=
+-\frac12\log_2\frac12
+-\frac12\log_2\frac12
+=
+1\text{ bit}.
+\]
+
+The other two hats have four equally likely possibilities,
+
+\[
+RR,\ RB,\ BR,\ BB,
+\]
+
+so their entropy is
+
+\[
+H(\text{other two})=\log_2 4=2\text{ bits}.
+\]
+
+But the hats are assigned independently. Therefore seeing the other two
+does not tell a player anything about their own hat:
+
+\[
+H(\text{own}\mid\text{other two})
+=
+H(\text{own})
+=
+1.
+\]
+
+Thus
+
+\[
+I(\text{own};\text{other two})
+=
+H(\text{own})-H(\text{own}\mid\text{other two})
+=
+0.
+\]
+
+\item Design a variant of this game in which each player wears one of
+four hat colors instead of two. Is there still a winning strategy that
+performs better than chance? What principles from information theory
+might be useful?
+
+Label the four colors
+
+\[
+0,1,2,3\pmod 4.
+\]
+
+Beforehand, agree to act as though the total color sum should satisfy
+
+\[
+x_1+x_2+x_3=0\pmod 4.
+\]
+
+Each player sees the other two colors and guesses the unique color that
+would make the sum \(0\pmod4\).
+
+For example, player \(1\) guesses
+
+\[
+\hat x_1=-(x_2+x_3)\pmod4.
+\]
+
+All three guesses are correct exactly when the actual colors satisfy
+
+\[
+x_1+x_2+x_3=0\pmod4.
+\]
+
+For any choices of \(x_1,x_2\), exactly one of the four possible values of
+\(x_3\) makes this true. Thus
+
+\[
+P(\text{win})=\frac14.
+\]
+
+By comparison, if all three independently guess one of four colors,
+
+\[
+P(\text{all correct})
+=
+\left(\frac14\right)^3
+=
+\frac1{64}.
+\]
+
+So coordination again helps substantially. The useful ideas are
+\(q\)-ary codes, modular checksums, parity constraints, and Hamming distance.
+
+\item Suppose the referee tells the players the parity---that is,
+whether the number of red hats is even or odd. How does this change
+the information content of each observation, and how would you modify
+the strategy?
+
+Without the parity bit, after seeing the other two hats a player still has
+
+\[
+H(\text{own}\mid\text{other two})=1\text{ bit}
+\]
+
+of uncertainty.
+
+Now suppose the parity is also given. If a player sees the other two hats,
+they know whether those two contain an even or odd number of red hats.
+Comparing that with the announced total parity determines their own hat.
+
+For example, if the total parity is odd and the player sees two red hats,
+then the visible hats contribute an even number of reds, so their own hat
+must be red.
+
+Therefore
+
+\[
+H(\text{own}\mid\text{other two, parity})=0.
+\]
+
+The parity supplies exactly the missing information needed to determine
+the player's hat. All three players can infer their hats exactly, so
+
+\[
+P(\text{win})=1.
+\]
+
+\end{enumerate}
+
+% =================================================
+% Problem I.2
+% =================================================
+
+\problem{Problem I.2: Evaluating Kullback--Leibler Distances Between Gaussian Distributions}
+
+Consider
+
+\[
+p(x)=\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left[-\frac{(x-\mu_1)^2}{2\sigma^2}\right]
+\]
+
+and
+
+\[
+q(x)=\frac{1}{\sqrt{2\pi}}
+\exp\left[-\frac{(x-\mu_2)^2}{2}\right].
+\]
+
+\begin{enumerate}
+
+\item Evaluate the Kullback--Leibler distance between \(p(x)\) and \(q(x)\).
+
+Start with
+
+\[
+\KL(p\|q)
+=
+\int p(x)\log\frac{p(x)}{q(x)}\,dx.
+\]
+
+The log ratio is
+
+\[
+\log\frac{p(x)}{q(x)}
+=
+-\frac12\log\sigma^2
+-\frac{(x-\mu_1)^2}{2\sigma^2}
++\frac{(x-\mu_2)^2}{2}.
+\]
+
+Take expectation under \(p\):
+
+\[
+\KL(p\|q)
+=
+-\frac12\log\sigma^2
+-\frac{1}{2\sigma^2}
+\E_p[(X-\mu_1)^2]
++\frac12\E_p[(X-\mu_2)^2].
+\]
+
+Since \(X\sim N(\mu_1,\sigma^2)\),
+
+\[
+\E_p[(X-\mu_1)^2]=\sigma^2.
+\]
+
+Also,
+
+\[
+X-\mu_2
+=
+(X-\mu_1)+(\mu_1-\mu_2),
+\]
+
+so
+
+\[
+\E_p[(X-\mu_2)^2]
+=
+\sigma^2+(\mu_1-\mu_2)^2.
+\]
+
+Substituting,
+
+\begin{align*}
+\KL(p\|q)
+&=
+-\frac12\log\sigma^2
+-\frac12
++\frac12\left[
+\sigma^2+(\mu_1-\mu_2)^2
+\right] \\
+&=
+\frac12
+\left[
+\sigma^2+(\mu_1-\mu_2)^2-1-\log\sigma^2
+\right].
+\end{align*}
+
+\item Find the value of \(\mu_1\) that minimizes this distance for fixed
+\(\mu_2\) and \(\sigma\).
+
+Only the term
+
+\[
+\frac12(\mu_1-\mu_2)^2
+\]
+
+depends on \(\mu_1\). Differentiate:
+
+\[
+\frac{\partial \KL}{\partial\mu_1}
+=
+\mu_1-\mu_2.
+\]
+
+Set this equal to zero:
+
+\[
+\mu_1-\mu_2=0,
+\]
+
+so
+
+\[
+\mu_1=\mu_2.
+\]
+
+The second derivative is
+
+\[
+\frac{\partial^2\KL}{\partial\mu_1^2}=1>0,
+\]
+
+so this is indeed the minimum.
+
+\end{enumerate}
+
+% =================================================
+% Problem I.3
+% =================================================
+
+\problem{Problem I.3: Mo's Variational Compression Scheme}
+
+Jen sends data to Mo. Each data point \(x\in\mathbb N\) is independently drawn
+from a Poisson distribution with mean \(\lambda>0\):
+
+\[
+P_\lambda(x)=\frac{\lambda^x e^{-\lambda}}{x!}.
+\]
+
+Mo assumes instead a Gaussian model
+
+\[
+Q_{\mu,\sigma}(x)=\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]
+\]
+
+and minimizes
+
+\[
+\KL(P_\lambda\|Q_{\mu,\sigma})
+=
+\sum_{x=0}^{\infty}
+P_\lambda(x)
+\log\frac{P_\lambda(x)}{Q_{\mu,\sigma}(x)}.
+\]
+
+\begin{enumerate}
+
+\item Explain why minimizing this KL divergence is sensible from the
+perspective of data compression.
+
+If Mo uses \(Q\) to encode data actually generated from \(P\), the expected
+code length is proportional to
+
+\[
+\E_P[-\log Q(X)].
+\]
+
+The optimal expected length, if Mo knew the true distribution, would be
+
+\[
+\E_P[-\log P(X)].
+\]
+
+The difference is
+
+\begin{align*}
+\E_P[-\log Q(X)]
+-
+\E_P[-\log P(X)]
+&=
+\E_P\left[
+\log\frac{P(X)}{Q(X)}
+\right] \\
+&=
+\KL(P\|Q).
+\end{align*}
+
+Thus KL divergence is exactly the extra expected coding cost from using
+\(Q\) instead of \(P\). Minimizing it minimizes the compression overhead.
+
+\item Show that the KL divergence, up to a constant independent of
+\(\mu,\sigma\), has the stated form.
+
+Write
+
+\[
+\KL(P_\lambda\|Q_{\mu,\sigma})
+=
+\E_{P_\lambda}
+\left[
+\log P_\lambda(X)
+-
+\log Q_{\mu,\sigma}(X)
+\right].
+\]
+
+The first term does not depend on \(\mu\) or \(\sigma\), so it can be absorbed
+into a constant.
+
+For the Gaussian,
+
+\[
+-\log Q_{\mu,\sigma}(X)
+=
+\frac12\log(2\pi\sigma^2)
++
+\frac{(X-\mu)^2}{2\sigma^2}.
+\]
+
+Hence
+
+\[
+\KL(P_\lambda\|Q_{\mu,\sigma})
+=
+\E_{P_\lambda}
+\left[
+\frac{(X-\mu)^2}{2\sigma^2}
++
+\frac12\log(2\pi\sigma^2)
+\right]
++\text{const.}
+\]
+
+\item Using \(\E[X]=\lambda\) and \(\Var(X)=\lambda\), derive the optimal
+\(\mu\) and \(\sigma\).
+
+First expand
+
+\[
+X-\mu
+=
+(X-\lambda)+(\lambda-\mu).
+\]
+
+Therefore
+
+\begin{align*}
+\E[(X-\mu)^2]
+&=
+\E[(X-\lambda)^2]
++2(\lambda-\mu)\E[X-\lambda]
++(\lambda-\mu)^2 \\
+&=
+\lambda+(\lambda-\mu)^2,
+\end{align*}
+
+because
+
+\[
+\E[X-\lambda]=0,
+\qquad
+\E[(X-\lambda)^2]=\Var(X)=\lambda.
+\]
+
+Ignoring constants, the objective is therefore
+
+\[
+F(\mu,\sigma)
+=
+\frac{\lambda+(\lambda-\mu)^2}{2\sigma^2}
++
+\frac12\log(2\pi\sigma^2).
+\]
+
+Differentiate with respect to \(\mu\):
+
+\[
+\frac{\partial F}{\partial\mu}
+=
+\frac{\mu-\lambda}{\sigma^2}.
+\]
+
+Thus
+
+\[
+\mu=\lambda.
+\]
+
+Now substitute this back in:
+
+\[
+F(\lambda,\sigma)
+=
+\frac{\lambda}{2\sigma^2}
++
+\frac12\log(2\pi\sigma^2).
+\]
+
+It is a little cleaner to let
+
+\[
+v=\sigma^2.
+\]
+
+Then
+
+\[
+F(v)=\frac{\lambda}{2v}+\frac12\log(2\pi v).
+\]
+
+Differentiate:
+
+\[
+\frac{dF}{dv}
+=
+-\frac{\lambda}{2v^2}
++
+\frac{1}{2v}.
+\]
+
+Set equal to zero:
+
+\[
+-\frac{\lambda}{2v^2}
++
+\frac{1}{2v}
+=0.
+\]
+
+Multiply by \(2v^2\):
+
+\[
+-\lambda+v=0.
+\]
+
+Thus
+
+\[
+v=\lambda,
+\]
+
+so
+
+\[
+\sigma^2=\lambda
+\]
+
+and therefore
+
+\[
+\sigma=\sqrt{\lambda}.
+\]
+
+So the optimal parameters are
+
+\[
+\mu^*=\lambda,
+\qquad
+(\sigma^*)^2=\lambda.
+\]
+
+\item Briefly interpret your result.
+
+The minimizing Gaussian has
+
+\[
+\text{mean}=\lambda
+\]
+
+and
+
+\[
+\text{variance}=\lambda,
+\]
+
+which are exactly the mean and variance of the Poisson distribution.
+
+So in this KL direction, the best Gaussian in the allowed family matches
+the first two moments of the Poisson. For large \(\lambda\), this is also
+the usual Gaussian approximation to a Poisson random variable.
+
+\end{enumerate}
+
+% =================================================
+% Problem I.4
+% =================================================
+
+\problem{Problem I.4 Running a Casino}
+
+Suppose a coin has \(P(H)=p\) and \(P(T)=1-p\). A bet of \(x\) dollars on
+heads pays \(g_Hx\) if heads occurs, and a bet of \(x\) dollars on tails pays
+\(g_Tx\) if tails occurs. Define fair odds that do not bankrupt the casino in
+the long run.
+
+For a fair bet, the expected payout should equal the amount wagered.
+
+For a heads bet,
+
+\[
+\E[\text{payout}]
+=
+p(g_Hx)+(1-p)(0).
+\]
+
+Set this equal to the original stake \(x\):
+
+\[
+p g_H x=x.
+\]
+
+Assuming \(x\neq0\),
+
+\[
+p g_H=1,
+\]
+
+so
+
+\[
+g_H=\frac1p.
+\]
+
+Similarly, for tails,
+
+\[
+(1-p)g_Tx=x,
+\]
+
+which gives
+
+\[
+g_T=\frac{1}{1-p}.
+\]
+
+Thus fair payout multipliers are
+
+\[
+g_H=\frac1p,
+\qquad
+g_T=\frac{1}{1-p}.
+\]
+
+With these odds the expected net gain is zero for both the gambler and
+casino.
+
+% =================================================
+% Problem I.5
+% =================================================
+
+\problem{Problem I.5 Solving a Poorly Posed Problem Using Maximum Entropy}
+
+\textbf{Inferring models of cars.}
+
+Two models of cars of lengths \(\ell_1\) and \(\ell_2\) are loaded end-to-end
+onto a barge. Let \(n_1,n_2\) be the unknown counts, and suppose the only
+aggregate information is the ship length \(L\).
+
+Let
+
+\[
+P_{n_1,n_2}=P(n_1,n_2)
+\]
+
+be a probability distribution on nonnegative integer pairs
+\((n_1,n_2)\).
+
+The constraints are normalization,
+
+\[
+\sum_{n_1,n_2}P_{n_1,n_2}=1,
+\]
+
+and the known mean total length,
+
+\[
+\sum_{n_1,n_2}
+P_{n_1,n_2}
+(\ell_1n_1+\ell_2n_2)
+=
+L.
+\]
+
+We maximize the entropy
+
+\[
+S
+=
+-\sum_{n_1,n_2}
+P_{n_1,n_2}\log P_{n_1,n_2}.
+\]
+
+Introduce Lagrange multipliers \(\alpha,\beta\):
+
+\[
+\mathcal L
+=
+-\sum P\log P
+-\alpha\left(\sum P-1\right)
+-\beta
+\left[
+\sum P(\ell_1n_1+\ell_2n_2)-L
+\right].
+\]
+
+Differentiate with respect to one probability:
+
+\[
+\frac{\partial\mathcal L}{\partial P_{n_1,n_2}}
+=
+-\log P_{n_1,n_2}
+-1
+-\alpha
+-\beta(\ell_1n_1+\ell_2n_2)
+=0.
+\]
+
+Thus
+
+\[
+\log P_{n_1,n_2}
+=
+-1-\alpha
+-\beta(\ell_1n_1+\ell_2n_2),
+\]
+
+or, after absorbing the extra constant into the normalization,
+
+\[
+P(n_1,n_2)
+=
+\frac{
+e^{-\beta(\ell_1n_1+\ell_2n_2)}
+}{Z}.
+\]
+
+The partition function is
+
+\begin{align*}
+Z
+&=
+\sum_{n_1=0}^{\infty}
+\sum_{n_2=0}^{\infty}
+e^{-\beta\ell_1n_1}
+e^{-\beta\ell_2n_2} \\
+&=
+\left(
+\sum_{n_1=0}^{\infty}e^{-\beta\ell_1n_1}
+\right)
+\left(
+\sum_{n_2=0}^{\infty}e^{-\beta\ell_2n_2}
+\right).
+\end{align*}
+
+Each sum is geometric:
+
+\[
+\sum_{n=0}^{\infty}r^n=\frac{1}{1-r}.
+\]
+
+Hence
+
+\[
+Z
+=
+\frac{1}{
+(1-e^{-\beta\ell_1})
+(1-e^{-\beta\ell_2})
+}.
+\]
+
+The mean of each count is the mean of a geometric distribution:
+
+\[
+\E[n_i]
+=
+\frac{e^{-\beta\ell_i}}
+{1-e^{-\beta\ell_i}}
+=
+\frac{1}{e^{\beta\ell_i}-1}.
+\]
+
+Therefore the mean length constraint becomes
+
+\[
+\ell_1\E[n_1]+\ell_2\E[n_2]=L,
+\]
+
+so
+
+\[
+\frac{\ell_1}{e^{\beta\ell_1}-1}
++
+\frac{\ell_2}{e^{\beta\ell_2}-1}
+=
+L.
+\]
+
+This equation determines \(\beta\).
+
+Since
+
+\[
+P(n_1,n_2)
+\propto
+e^{-\beta(\ell_1n_1+\ell_2n_2)},
+\]
+
+the probability decreases as either \(n_1\) or \(n_2\) increases. Therefore,
+with only the average-length constraint, the literal mode is
+
+\[
+(n_1,n_2)=(0,0).
+\]
+
+This is a sign that the inference problem is poorly posed: imposing only an
+average total length is not the same as saying that every barge is filled to
+length \(L\).
+
+For
+
+\[
+(\ell_1,\ell_2,L)=(3,11,2000),
+\]
+
+solving
+
+\[
+\frac{3}{e^{3\beta}-1}
++
+\frac{11}{e^{11\beta}-1}
+=
+2000
+\]
+
+gives approximately
+
+\[
+\beta
+\approx
+9.96518\times10^{-4}.
+\]
+
+Then
+
+\[
+\E[n_1]
+=
+\frac{1}{e^{3\beta}-1}
+\approx333.998
+\]
+
+and
+
+\[
+\E[n_2]
+=
+\frac{1}{e^{11\beta}-1}
+\approx90.728.
+\]
+
+If instead the barge must be exactly filled in every realization, then the
+support should be restricted to pairs satisfying
+
+\[
+\ell_1n_1+\ell_2n_2=L.
+\]
+
+That would be a different maximum-entropy problem.
+
+% =================================================
+% Problem I.6
+% =================================================
+
+\problem{Problem I.6 Statistical Mechanics of Binding and Unbinding of Transcription Factors}
+
+Consider a particle with states \(i=1,\ldots,N\), probabilities \(p_i\), and
+energies \(E_i\), with fixed average energy
+\(\sum_i p_iE_i=\langle E\rangle\).
+
+\begin{enumerate}
+
+\item What distribution maximizes entropy? Define the partition function
+\(Z\), and evaluate \(-\partial\ln Z/\partial\beta\).
+
+We maximize
+
+\[
+S=-\sum_i p_i\log p_i
+\]
+
+subject to
+
+\[
+\sum_i p_i=1
+\]
+
+and
+
+\[
+\sum_i p_iE_i=\langle E\rangle.
+\]
+
+Using multipliers \(\alpha,\beta\),
+
+\[
+\mathcal L
+=
+-\sum_i p_i\log p_i
+-\alpha\left(\sum_i p_i-1\right)
+-\beta\left(\sum_i p_iE_i-\langle E\rangle\right).
+\]
+
+Differentiate:
+
+\[
+\frac{\partial\mathcal L}{\partial p_i}
+=
+-\log p_i-1-\alpha-\beta E_i=0.
+\]
+
+Therefore
+
+\[
+p_i\propto e^{-\beta E_i}.
+\]
+
+Normalizing gives
+
+\[
+p_i=\frac{e^{-\beta E_i}}{Z},
+\]
+
+where
+
+\[
+Z=\sum_i e^{-\beta E_i}.
+\]
+
+Now
+
+\[
+\frac{\partial\ln Z}{\partial\beta}
+=
+\frac1Z\frac{\partial Z}{\partial\beta}.
+\]
+
+Also
+
+\[
+\frac{\partial Z}{\partial\beta}
+=
+-\sum_i E_i e^{-\beta E_i}.
+\]
+
+Hence
+
+\begin{align*}
+-\frac{\partial\ln Z}{\partial\beta}
+&=
+\frac{1}{Z}
+\sum_i E_i e^{-\beta E_i} \\
+&=
+\sum_i E_i
+\frac{e^{-\beta E_i}}{Z} \\
+&=
+\sum_i p_iE_i \\
+&=
+\langle E\rangle.
+\end{align*}
+
+\item A cell of volume \(V\) contains transcription factor at concentration
+\(T\). The gene is unbound or bound by one molecule. A free molecule has
+energy \(E_0\); a bound molecule has energy \(E_1\). Divide the cell into
+boxes of volume \(1/C\), with \(CV\gg TV\), and derive
+\(p_{\mathrm{bound}}\).
+
+Let
+
+\[
+M=CV
+\]
+
+be the number of boxes and
+
+\[
+N=TV
+\]
+
+the number of transcription factor molecules.
+
+If the gene is unbound, all \(N\) molecules are free. The number of ways to
+place them is
+
+\[
+\binom{M}{N},
+\]
+
+so the statistical weight is
+
+\[
+w_0
+=
+\binom{M}{N}
+e^{-\beta N E_0}.
+\]
+
+If the gene is bound, one molecule is on the gene and \(N-1\) are free:
+
+\[
+w_1
+=
+\binom{M}{N-1}
+e^{-\beta[(N-1)E_0+E_1]}.
+\]
+
+Take the ratio:
+
+\begin{align*}
+\frac{w_1}{w_0}
+&=
+\frac{\binom{M}{N-1}}{\binom{M}{N}}
+e^{-\beta(E_1-E_0)} \\
+&=
+\frac{N}{M-N+1}
+e^{-\beta(E_1-E_0)}.
+\end{align*}
+
+Since \(M\gg N\),
+
+\[
+M-N+1\simeq M.
+\]
+
+Thus
+
+\[
+\frac{w_1}{w_0}
+\simeq
+\frac{N}{M}
+e^{-\beta(E_1-E_0)}.
+\]
+
+Since
+
+\[
+\frac{N}{M}
+=
+\frac{TV}{CV}
+=
+\frac{T}{C},
+\]
+
+we get
+
+\[
+\frac{w_1}{w_0}
+\simeq
+\frac{T}{C}
+e^{-\beta(E_1-E_0)}.
+\]
+
+Let
+
+\[
+r=
+\frac{T}{C}
+e^{-\beta(E_1-E_0)}.
+\]
+
+Then
+
+\[
+p_{\mathrm{bound}}
+=
+\frac{w_1}{w_0+w_1}
+=
+\frac{r}{1+r}.
+\]
+
+Define
+
+\[
+K
+=
+C e^{\beta(E_1-E_0)}.
+\]
+
+Since \(r=T/K\),
+
+\[
+p_{\mathrm{bound}}
+=
+\frac{T}{T+K}.
+\]
+
+\item Suppose the gene can bind one or two molecules. What is the average
+number bound as a function of \(T\)?
+
+Define
+
+\[
+z
+=
+\frac{T}{C}
+e^{-\beta(E_1-E_0)}.
+\]
+
+The relative statistical weights for having \(0,1,2\) bound molecules are
+
+\[
+1,\qquad z,\qquad z^2.
+\]
+
+Therefore
+
+\[
+Z_{\text{bind}}
+=
+1+z+z^2.
+\]
+
+The average number bound is
+
+\[
+\langle n_{\mathrm{bound}}\rangle
+=
+\frac{
+0(1)+1(z)+2(z^2)
+}{
+1+z+z^2
+}.
+\]
+
+Thus
+
+\[
+\langle n_{\mathrm{bound}}\rangle
+=
+\frac{z+2z^2}{1+z+z^2}.
+\]
+
+\item Suppose the second molecule binds with energy \(E_2\neq E_1\). What
+is the average number bound now?
+
+Let
+
+\[
+z_1
+=
+\frac{T}{C}
+e^{-\beta(E_1-E_0)}
+\]
+
+for binding the first molecule and
+
+\[
+z_2
+=
+\frac{T}{C}
+e^{-\beta(E_2-E_0)}
+\]
+
+for binding the second.
+
+The relative weights are now
+
+\[
+1,
+\qquad
+z_1,
+\qquad
+z_1z_2.
+\]
+
+Hence
+
+\[
+Z_{\text{bind}}
+=
+1+z_1+z_1z_2.
+\]
+
+Then
+
+\[
+\langle n_{\mathrm{bound}}\rangle
+=
+\frac{
+0(1)+1(z_1)+2(z_1z_2)
+}{
+1+z_1+z_1z_2
+}.
+\]
+
+So
+
+\[
+\langle n_{\mathrm{bound}}\rangle
+=
+\frac{
+z_1+2z_1z_2
+}{
+1+z_1+z_1z_2
+}.
+\]
+
+\end{enumerate}
+
+% =================================================
+% Problem I.7
+% =================================================
+
+\problem{Problem I.7: Finding Key Amino Acids in Protein Families}
+
+The files \texttt{sequencefamily*.txt} contain 100 sequences for each of four
+families A--D, and \texttt{sequencefreqs*.txt} contain amino-acid frequencies
+at the 10 variable sites.
+
+\begin{enumerate}
+
+\item For each site and family, calculate \(H(a_i\mid f)\), and also
+calculate \(H(a_i)\) across all families.
+
+For a particular family \(f\), let
+
+\[
+p_f(a;i)
+\]
+
+be the frequency of amino acid \(a\) at site \(i\).
+
+Then the entropy at that site within family \(f\) is
+
+\[
+H(a_i\mid f)
+=
+-\sum_a p_f(a;i)\log_2 p_f(a;i).
+\]
+
+Since the four families have equal size, the overall amino-acid frequency at
+site \(i\) is
+
+\[
+p(a;i)
+=
+\frac14
+\sum_f p_f(a;i).
+\]
+
+Then
+
+\[
+H(a_i)
+=
+-\sum_a p(a;i)\log_2p(a;i).
+\]
+
+So for each of the \(10\) sites, the calculation is:
+
+\[
+p_f(a;i)
+\longrightarrow
+H(a_i\mid f)
+\]
+
+for each family, followed by
+
+\[
+p(a;i)
+=
+\frac14\sum_f p_f(a;i)
+\longrightarrow
+H(a_i).
+\]
+
+The numerical values require the sequence/frequency files, which were not
+included with this problem set.
+
+\item Compute the mutual information \(I(a_i;F)\). What are its possible
+minimum and maximum values?
+
+The conditional entropy given the family is
+
+\[
+H(a_i\mid F)
+=
+\sum_f P(f)H(a_i\mid f).
+\]
+
+Since all four families are equally likely,
+
+\[
+P(f)=\frac14,
+\]
+
+so
+
+\[
+H(a_i\mid F)
+=
+\frac14\sum_f H(a_i\mid f).
+\]
+
+The mutual information is
+
+\[
+I(a_i;F)
+=
+H(a_i)-H(a_i\mid F).
+\]
+
+The minimum is
+
+\[
+I(a_i;F)=0,
+\]
+
+which happens when knowing the family gives no information about the residue.
+
+The maximum cannot exceed the entropy of the family label:
+
+\[
+I(a_i;F)\leq H(F).
+\]
+
+Since there are four equally likely families,
+
+\[
+H(F)
+=
+-\sum_{f=1}^4
+\frac14\log_2\frac14
+=
+2\text{ bits}.
+\]
+
+Therefore
+
+\[
+0\leq I(a_i;F)\leq2\text{ bits}.
+\]
+
+Numerical values for each site require the supplied data files.
+
+\item A new protein has phenylalanine at site 10. To which family should
+it be assigned, and with what probability?
+
+We want
+
+\[
+P(f\mid a_{10}=\mathrm{Phe}).
+\]
+
+By Bayes' rule,
+
+\[
+P(f\mid\mathrm{Phe})
+=
+\frac{
+P(\mathrm{Phe}\mid f)P(f)
+}{
+P(\mathrm{Phe})
+}.
+\]
+
+Since the priors are equal,
+
+\[
+P(f)=\frac14.
+\]
+
+Also,
+
+\[
+P(\mathrm{Phe})
+=
+\sum_g
+P(\mathrm{Phe}\mid g)P(g)
+=
+\frac14
+\sum_g
+P(\mathrm{Phe}\mid g).
+\]
+
+The factors of \(1/4\) cancel:
+
+\[
+P(f\mid a_{10}=\mathrm{Phe})
+=
+\frac{
+P(a_{10}=\mathrm{Phe}\mid f)
+}{
+\sum_g
+P(a_{10}=\mathrm{Phe}\mid g)
+}.
+\]
+
+So the protein should be assigned to whichever family has the largest
+site-10 phenylalanine frequency.
+
+The specific family and probability cannot be determined without the
+site-10 frequency data.
+
+\item Divide the sites into conserved, specificity-determining, and
+neither categories.
+
+A conserved site should have little uncertainty overall, so
+
+\[
+H(a_i)\approx0.
+\]
+
+A specificity-determining site should vary across families but be predictable
+once the family is known. Equivalently,
+
+\[
+I(a_i;F)
+\]
+
+should be large.
+
+Thus the rough classification is
+
+\[
+\begin{array}{ll}
+\text{conserved:}
+&
+H(a_i)\text{ small},
+\\[0.4em]
+\text{specificity-determining:}
+&
+I(a_i;F)\text{ large},
+\\[0.4em]
+\text{neither:}
+&
+H(a_i)\text{ not small and }I(a_i;F)\text{ small}.
+\end{array}
+\]
+
+Exact site numbers require the missing sequence/frequency files.
+
+\end{enumerate}
+
+% =================================================
+% Problem I.8
+% =================================================
+
+\problem{Problem I.8 Determining the Capacity of a Noisy Communication Channel}
+
+The joint distribution of input \(X\in\{a,b,c,d\}\) and output
+\(Y\in\{a,b,c,d\}\) is
+
+\[
+\begin{array}{c|cccc}
+    & x=a & x=b & x=c & x=d \\
+    \hline
+    y=a & \frac18  & \frac1{16} & \frac1{16} & \frac14 \\
+    y=b & \frac1{16} & \frac18  & \frac1{16} & 0 \\
+    y=c & \frac1{32} & \frac1{32} & \frac1{16} & 0 \\
+    y=d & \frac1{32} & \frac1{32} & \frac1{16} & 0
+\end{array}
+\]
+
+\begin{enumerate}
+
+\item Find \(P_X\) and \(H(X)\).
+
+Sum down each column.
+
+For \(x=a\),
+
+\[
+P_X(a)
+=
+\frac18+\frac1{16}+\frac1{32}+\frac1{32}
+=
+\frac14.
+\]
+
+Similarly,
+
+\[
+P_X(b)=\frac14,
+\qquad
+P_X(c)=\frac14,
+\qquad
+P_X(d)=\frac14.
+\]
+
+Thus
+
+\[
+P_X
+=
+\left(
+\frac14,\frac14,\frac14,\frac14
+\right).
+\]
+
+Then
+
+\begin{align*}
+H(X)
+&=
+-\sum_xP_X(x)\log_2P_X(x) \\
+&=
+-4\left(\frac14\right)\log_2\frac14 \\
+&=
+2\text{ bits}.
+\end{align*}
+
+\item Find \(P_Y\) and \(H(Y)\).
+
+Sum across each row.
+
+For \(y=a\),
+
+\[
+P_Y(a)
+=
+\frac18+\frac1{16}+\frac1{16}+\frac14
+=
+\frac12.
+\]
+
+For \(y=b\),
+
+\[
+P_Y(b)
+=
+\frac1{16}+\frac18+\frac1{16}
+=
+\frac14.
+\]
+
+For \(y=c\),
+
+\[
+P_Y(c)
+=
+\frac1{32}+\frac1{32}+\frac1{16}
+=
+\frac18.
+\]
+
+Similarly,
+
+\[
+P_Y(d)=\frac18.
+\]
+
+Therefore
+
+\[
+P_Y
+=
+\left(
+\frac12,\frac14,\frac18,\frac18
+\right).
+\]
+
+Now
+
+\begin{align*}
+H(Y)
+&=
+-\frac12\log_2\frac12
+-\frac14\log_2\frac14
+-2\left(\frac18\log_2\frac18\right) \\
+&=
+\frac12+\frac12+\frac34 \\
+&=
+\frac74.
+\end{align*}
+
+Thus
+
+\[
+H(Y)=1.75\text{ bits}.
+\]
+
+\item Compute \(H(X,Y)\).
+
+The nonzero probabilities in the table are:
+
+\[
+1\times\frac14,
+\qquad
+2\times\frac18,
+\qquad
+6\times\frac1{16},
+\qquad
+4\times\frac1{32}.
+\]
+
+Therefore
+
+\begin{align*}
+H(X,Y)
+&=
+-\frac14\log_2\frac14
+-2\left(\frac18\log_2\frac18\right) \\
+&\qquad
+-6\left(\frac1{16}\log_2\frac1{16}\right)
+-4\left(\frac1{32}\log_2\frac1{32}\right).
+\end{align*}
+
+Compute each piece:
+
+\[
+-\frac14\log_2\frac14
+=
+\frac12,
+\]
+
+\[
+-2\left(\frac18\log_2\frac18\right)
+=
+2\left(\frac38\right)
+=
+\frac34,
+\]
+
+\[
+-6\left(\frac1{16}\log_2\frac1{16}\right)
+=
+6\left(\frac4{16}\right)
+=
+\frac32,
+\]
+
+and
+
+\[
+-4\left(\frac1{32}\log_2\frac1{32}\right)
+=
+4\left(\frac5{32}\right)
+=
+\frac58.
+\]
+
+Hence
+
+\[
+H(X,Y)
+=
+\frac12+\frac34+\frac32+\frac58
+=
+\frac{27}{8}
+=
+3.375\text{ bits}.
+\]
+
+\item Compute \(H(Y\mid X)\).
+
+Use
+
+\[
+H(Y\mid X)
+=
+H(X,Y)-H(X).
+\]
+
+Therefore
+
+\[
+H(Y\mid X)
+=
+\frac{27}{8}-2
+=
+\frac{27}{8}-\frac{16}{8}
+=
+\frac{11}{8}.
+\]
+
+Thus
+
+\[
+H(Y\mid X)=1.375\text{ bits}.
+\]
+
+\item Compute \(I(X;Y)\).
+
+Use
+
+\[
+I(X;Y)
+=
+H(X)+H(Y)-H(X,Y).
+\]
+
+Substitute:
+
+\begin{align*}
+I(X;Y)
+&=
+2+\frac74-\frac{27}{8} \\
+&=
+\frac{16}{8}+\frac{14}{8}-\frac{27}{8} \\
+&=
+\frac38.
+\end{align*}
+
+So
+
+\[
+I(X;Y)=0.375\text{ bits}.
+\]
+
+\item Give a lower-bound estimate of the channel capacity \(C\).
+
+Channel capacity is
+
+\[
+C
+=
+\max_{P_X} I(X;Y).
+\]
+
+The supplied distribution uses the uniform input distribution and gives
+
+\[
+I(X;Y)=\frac38.
+\]
+
+Since the maximum over all input distributions must be at least as large as
+the value for this particular one,
+
+\[
+C\geq\frac38\text{ bits/use}.
+\]
+
+\end{enumerate}
+
+% =================================================
+% Problem I.9
+% =================================================
+
+\problem{Problem I.9 Optimizing the Source Code to Match the Capacity of an Information Channel}
+
+A source produces A, B, and C with probabilities \(P,Q,Q\), where
+
+\[
+P+2Q=1.
+\]
+
+A is transmitted perfectly. B and C are transmitted correctly with
+probability \(p\) and interchanged with probability \(q\), so \(p+q=1\).
+
+\begin{enumerate}
+
+\item Compute \(H(X)\) and \(H(X\mid Y)\).
+
+The input distribution is
+
+\[
+(P,Q,Q).
+\]
+
+Thus
+
+\begin{align*}
+H(X)
+&=
+-P\log_2P
+-Q\log_2Q
+-Q\log_2Q \\
+&=
+-P\log_2P
+-2Q\log_2Q.
+\end{align*}
+
+Now define the binary entropy associated with confusion between B and C:
+
+\[
+h
+=
+-p\log_2p-q\log_2q.
+\]
+
+If the output is A, then the input must have been A, so
+
+\[
+H(X\mid Y=A)=0.
+\]
+
+If the output is B or C, there remains a binary uncertainty between B and C
+with entropy \(h\).
+
+By symmetry the output probabilities are also
+
+\[
+P_Y=(P,Q,Q).
+\]
+
+Therefore
+
+\begin{align*}
+H(X\mid Y)
+&=
+P(Y=A)(0)
++
+P(Y=B)h
++
+P(Y=C)h \\
+&=
+Qh+Qh \\
+&=
+2Qh.
+\end{align*}
+
+So
+
+\[
+H(X)
+=
+-P\log_2P-2Q\log_2Q
+\]
+
+and
+
+\[
+H(X\mid Y)=2Qh.
+\]
+
+\item Compute and maximize the transmission rate subject to \(P+2Q=1\).
+
+The transmission rate is the mutual information
+
+\[
+I(X;Y)
+=
+H(X)-H(X\mid Y).
+\]
+
+Thus
+
+\[
+I(X;Y)
+=
+-P\log_2P
+-2Q\log_2Q
+-2Qh.
+\]
+
+We maximize this subject to
+
+\[
+P+2Q=1.
+\]
+
+Introduce a multiplier \(\lambda\):
+
+\[
+\mathcal L
+=
+-P\log_2P
+-2Q\log_2Q
+-2Qh
++
+\lambda(P+2Q-1).
+\]
+
+Differentiate with respect to \(P\):
+
+\[
+\frac{\partial\mathcal L}{\partial P}
+=
+-\log_2P-\frac1{\ln2}+\lambda
+=
+0.
+\]
+
+Therefore
+
+\[
+\lambda
+=
+\log_2P+\frac1{\ln2}.
+\]
+
+Differentiate with respect to \(Q\):
+
+\[
+\frac{\partial\mathcal L}{\partial Q}
+=
+-2\log_2Q
+-\frac2{\ln2}
+-2h
++2\lambda
+=
+0.
+\]
+
+Divide by \(2\):
+
+\[
+-\log_2Q
+-\frac1{\ln2}
+-h
++\lambda
+=
+0.
+\]
+
+Thus
+
+\[
+\lambda
+=
+\log_2Q+\frac1{\ln2}+h.
+\]
+
+Equating the two expressions for \(\lambda\),
+
+\[
+\log_2P
+=
+\log_2Q+h.
+\]
+
+Therefore
+
+\[
+\log_2\frac{P}{Q}=h,
+\]
+
+so
+
+\[
+\frac{P}{Q}=2^h.
+\]
+
+Hence
+
+\[
+P=2^hQ.
+\]
+
+Use the normalization condition:
+
+\[
+2^hQ+2Q=1.
+\]
+
+Thus
+
+\[
+Q
+=
+\frac{1}{2^h+2}.
+\]
+
+Equivalently,
+
+\[
+Q
+=
+\frac{2^{-h}}{1+2^{1-h}}.
+\]
+
+Then
+
+\[
+P
+=
+2^hQ
+=
+\frac{2^h}{2^h+2}
+=
+\frac{1}{1+2^{1-h}}.
+\]
+
+So
+
+\[
+P^*
+=
+\frac{1}{1+2^{1-h}},
+\qquad
+Q^*
+=
+\frac{2^{-h}}{1+2^{1-h}}.
+\]
+
+\item Using the optimum, compute the channel capacity.
+
+Start with
+
+\[
+I
+=
+-P\log_2P
+-2Q\log_2Q
+-2Qh.
+\]
+
+At the optimum,
+
+\[
+\frac{P}{Q}=2^h,
+\]
+
+so
+
+\[
+\log_2P
+=
+\log_2Q+h.
+\]
+
+Substitute this into \(I\):
+
+\begin{align*}
+I
+&=
+-P(\log_2Q+h)
+-2Q\log_2Q
+-2Qh \\
+&=
+-(P+2Q)\log_2Q
+-(P+2Q)h.
+\end{align*}
+
+Since
+
+\[
+P+2Q=1,
+\]
+
+this becomes
+
+\[
+I
+=
+-\log_2Q-h.
+\]
+
+Using
+
+\[
+Q
+=
+\frac{2^{-h}}{1+2^{1-h}},
+\]
+
+we get
+
+\begin{align*}
+-\log_2Q
+&=
+-\log_2
+\left(
+\frac{2^{-h}}{1+2^{1-h}}
+\right) \\
+&=
+h+\log_2(1+2^{1-h}).
+\end{align*}
+
+Therefore
+
+\[
+C
+=
+\log_2(1+2^{1-h}),
+\]
+
+where
+
+\[
+h=-p\log_2p-q\log_2q.
+\]
+
+\item Check \(p=1\) and \(p=1/2\).
+
+First let
+
+\[
+p=1,
+\qquad
+q=0.
+\]
+
+Then
+
+\[
+h=0.
+\]
+
+So
+
+\[
+P^*
+=
+\frac{1}{1+2}
+=
+\frac13
+\]
+
+and
+
+\[
+Q^*
+=
+\frac{1}{1+2}
+=
+\frac13.
+\]
+
+Thus the three symbols are used equally often, as expected for a noiseless
+three-symbol channel.
+
+The capacity is
+
+\[
+C
+=
+\log_2(1+2)
+=
+\log_2 3.
+\]
+
+Now let
+
+\[
+p=q=\frac12.
+\]
+
+Then
+
+\[
+h
+=
+-\frac12\log_2\frac12
+-\frac12\log_2\frac12
+=
+1.
+\]
+
+Therefore
+
+\[
+P^*
+=
+\frac{1}{1+2^{0}}
+=
+\frac12
+\]
+
+and
+
+\[
+Q^*
+=
+\frac{2^{-1}}{1+2^0}
+=
+\frac14.
+\]
+
+The capacity becomes
+
+\[
+C
+=
+\log_2(1+2^0)
+=
+\log_2 2
+=
+1\text{ bit/use}.
+\]
+
+This makes sense because when \(p=q=1/2\), the channel cannot distinguish B
+from C. It can only reliably distinguish
+
+\[
+A
+\]
+
+from
+
+\[
+\text{``B or C''},
+\]
+
+which leaves an effectively binary channel.
+
+\end{enumerate}
+
+\end{document}

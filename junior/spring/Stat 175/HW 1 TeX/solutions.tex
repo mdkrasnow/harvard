@@ -1,0 +1,434 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\Unif}{\mathrm{Unif}}
+\newcommand{\Bern}{\mathrm{Bern}}
+
+\title{Pset 1 -- Solutions}
+\author{matt krasnow}
+\date{February 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1 (Markov Chains)}
+
+Let the state space be the set of cities $\{1,2,3,4,5,6,7\}$. From the figure, the (undirected) neighbor sets are
+\[
+\begin{aligned}
+&N(1)=\{2,3,6\},\quad N(2)=\{1,4,7\},\quad N(3)=\{1,5\},\\
+&N(4)=\{2,5,6,7\},\quad N(5)=\{3,4,6\},\quad N(6)=\{1,4,5\},\quad N(7)=\{2,4\}.
+\end{aligned}
+\]
+Hence the degrees are
+\[
+\deg(1)=3,\ \deg(2)=3,\ \deg(3)=2,\ \deg(4)=4,\ \deg(5)=3,\ \deg(6)=3,\ \deg(7)=2,
+\]
+and $\sum_{j=1}^7 \deg(j)=20$.
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Prove that $(X_j)$ is a Markov chain.}
+
+By construction: given $X_j=i$, the next city $X_{j+1}$ is chosen uniformly from the neighbors $N(i)$, and does not depend on earlier history.
+
+Formally, for any $j\ge 0$ and any states $i,k$,
+\[
+\mathbb P(X_{j+1}=k \mid X_j=i, X_{j-1},\dots,X_0)
+=
+\mathbb P(X_{j+1}=k\mid X_j=i)
+=
+\begin{cases}
+\frac{1}{\deg(i)}, & k\in N(i),\\[4pt]
+0, & k\notin N(i).
+\end{cases}
+\]
+This is the Markov property, so $(X_j)$ is a Markov chain.
+
+\item \textbf{What is the transition matrix $P$?}
+
+Index states in the order $(1,2,3,4,5,6,7)$. Then $P_{ij}=\mathbb P(X_{t+1}=j\mid X_t=i)$ equals $1/\deg(i)$ if $j\in N(i)$, else $0$. Thus
+\[
+P=
+\begin{pmatrix}
+0 & \tfrac13 & \tfrac13 & 0 & 0 & \tfrac13 & 0\\
+\tfrac13 & 0 & 0 & \tfrac13 & 0 & 0 & \tfrac13\\
+\tfrac12 & 0 & 0 & 0 & \tfrac12 & 0 & 0\\
+0 & \tfrac14 & 0 & 0 & \tfrac14 & \tfrac14 & \tfrac14\\
+0 & 0 & \tfrac13 & \tfrac13 & 0 & \tfrac13 & 0\\
+\tfrac13 & 0 & 0 & \tfrac13 & \tfrac13 & 0 & 0\\
+0 & \tfrac12 & 0 & \tfrac12 & 0 & 0 & 0
+\end{pmatrix}.
+\]
+
+\item \textbf{Prove that the stationary distribution is $\pi(j)=\deg(j)/20$.}
+
+Define
+\[
+\pi(j)=\frac{\deg(j)}{\sum_{\ell=1}^7 \deg(\ell)}=\frac{\deg(j)}{20}.
+\]
+We verify $\pi P=\pi$. For any fixed $j$,
+\[
+(\pi P)(j)=\sum_{i=1}^7 \pi(i)P_{ij}
+= \sum_{i\in N(j)} \pi(i)\frac{1}{\deg(i)}
+= \sum_{i\in N(j)} \frac{\deg(i)}{20}\cdot \frac{1}{\deg(i)}
+= \sum_{i\in N(j)} \frac{1}{20}
+= \frac{\deg(j)}{20}
+=\pi(j).
+\]
+So $\pi$ is stationary.
+
+\item \textbf{Prove that the chain is reversible: $\pi(i)P_{ij}=\pi(j)P_{ji}$.}
+
+If $i$ and $j$ are not neighbors, then $P_{ij}=P_{ji}=0$, so the equality holds.
+
+If $i\sim j$ (there is an edge), then
+\[
+\pi(i)P_{ij}=\frac{\deg(i)}{20}\cdot \frac{1}{\deg(i)}=\frac{1}{20}
+=\frac{\deg(j)}{20}\cdot \frac{1}{\deg(j)}=\pi(j)P_{ji}.
+\]
+Hence the chain is reversible.
+
+\item \textbf{Lazy walk: stay with probability $\alpha\in(0,1)$. Does $\pi$ change?}
+
+The new transition matrix is
+\[
+P^{(\alpha)}=\alpha I + (1-\alpha)P.
+\]
+If $\pi$ is stationary for $P$, i.e.\ $\pi P=\pi$, then
+\[
+\pi P^{(\alpha)}
+=\pi\bigl(\alpha I + (1-\alpha)P\bigr)
+=\alpha \pi + (1-\alpha)\pi P
+=\alpha \pi + (1-\alpha)\pi
+=\pi.
+\]
+So the stationary distribution does \emph{not} change: it remains $\pi(j)=\deg(j)/20$.
+\end{enumerate}
+
+\section*{Exercise 2 (Linear Algebra)}
+
+From the figure, the undirected edges are
+\[
+\{(1,2),(1,3),(2,3),(2,4),(3,5),(4,5),(4,6),(5,6),(4,7),(6,7)\}.
+\]
+Degrees:
+\[
+\deg(1)=2,\ \deg(2)=3,\ \deg(3)=3,\ \deg(4)=4,\ \deg(5)=3,\ \deg(6)=3,\ \deg(7)=2.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Adjacency matrix $A$ and Laplacian $L=D-A$.}
+
+With vertex order $(1,2,3,4,5,6,7)$,
+\[
+A=
+\begin{pmatrix}
+0&1&1&0&0&0&0\\
+1&0&1&1&0&0&0\\
+1&1&0&0&1&0&0\\
+0&1&0&0&1&1&1\\
+0&0&1&1&0&1&0\\
+0&0&0&1&1&0&1\\
+0&0&0&1&0&1&0
+\end{pmatrix},
+\qquad
+D=\mathrm{diag}(2,3,3,4,3,3,2).
+\]
+Thus
+\[
+L=D-A=
+\begin{pmatrix}
+2&-1&-1&0&0&0&0\\
+-1&3&-1&-1&0&0&0\\
+-1&-1&3&0&-1&0&0\\
+0&-1&0&4&-1&-1&-1\\
+0&0&-1&-1&3&-1&0\\
+0&0&0&-1&-1&3&-1\\
+0&0&0&-1&0&-1&2
+\end{pmatrix}.
+\]
+
+\item \textbf{Compute the eigenvalues of $L$. Remark that $\bm 1$ is an eigenvector.}
+
+Numerically (e.g.\ using Python for the symmetric matrix $L$), the eigenvalues are approximately
+\[
+\lambda(L)\approx
+\{0,\ 0.814349,\ 2.328009,\ 3.313908,\ 3.598089,\ 4.457530,\ 5.488115\}.
+\]
+Also,
+\[
+L\bm 1 = 0\quad\text{where }\bm 1=(1,1,1,1,1,1,1)^\top,
+\]
+because each row of $L$ sums to $0$. Hence $\bm 1$ is an eigenvector with eigenvalue $0$.
+
+\item \textbf{For a general undirected graph, prove that for any $x\in\R^n$,
+\(
+x^\top L x = \sum_{(i,j)\in E}(x_i-x_j)^2.
+\)
+}
+
+For an undirected graph,
+\[
+x^\top L x = x^\top(D-A)x
+= \sum_{i}\deg(i)x_i^2 - \sum_{i,j}A_{ij}x_i x_j.
+\]
+Rewrite the first term as $\sum_{i,j}A_{ij}x_i^2$ (since $\deg(i)=\sum_j A_{ij}$):
+\[
+x^\top L x
+= \sum_{i,j}A_{ij}x_i^2 - \sum_{i,j}A_{ij}x_i x_j
+= \frac12\sum_{i,j}A_{ij}\bigl(x_i^2+x_j^2-2x_i x_j\bigr)
+= \frac12\sum_{i,j}A_{ij}(x_i-x_j)^2.
+\]
+Each undirected edge $(i,j)\in E$ appears twice in $\sum_{i,j}$, so
+\[
+x^\top L x = \sum_{(i,j)\in E}(x_i-x_j)^2.
+\]
+
+\item \textbf{Use this identity to prove that $L$ is positive semidefinite and that the smallest eigenvalue is always $\lambda_1=0$.}
+
+From (c),
+\[
+x^\top L x = \sum_{(i,j)\in E}(x_i-x_j)^2 \ge 0\quad\text{for all }x,
+\]
+so $L\succeq 0$ (positive semidefinite), hence all eigenvalues are $\ge 0$.
+But $L\bm 1=0$, so $0$ is an eigenvalue. Therefore the smallest eigenvalue is
+\[
+\lambda_1=0.
+\]
+
+\item \textbf{Let $\lambda_2$ be the second-smallest eigenvalue. Prove that if $G$ is disconnected, then $\lambda_2=0$.}
+
+Assume $G$ has at least two connected components, and let $C$ be one component. Let $\bm 1_C\in\R^n$ be the indicator vector:
+\[
+(\bm 1_C)_i=
+\begin{cases}
+1,& i\in C,\\
+0,& i\notin C.
+\end{cases}
+\]
+Because there are no edges between $C$ and $C^c$, every edge $(i,j)\in E$ has both endpoints in the same component, hence $(\bm 1_C)_i-(\bm 1_C)_j=0$. By (c),
+\[
+\bm 1_C^\top L \bm 1_C = \sum_{(i,j)\in E}\bigl((\bm 1_C)_i-(\bm 1_C)_j\bigr)^2=0,
+\]
+so $\bm 1_C\in \ker(L)$. Also $\bm 1_C$ is not a multiple of $\bm 1$, so $\dim \ker(L)\ge 2$, meaning eigenvalue $0$ has multiplicity at least $2$. Therefore the second-smallest eigenvalue is
+\[
+\lambda_2=0.
+\]
+\end{enumerate}
+
+\section*{Exercise 3 (Statistical Inference)}
+
+Let $X_1,\dots,X_n$ be i.i.d.\ with density
+\[
+f(x)=\frac{1}{2\sigma}e^{-|x|/\sigma},\qquad \sigma>0.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Write out the log-likelihood function $\ell(X_1,\dots,X_n)$.}
+
+The likelihood is
+\[
+L(\sigma)=\prod_{i=1}^n \frac{1}{2\sigma}\exp\!\left(-\frac{|X_i|}{\sigma}\right).
+\]
+Thus the log-likelihood is
+\[
+\ell(\sigma)=\log L(\sigma)
+= \sum_{i=1}^n\left[-\log(2\sigma)-\frac{|X_i|}{\sigma}\right]
+= -n\log(2\sigma)-\frac{1}{\sigma}\sum_{i=1}^n |X_i|.
+\]
+
+\item \textbf{What is the MLE of $\sigma$?}
+
+Differentiate for $\sigma>0$:
+\[
+\ell'(\sigma)= -\frac{n}{\sigma}+\frac{1}{\sigma^2}\sum_{i=1}^n |X_i|.
+\]
+Set $\ell'(\sigma)=0$:
+\[
+-\frac{n}{\sigma}+\frac{1}{\sigma^2}\sum_{i=1}^n |X_i|=0
+\quad\Longleftrightarrow\quad
+-n\sigma+\sum_{i=1}^n|X_i|=0
+\quad\Longleftrightarrow\quad
+\hat\sigma=\frac1n\sum_{i=1}^n |X_i|.
+\]
+Second derivative:
+\[
+\ell''(\sigma)=\frac{n}{\sigma^2}-\frac{2}{\sigma^3}\sum_{i=1}^n |X_i|,
+\]
+and at $\sigma=\hat\sigma$, $\ell''(\hat\sigma)=\frac{n}{\hat\sigma^2}-\frac{2n\hat\sigma}{\hat\sigma^3}=-\frac{n}{\hat\sigma^2}<0$, so $\hat\sigma$ is indeed a maximizer.
+
+\item \textbf{Is the MLE consistent? Prove your answer.}
+
+Compute $\E|X_1|$. By symmetry,
+\[
+\E|X_1|
+=2\int_0^\infty x\cdot \frac{1}{2\sigma}e^{-x/\sigma}\,dx
+=\frac{1}{\sigma}\int_0^\infty x e^{-x/\sigma}\,dx.
+\]
+Let $y=x/\sigma$ so $x=\sigma y$, $dx=\sigma dy$:
+\[
+\E|X_1|
+=\frac{1}{\sigma}\int_0^\infty (\sigma y)e^{-y}\,\sigma dy
+=\sigma\int_0^\infty y e^{-y}\,dy
+=\sigma\cdot 1
+=\sigma,
+\]
+since $\int_0^\infty y e^{-y}\,dy=1$.
+
+Now
+\[
+\hat\sigma=\frac{1}{n}\sum_{i=1}^n |X_i|.
+\]
+By the strong law of large numbers,
+\[
+\hat\sigma \xrightarrow{a.s.} \E|X_1|=\sigma,
+\]
+so $\hat\sigma$ is consistent.
+\end{enumerate}
+
+\section*{Exercise 4 (Probability Theory)}
+
+Assume the standard (undirected) graphon sampling: draw $U_1,\dots,U_n \iid \Unif(0,1)$, and (conditionally on the $U$'s) the edges $\{a_{ij}:1\le i<j\le n\}$ are independent with
+\[
+a_{ij}\mid (U_i,U_j)\sim \Bern(W(U_i,U_j)),\qquad a_{ji}=a_{ij},\qquad a_{ii}=0.
+\]
+Define degrees $d_i=\sum_{j\ne i} a_{ij}$.
+
+Introduce the graphon degree function
+\[
+g(u):=\int_0^1 W(u,v)\,dv,
+\]
+and the global edge density
+\[
+\mu := \int_0^1\int_0^1 W(u,v)\,du\,dv = \E[W(U_1,U_2)].
+\]
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Compute $\E[d_i\mid U_i]$ and $\E[d_i]$.}
+
+For $j\ne i$,
+\[
+\E[a_{ij}\mid U_i]
+=\E\!\left[\E[a_{ij}\mid U_i,U_j]\mid U_i\right]
+=\E[W(U_i,U_j)\mid U_i]
+=\int_0^1 W(U_i,v)\,dv
+=g(U_i).
+\]
+Therefore
+\[
+\E[d_i\mid U_i]=(n-1)\,g(U_i).
+\]
+Taking expectation again,
+\[
+\E[d_i]=(n-1)\,\E[g(U_i)]=(n-1)\mu.
+\]
+
+\item \textbf{Compute $\Var(d_i\mid U_i)$ and $\Var(d_i)$.}
+
+Given $U_i$, the random variables $\{a_{ij}:j\ne i\}$ are independent and each satisfies
+\[
+\mathbb P(a_{ij}=1\mid U_i)=g(U_i),
+\]
+so $a_{ij}\mid U_i \sim \Bern(g(U_i))$. Hence
+\[
+\Var(a_{ij}\mid U_i)=g(U_i)\bigl(1-g(U_i)\bigr),
+\]
+and summing independent terms,
+\[
+\Var(d_i\mid U_i)=(n-1)\,g(U_i)\bigl(1-g(U_i)\bigr).
+\]
+
+For the unconditional variance, use the law of total variance:
+\[
+\Var(d_i)=\E[\Var(d_i\mid U_i)] + \Var(\E[d_i\mid U_i]).
+\]
+Thus
+\[
+\Var(d_i)
+=(n-1)\,\E\!\big[g(U)(1-g(U))\big] + (n-1)^2\,\Var(g(U)).
+\]
+
+\item \textbf{Compute $\Cov(d_i,d_j)$ for $i\ne j$.}
+
+Write
+\[
+d_i = a_{ij} + \sum_{k\ne i,j} a_{ik},
+\qquad
+d_j = a_{ij} + \sum_{k\ne i,j} a_{jk}.
+\]
+Let
+\[
+\gamma := \E\!\left[g(U)^2\right]
+= \E\!\left[W(U_1,U_2)\,W(U_1,U_3)\right]
+\quad (\text{with }U_1,U_2,U_3\ iid).
+\]
+Then
+\[
+\E[a_{ij}]=\mu,\quad \Var(a_{ij})=\mu(1-\mu),
+\]
+and for any $k\ne i,j$,
+\[
+\Cov(a_{ij},a_{ik})=\gamma-\mu^2,\quad
+\Cov(a_{ij},a_{jk})=\gamma-\mu^2,\quad
+\Cov(a_{ik},a_{jk})=\gamma-\mu^2.
+\]
+There are $(n-2)$ choices of $k$, so
+\[
+\Cov(d_i,d_j)=\mu(1-\mu)\;+\;3(n-2)\,(\gamma-\mu^2).
+\]
+
+\item \textbf{Limits of $d_1/n$ and $d_2/n$. Do they converge to the same quantity? CLT?}
+
+Condition on $U_1$. Since $d_1\mid U_1 \sim \mathrm{Bin}(n-1,g(U_1))$,
+\[
+\frac{d_1}{n-1}\xrightarrow{a.s.} g(U_1),
+\qquad\text{hence}\qquad
+\frac{d_1}{n}\xrightarrow{a.s.} g(U_1).
+\]
+Similarly,
+\[
+\frac{d_2}{n}\xrightarrow{a.s.} g(U_2).
+\]
+In general, they do \emph{not} converge to the same quantity: $g(U_1)$ and $g(U_2)$ are i.i.d.\ and are almost surely equal only if $g$ is (a.e.) constant.
+
+\medskip
+\noindent
+\textbf{CLT (conditional).} For fixed $u$, if $d_1\mid U_1=u\sim \mathrm{Bin}(n-1,g(u))$, then
+\[
+\frac{d_1-(n-1)g(u)}{\sqrt{(n-1)g(u)(1-g(u))}}
+\xrightarrow{d} \mathcal N(0,1).
+\]
+Equivalently, conditioning on $U_1$,
+\[
+\sqrt{n}\left(\frac{d_1}{n}-g(U_1)\right)\ \Big|\ U_1
+\ \xrightarrow{d}\ \mathcal N\!\left(0,\ g(U_1)(1-g(U_1))\right).
+\]
+Unconditionally this yields a mixture of normals (variance depends on the random $U_1$).
+
+\item \textbf{Limit of $\dfrac{\sum_{i\le n} d_i}{n^2}$.}
+
+In an undirected graph,
+\[
+\sum_{i=1}^n d_i = 2\sum_{1\le i<j\le n} a_{ij}.
+\]
+Thus
+\[
+\frac{1}{n^2}\sum_{i=1}^n d_i
+= \frac{2}{n^2}\sum_{i<j} a_{ij}.
+\]
+Decompose $a_{ij}=(a_{ij}-W(U_i,U_j))+W(U_i,U_j)$. The first part averages to $0$ and the second part is a $U$-statistic that converges almost surely to $\mu=\iint W$. Therefore
+\[
+\frac{1}{n^2}\sum_{i=1}^n d_i \xrightarrow{a.s.} \iint_{[0,1]^2} W(u,v)\,du\,dv.
+\]
+\end{enumerate}
+
+\end{document}
