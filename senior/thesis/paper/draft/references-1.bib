@@ -1,0 +1,27 @@
+@inproceedings{Wang2020,
+abstract = {, we show that posterior collapse occurs if and only if the latent variable is non-identifiable in the generative model. Here is the intuition. Consider a dataset X and a latent variable Z. Loosely, a latent variable is non-identifiable (Poirier, 1998) when the likelihood of the generative model p(x | z) does not depend on this latent variable Z, i.e. p(x | z) ∝ f (x) for some function f. Then, by the Bayes rule, its (exact) posterior is proportional to the product of the prior and the likelihood p(z | x) ∝ p(z) {\textperiodcentered} p(x | z) ∝ p(z) {\textperiodcentered} f (x) ∝ p(z). Therefore, the posterior must be equal to the prior because the likelihood is not dependent on Z. This connection between posterior collapse and non-identifiability implies that posterior collapse is not a phenomenon specific to the use of neural networks or variational inference. Rather, it can occur in classical probabilistic models fitted with exact inference methods. As an example, the latent variables in Gaussian mixture model can be non-identifiable and suffer from posterior collapse when the model has more components than the true data generating model. Figure 1 illustrates such a Gaussian mixture model suffering from posterior collapse even with (near-)exact inference. Moreover, we show that VAEs suffer from posterior collapse for the same reason: the per-data-point latent variable is non-identifiable in VAEs. Connecting posterior collapse to non-identifiability results in a natural solution to mitigating posterior collapse in VAEs: one must make the generative model identifiable. We propose a class of identifiable VAEs, which is as flexible as classical VAEs while also being identifiable. This model class resolves the latent variable non-identifiability by leveraging monotone transport maps (Peyr{\'{e}} et al., 2019; McCann et al., 1995) and parameterizing them with input convex neural networks (Amos et al., 2017; Makkuva et al., 2019). Across four datasets, we show that the identifiable VAEs mitigates posterior collapse; see Section 1 for an example. (The supplementary material includes software that reproduces the studies.) Contributions. We consider posterior collapse as a problem of latent variable non-identifiability. We show that posteriors collapse if and only if the latent variable in non-identifiable. It implies that posterior collapse is neither specific to flexible VAEs nor because of its variational approximation. Rather, it pertains to the structure of the generative model. We then propose a class of flexible and identifiable VAEs and demonstrate that it mitigates posterior collapse across four datasets. Appendix A discusses how these contributions situate among the related works. 2},
+author = {Wang, Yixin and Cunningham, John Patrick},
+booktitle = {AABI Symp.},
+file = {:Users/alexanderyoung/Library/Application Support/Mendeley Desktop/Downloaded/Wang, Cunningham - 2020 - Posterior Collapse and Latent Variable Non-identifiability.pdf:pdf},
+month = {nov},
+title = {{Posterior Collapse and Latent Variable Non-identifiability}},
+year = {2020}
+}
+@techreport{Lloyd,
+author = {Lloyd, Charlotte},
+booktitle = {Sociol. Dep. Writ. Fellow},
+file = {:Users/alexanderyoung/Library/Application Support/Mendeley Desktop/Downloaded/Lloyd - Unknown - LITERATURE REVIEWS FOR SOCIOLOGY SENIOR THESES.pdf:pdf},
+pages = {2017--2018},
+title = {{LITERATURE REVIEWS FOR SOCIOLOGY SENIOR THESES}}
+}
+@techreport{Ley2013,
+author = {Ley, Christy},
+file = {:Users/alexanderyoung/Library/Application Support/Mendeley Desktop/Downloaded/Ley - 2013 - The Thesis Writing Process and Literature Review From Splattered Ink Notes to Refined Arguments.pdf:pdf},
+title = {{The Thesis Writing Process and Literature Review From Splattered Ink Notes to Refined Arguments}},
+year = {2013}
+}
+@techreport{Karl-Johnson,
+abstract = {This guide will help ground you in resources available on campus while also offering research strategies developed to save you time but cover your bases.},
+author = {Karl-Johnson, Gabriella},
+title = {{LibGuides: SoA Senior Thesis Research: Literature Review}}
+}

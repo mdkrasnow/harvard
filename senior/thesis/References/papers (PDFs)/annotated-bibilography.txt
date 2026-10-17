@@ -1,0 +1,197 @@
+Papers supporting Scalar Equilibrium Matching for Predicting Protein Evolvability
+Selected 17 October 2026 against documentation/Thesis Proposal/proposal.md
+
+Ten additional papers; the existing AI Redesigned Protein Evolution.pdf is preserved.
+Q1 = useful scalar landscapes versus supervised/implicit alternatives.
+Q2 = sequence-to-measured-function relationship.
+Q3 = predicting a starting sequence's evolvability from its neighborhood.
+
+WHY THESE PAPERS FORM A CHAIN
+Statistical sequence energies can capture mutation effects, and pretrained embeddings
+already enable strong supervised predictors. EqM supplies the methodological starting
+point, but its explicit-energy experiments leave an optimization/performance gap.
+Energy Matching offers a relevant alternative scalar formulation, while discrete MCMC
+shows how differentiable scores can guide actual amino-acid mutations. Biological
+experiments then show why current activity alone does not identify the best starting
+sequence: stability, permissive substitutions, and epistasis change accessible outcomes.
+That combination motivates testing whether a learned landscape's neighborhood adds
+predictive value beyond the starting sequence's predicted function.
+This is a synthesis motivating your existing questions, not evidence they are solved.
+
+SUGGESTED READING ORDER
+Bloom -> Baier -> Wu -> Starr -> Hopf -> Alley -> ProteinGym -> EqM ->
+Energy Matching -> Plug & Play Directed Evolution. Then revisit your existing
+AI-redesigned starting-points paper as the modern experimental endpoint.
+The numbered entries below follow this order.
+
+1. Bloom et al. (2006). Protein stability promotes evolvability. PNAS.
+File: Bloom_2006_Protein_Stability_Promotes_Evolvability.pdf
+DOI: https://doi.org/10.1073/pnas.0510098103
+PDF: https://cheme.caltech.edu/groups/fha/publications/Bloom_PNAS2006.pdf
+Questions: Q3.
+Why: Controlled cytochrome P450 experiments connect extra stability to tolerance of
+mutations and acquisition of new/improved activities. This provides a mechanistic
+reason to examine the fraction of functional or improving mutants around a starting
+sequence rather than its current activity alone.
+Read for: experimental mutant yields and the stability/robustness explanation.
+Limit: thermodynamic stability and your model's scalar energy are different quantities;
+the paper does not establish that any learned energy automatically measures stability.
+
+2. Baier et al. (2019). Cryptic genetic variation shapes the adaptive evolutionary
+potential of enzymes. eLife 8:e40789.
+File: Baier_2019_Cryptic_Genetic_Variation.pdf
+DOI: https://doi.org/10.7554/eLife.40789
+PDF: https://openresearch-repository.anu.edu.au/bitstreams/418474bc-0ae1-4ecd-ba4a-5d96b2a0e4eb/download
+Questions: Q3; strongest direct comparison of alternative starting sequences here.
+Why: Four orthologous metallo-beta-lactamases follow different directed-evolution
+outcomes. A low-initial-fitness starting protein reaches a higher plateau, while the
+highest-initial-activity protein reaches an inferior outcome. Background-dependent
+mutation effects make evolvability distinct from present-day function.
+Read for: comparative trajectories, first adaptive mutations, and epistasis.
+Limit: a specific enzyme system; neighborhood statistics must be tested against
+outcomes rather than assumed to generalize.
+
+3. Wu et al. (2016). Adaptation in protein fitness landscapes is facilitated by
+indirect paths. eLife 5:e16965.
+File: Wu_2016_Adaptation_via_Indirect_Paths.pdf
+DOI: https://doi.org/10.7554/eLife.16965
+PDF: https://cdn.elifesciences.org/articles/16965/elife-16965-v4.pdf
+Questions: Q3 and the neighborhood-evaluation data requirement.
+Why: A combinatorial GB1 landscape over four sites exposes blocked direct adaptive
+paths and indirect routes that restore accessibility. It makes landscape topology
+and epistasis concrete, rather than treating a fitness landscape as a metaphor.
+Read for: reciprocal sign epistasis and indirect paths through added/lost mutations.
+Limit: 160,000 is the full four-site combinatorial space, not a full-protein map.
+A favorable single-mutation neighborhood need not determine long-term evolvability.
+
+4. Starr, Picton & Thornton (2017). Alternative evolutionary histories in the
+sequence space of an ancient protein. Nature.
+File: Starr_2017_Alternative_Evolutionary_Histories.pdf
+DOI: https://doi.org/10.1038/nature23902
+PDF: https://bpb-us-w2.wpmucdn.com/voices.uchicago.edu/dist/7/477/files/2017/09/Starr-Thornton_Nature2017-txzy25.pdf
+Questions: Q3.
+Why: Ancestral reconstruction and deep mutational scanning show that permissive
+background substitutions enable alternative functional outcomes. It explains why
+sequence backgrounds with similar ancestral function can have different accessible
+futures, complementing Baier's comparative laboratory evolution.
+Read for: permissive substitutions and networks of functional sequences.
+Limit: historical receptor-function evolution is not the same endpoint as a modern
+directed-evolution campaign; this is mechanistic support, not direct validation.
+
+5. Hopf et al. (2017). Mutation effects predicted from sequence co-variation.
+Nature Biotechnology 35:128-135 (EVmutation).
+File: Hopf_2017_Mutation_Effects_from_Sequence_Covariation.pdf
+DOI: https://doi.org/10.1038/nbt.3769
+PDF: https://public.websites.umich.edu/~zhanglab/clubPaper/02_22_2017.pdf
+Questions: Q1/Q2, with a bridge to Q3 through context-dependent mutations.
+Why: A pairwise statistical sequence model assigns scalar scores and predicts
+mutation effects from evolutionary covariation. This is a concrete precedent for
+useful sequence energies and a comparator for the claim that energy captures
+interactions beyond an ordinary independent-site model.
+Read for: epistatic versus independent models and experimental mutation-effect tests.
+Limit: unsupervised evolutionary probability is not assay-specific fitness or physical
+folding free energy. Its positive delta-E denotes increased probability; align signs
+before comparing with your proposal's lower-energy-is-better convention.
+
+6. Alley et al. (2019). Unified rational protein engineering with sequence-based
+deep representation learning. Nature Methods 16:1315-1322 (UniRep).
+File: Alley_2019_Unified_Rational_Protein_Engineering_UniRep.pdf
+DOI: https://doi.org/10.1038/s41592-019-0598-1
+PDF: https://ccsp.hms.harvard.edu/wp-content/uploads/2020/11/Unified-rational-protein-engineering-with-sequence-based-deep-representation-learning-Alley-Church.pdf
+Questions: Q1/Q2; secondary bridge to Q3.
+Why: Pretrained sequence representations support simple supervised models of
+protein properties. This directly motivates your embedding-based baseline: the
+energy formulation must add value beyond a representation plus ordinary predictor.
+Read for: low-data generalization and Figure 4's predicted brightness under mutation.
+Limit: predicted mutational robustness is not independent experimental proof of
+starting-sequence evolvability. Download is an author manuscript.
+
+7. Notin et al. (2023). ProteinGym: Large-Scale Benchmarks for Protein Fitness
+Prediction and Design. NeurIPS, Datasets and Benchmarks.
+File: Notin_2023_ProteinGym.pdf
+Paper: https://papers.neurips.cc/paper_files/paper/2023/hash/cac723e5ff29f65e3fcbb0739ae91bee-Abstract-Datasets_and_Benchmarks.html
+PDF: https://proceedings.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf
+Questions: Q1/Q2 and sequence-function data/evaluation.
+Why: A common benchmark makes it possible to evaluate sequence-based fitness
+prediction across assays and model families rather than choosing one favorable
+example. It grounds the proposal's comparison with existing approaches and its
+need for measured sequence-function datasets.
+Read for: supervised versus zero-shot settings, splits, and evaluation metrics.
+Limit: success on mutation-effect prediction does not itself establish prospective
+multi-round evolvability. Assay readouts are not interchangeable biological fitness.
+
+8. Wang & Du (2025). Equilibrium Matching: Generative Modeling with Implicit
+Energy-Based Models. arXiv:2510.02300.
+File: Wang_Du_2025_Equilibrium_Matching.pdf
+Paper: https://arxiv.org/abs/2510.02300
+PDF: https://arxiv.org/pdf/2510.02300
+Questions: Q1; the methodological foundation explicitly cited in your proposal.
+Why: Defines the equilibrium-gradient objective and optimization-based sampling.
+Section 3.2 gives explicit-energy EqM-E constructions; Section 5.3/Table 5 reports
+degraded generation performance and initialization sensitivity for the L2 variant.
+This is the precise empirical motivation for investigating your scalar formulation.
+Read for: Sections 3.1-3.3 and the explicit-energy ablation, not only the abstract.
+Limit: existing EqM-E already learns a scalar potential. Your contribution therefore
+needs comparison with those variants. Image generation performance does not show
+that energy ranks protein function; that relationship needs its own training/evidence.
+
+9. Balcerak et al. (2025). Energy Matching: Unifying Flow Matching and Energy-Based
+Models for Generative Modeling. NeurIPS 2025; arXiv:2504.10612.
+File: Balcerak_2025_Energy_Matching.pdf
+Paper: https://arxiv.org/abs/2504.10612
+PDF: https://arxiv.org/pdf/2504.10612
+Questions: Q1; methodological alternative supporting the scalar-energy comparison.
+Why: Learns a single time-independent scalar field with transport behavior away
+from the data manifold and equilibrium behavior nearby. It provides a particularly
+close existing approach for assessing what a direct scalar formulation contributes,
+and includes a controlled protein generation demonstration.
+Read for: scalar objective, near-manifold behavior, and protein generation example.
+Limit: Energy Matching and Equilibrium Matching are different methods. A protein
+generation demonstration is not evidence of measured sequence-function prediction
+or starting-sequence evolvability.
+
+10. Emami et al. (2023). Plug & Play Directed Evolution of Proteins with
+Gradient-based Discrete MCMC. Machine Learning: Science and Technology.
+File: Emami_2023_Plug_and_Play_Directed_Evolution.pdf
+DOI: https://doi.org/10.1088/2632-2153/accacd
+Paper: https://arxiv.org/abs/2212.09925
+PDF: https://arxiv.org/pdf/2212.09925
+Questions: Q1/Q3 and the Method section's continuous-to-discrete difficulty.
+Why: Combines unsupervised evolutionary models and supervised function predictors,
+then uses gradients to propose mutations directly in discrete protein space.
+This supplies an existing route from differentiable scores to sequences and a
+comparator for whether Scalar EqM offers useful additional landscape structure.
+Read for: product-of-experts formulation and gradient-based mutation proposals.
+Limit: reported evolution experiments are in silico and use predicted function;
+they do not independently validate biological evolvability or decode arbitrary
+continuous embedding points into viable sequences.
+
+EXISTING ANCHOR (not downloaded again)
+Krasnow et al. (2026). AI-redesigned starting points and outcomes enhance protein
+evolution. Nature. https://doi.org/10.1038/s41586-026-10820-0
+File: AI Redesigned Protein Evolution.pdf
+Connect the Bloom/Baier/Wu/Starr mechanism chain to this paper's comparison of
+redesigned and wild-type starting points. The added papers help explain why its
+starting-point result motivates learning predictors of evolutionary potential.
+
+SELECTION AND VERIFICATION
+Sources are publisher, arXiv, or institutional/author-hosted PDFs. All ten new files
+were opened with PDF tools, checked for extractable full-paper text and matching
+titles, and checked for distinct content. Some downloads are author manuscripts
+or preprints rather than publisher typeset versions. This guide is a focused
+selection and relevance assessment, not an exhaustive literature review or a
+reproduction of the papers' experimental results. The proposal was not edited.
+
+FOLLOW-UP: WHY PARAMETERIZE A SCALAR ENERGY? (17 October 2026)
+Du et al. (2023), Reduce, Reuse, Recycle: Compositional Generation with
+Energy-Based Diffusion Models and MCMC. ICML.
+File: Du_2023_Reduce_Reuse_Recycle_Energy_Diffusion.pdf
+PDF: https://proceedings.mlr.press/v202/du23a/du23a.pdf
+Read Section 4.2 and Appendix E (PDF pages 5-6 and 18-19).
+Appendix E describes scalar-output networks trained through their input gradients.
+Explicit potentials enable energy-dependent composition and Metropolis correction.
+Caveat: its selected architecture transforms a vector output into an energy; it
+does not establish that an ordinary scalar-output head improves EqM performance.
+For the exact EqM loss, see EqM Section 3.2, equation 7.
+The Slack exchange proposes gradient-target training, not scalar-target regression.
+The identity of Yilun's later projects remains unverified.
